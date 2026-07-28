@@ -1,0 +1,22 @@
+package.json
+  s_25ab203f1b07d0::t_cbc3adf39d651a 1-63
+README.md
+  s_25ab203f1b07d0::t_4cf44228540380 5
+  s_25ab203f1b07d0::t_8315bbb964d34b 1-4,6-134
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "9a8f2515d713910bf629c6d6349c0feff6de88a1",
+  "prompts": {},
+  "sessions": {
+    "s_25ab203f1b07d0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019fa44a-76f2-7673-90ad-3fd964bf68ef",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "hui2.han <hui2.han@ly.com>"
+    }
+  }
+}
