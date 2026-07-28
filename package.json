@@ -1,0 +1,63 @@
+{
+  "name": "nexilume-language",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Nexilume — an authority-aware language for AI agents.",
+  "homepage": "https://nexilume.velhu.com/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sczhui/nexilume.git"
+  },
+  "bin": {
+    "nexilume": "./dist-toolchain/src/cli/nexilume.js",
+    "nexilume-lsp": "./dist-toolchain/src/lsp/server.js"
+  },
+  "files": [
+    "dist-toolchain/src/language",
+    "dist-toolchain/src/cli",
+    "dist-toolchain/src/lsp",
+    "dist-toolchain/benchmarks",
+    "docs",
+    "examples",
+    "nexilume.pack",
+    "nexilume.lock",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "typecheck": "tsc -b",
+    "build:toolchain": "tsc -p tsconfig.toolchain.json",
+    "build:web": "vite build",
+    "build:vscode": "node scripts/package-vscode.mjs",
+    "stage:downloads": "node scripts/stage-downloads.mjs",
+    "build": "npm run typecheck && npm run build:toolchain && npm run build:vscode && npm run stage:downloads && npm run build:web",
+    "lint": "oxlint src tests scripts benchmarks packages",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "preview": "vite preview --host 0.0.0.0",
+    "check:examples": "npm run build:toolchain && node scripts/check-examples.mjs",
+    "bench": "npm run build:toolchain && node dist-toolchain/benchmarks/run.js",
+    "nexilume": "node dist-toolchain/src/cli/nexilume.js"
+  },
+  "dependencies": {
+    "lucide-react": "^1.27.0",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7"
+  },
+  "devDependencies": {
+    "@types/node": "^24.13.2",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.3",
+    "jsdom": "^30.0.0",
+    "oxlint": "^1.71.0",
+    "typescript": "~6.0.2",
+    "vite": "^8.1.1",
+    "vitest": "^4.1.10"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  }
+}

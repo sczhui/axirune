@@ -1,0 +1,33 @@
+space tool_receipt
+
+edition 1
+
+capability weather.read
+  effect network.read
+  resource «https://weather.example/v1»
+/capability
+
+tool weather.current
+  take city Text
+  give Weather
+  need weather.read
+  permission ask
+  fault ServiceUnavailable
+/tool
+
+sandbox weather_demo
+  network allow «weather.example»
+  clock allow
+  limit calls 4
+/sandbox
+
+task main
+  give Text
+  use weather.current
+  within sandbox weather_demo
+  let forecast [call weather.current :city «Singapore»]
+  emit «Tool call completed; receipt attached to the trace.»
+  yield forecast
+/task
+
+launch main

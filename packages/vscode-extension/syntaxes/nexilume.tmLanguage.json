@@ -1,0 +1,87 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Nexilume",
+  "scopeName": "source.nexilume",
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#strings" },
+    { "include": "#closers" },
+    { "include": "#frames" },
+    { "include": "#clauses" },
+    { "include": "#types" },
+    { "include": "#numbers" },
+    { "include": "#namedArguments" }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        { "name": "comment.line.double-dash.nexilume", "match": "--.*$" }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.other.guillemet.nexilume",
+          "begin": "«",
+          "end": "»"
+        },
+        {
+          "name": "string.quoted.double.nexilume",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [
+            { "name": "constant.character.escape.nexilume", "match": "\\\\." }
+          ]
+        }
+      ]
+    },
+    "closers": {
+      "patterns": [
+        {
+          "name": "keyword.control.frame.end.nexilume",
+          "match": "^\\s*/(?:shape|choice|fault|capability|permission|tool|mcp|memory|context|prompt|sandbox|task|agent|workflow|package)\\b"
+        }
+      ]
+    },
+    "frames": {
+      "patterns": [
+        {
+          "name": "keyword.declaration.frame.nexilume",
+          "match": "^\\s*(?:space|edition|shape|choice|fault|capability|permission|tool|mcp|memory|context|prompt|sandbox|task|agent|workflow|package)\\b"
+        }
+      ]
+    },
+    "clauses": {
+      "patterns": [
+        {
+          "name": "keyword.control.clause.nexilume",
+          "match": "\\b(?:take|give|field|slot|instruction|attach|expect|effect|resource|need|permission|lifetime|merge|retention|compact|budget|limit|model|remember|grant|within|context|handle|stage|after|recover|retry|backoff|compensate|use|let|emit|yield|invoke|launch|as|with|from|trust|allow|deny|version|source|entry|runtime|expose|require|authority|diagnostics)\\b"
+        }
+      ]
+    },
+    "types": {
+      "patterns": [
+        {
+          "name": "support.type.nexilume",
+          "match": "\\b(?:Unit|Bool|Int|Decimal|Text|Bytes|Duration|List|Map|Maybe|Outcome|Stream|Secret|Verified|Lease)\\b"
+        }
+      ]
+    },
+    "numbers": {
+      "patterns": [
+        {
+          "name": "constant.numeric.nexilume",
+          "match": "\\b\\d+(?:\\.\\d+)?\\b"
+        }
+      ]
+    },
+    "namedArguments": {
+      "patterns": [
+        {
+          "name": "variable.parameter.nexilume",
+          "match": ":[A-Za-z_][A-Za-z0-9_.-]*"
+        }
+      ]
+    }
+  }
+}

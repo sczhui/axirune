@@ -1,0 +1,25 @@
+{
+  "comments": {
+    "lineComment": "--"
+  },
+  "brackets": [
+    ["[", "]"],
+    ["«", "»"]
+  ],
+  "autoClosingPairs": [
+    { "open": "[", "close": "]" },
+    { "open": "«", "close": "»" },
+    { "open": "\"", "close": "\"" }
+  ],
+  "surroundingPairs": [
+    ["[", "]"],
+    ["«", "»"],
+    ["\"", "\""]
+  ],
+  "folding": {
+    "markers": {
+      "start": "^\\s*(shape|choice|fault|capability|permission|tool|mcp|memory|context|prompt|sandbox|task|agent|workflow)\\b",
+      "end": "^\\s*/(shape|choice|fault|capability|permission|tool|mcp|memory|context|prompt|sandbox|task|agent|workflow)\\b"
+    }
+  }
+}

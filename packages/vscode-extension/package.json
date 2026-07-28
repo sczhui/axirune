@@ -1,0 +1,61 @@
+{
+  "name": "nexilume-language",
+  "displayName": "Nexilume Language",
+  "description": "Language support for Nexilume: diagnostics, formatting, hover, symbols, and agent-aware snippets.",
+  "version": "0.1.0",
+  "publisher": "nexilume",
+  "type": "module",
+  "license": "Apache-2.0",
+  "engines": {
+    "vscode": "^1.96.0"
+  },
+  "categories": ["Programming Languages", "Linters", "Formatters"],
+  "keywords": ["nexilume", "agent", "ai", "workflow", "mcp", "capability"],
+  "activationEvents": ["onLanguage:nexilume"],
+  "main": "./extension.cjs",
+  "contributes": {
+    "languages": [
+      {
+        "id": "nexilume",
+        "aliases": ["Nexilume", "nexilume"],
+        "extensions": [".nxl"],
+        "filenames": ["nexilume.pack", "nexilume.lock"],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "nexilume",
+        "scopeName": "source.nexilume",
+        "path": "./syntaxes/nexilume.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "nexilume",
+        "path": "./snippets/nexilume.json"
+      }
+    ],
+    "commands": [
+      {
+        "command": "nexilume.restartServer",
+        "title": "Nexilume: Restart Language Server"
+      },
+      {
+        "command": "nexilume.showManifest",
+        "title": "Nexilume: Show Capability Manifest"
+      }
+    ],
+    "configuration": {
+      "title": "Nexilume",
+      "properties": {
+        "nexilume.trace.server": {
+          "type": "string",
+          "enum": ["off", "messages", "verbose"],
+          "default": "off",
+          "description": "Trace communication with the bundled Nexilume language server."
+        }
+      }
+    }
+  }
+}

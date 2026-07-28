@@ -1,0 +1,12 @@
+package nexilume.reference
+  version «0.1.0»
+  edition «first-intent»
+  source «examples/**/*.nxl»
+
+  expose task hello.main
+  expose workflow workflow_recovery.investigate
+
+  require runtime «nexilume@0.1»
+  authority manifest
+  diagnostics canonical_json
+/package

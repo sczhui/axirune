@@ -1,0 +1,7 @@
+node_modules
+dist
+dist-toolchain
+.git
+.npm-cache
+coverage
+*.log

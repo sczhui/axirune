@@ -1,0 +1,56 @@
+name: nexilume
+
+services:
+  nexilume:
+    image: nexilume:local
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nexilume
+    restart: unless-stopped
+    user: "101:101"
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=16m,uid=101,gid=101,mode=1777
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 128
+    expose:
+      - "8080"
+    networks:
+      - proxy-net
+    labels:
+      traefik.enable: "true"
+      traefik.docker.network: proxy-net
+      traefik.http.routers.nexilume.rule: "Host(`nexilume.velhu.com`)"
+      traefik.http.routers.nexilume.entrypoints: websecure
+      traefik.http.routers.nexilume.tls: "true"
+      traefik.http.services.nexilume.loadbalancer.server.port: "8080"
+      homepage.group: "AI"
+      homepage.name: "Nexilume Language"
+      homepage.icon: "mdi-code-block-braces"
+      homepage.href: "https://nexilume.velhu.com"
+      homepage.description: "AI Agent 原生编程语言与在线 IDE"
+    healthcheck:
+      test:
+        - CMD
+        - wget
+        - -q
+        - -O
+        - /dev/null
+        - http://127.0.0.1:8080/healthz
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  proxy-net:
+    external: true

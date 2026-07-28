@@ -1,0 +1,7 @@
+{
+  "rules": {
+    "no-console": "off",
+    "typescript/no-explicit-any": "warn"
+  },
+  "ignorePatterns": ["dist/**", "dist-toolchain/**", "public/downloads/**"]
+}

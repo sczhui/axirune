@@ -1,0 +1,14 @@
+{
+  "schema": "nexilume.lock/1",
+  "package": "nexilume.reference",
+  "version": "0.1.0",
+  "compiler": "nexilume@0.1.0",
+  "protocols": {
+    "mcp": "2025-06-18"
+  },
+  "dependencies": [],
+  "authority": {
+    "default": "deny",
+    "source": "generated capability manifest"
+  }
+}

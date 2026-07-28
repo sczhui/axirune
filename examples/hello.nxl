@@ -1,0 +1,12 @@
+space hello
+
+edition 1
+
+task main
+  give Text
+  let greeting «Hello from Nexilume.»
+  emit greeting
+  yield greeting
+/task
+
+launch main

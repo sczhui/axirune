@@ -1,0 +1,13 @@
+node_modules/
+dist/
+dist-toolchain/
+.npm-cache/
+coverage/
+*.log
+.DS_Store
+.env
+.env.*
+!.env.example
+public/downloads/*.vsix
+public/downloads/*.tgz
+public/downloads/*.tar.gz
