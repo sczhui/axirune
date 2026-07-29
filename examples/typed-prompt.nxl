@@ -22,7 +22,7 @@ prompt triage
 
 task main
   give Text
-  let ticket «Database latency is above the agreed threshold.»
+  let ticket = «Database latency is above the agreed threshold.»
   emit «Prompt compiled with a typed, untrusted ticket slot.»
   yield ticket
 /task

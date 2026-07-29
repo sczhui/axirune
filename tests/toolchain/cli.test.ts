@@ -1,4 +1,4 @@
-import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
@@ -163,6 +163,218 @@ describe("Nexilume CLI", () => {
       "run",
     ]);
     expect(report.cases.every((entry) => entry.timing.samples === 1)).toBe(true);
+  });
+
+  it("runs a pure task without any mock or LLM dependency", async () => {
+    await writeFile(
+      join(directory, "pure.nxl"),
+      `space pure
+task main
+  give Text
+  yield [call Text.join :parts [list «deterministic» « task»]]
+/task
+launch main
+`,
+      "utf8",
+    );
+    const output = capture();
+    expect(
+      await runCli(["run", "pure.nxl", "--json"], {
+        cwd: directory,
+        ...output.environment,
+      }),
+    ).toBe(0);
+    expect(JSON.parse(output.stdout())).toMatchObject({
+      ok: true,
+      status: "completed",
+      value: "deterministic task",
+    });
+  });
+
+  it("passes a validated JSON object to main", async () => {
+    await writeFile(
+      join(directory, "input.nxl"),
+      `space input
+task main
+  take name Text
+  give Text
+  yield name
+/task
+launch main
+`,
+      "utf8",
+    );
+    const output = capture();
+    expect(
+      await runCli(
+        ["run", "input.nxl", "--input-json", "{\"name\":\"Nexilume 0.2\"}", "--json"],
+        {
+          cwd: directory,
+          ...output.environment,
+        },
+      ),
+    ).toBe(0);
+    expect(JSON.parse(output.stdout())).toMatchObject({
+      status: "completed",
+      value: "Nexilume 0.2",
+    });
+
+    const invalid = capture();
+    expect(
+      await runCli(["run", "input.nxl", "--input-json", "[]", "--json"], {
+        cwd: directory,
+        ...invalid.environment,
+      }),
+    ).toBe(2);
+    expect(JSON.parse(invalid.stdout()).error).toMatch(/JSON object/u);
+  });
+
+  it("reads a real file only with explicit CLI authority", async () => {
+    const data = join(directory, "data");
+    await mkdir(data);
+    const input = join(data, "input.txt");
+    await writeFile(input, "host-backed value", "utf8");
+    await writeFile(
+      join(directory, "read.nxl"),
+      `space read
+task main
+  give Text
+  yield [call File.readText :path «${input}»]
+/task
+launch main
+`,
+      "utf8",
+    );
+
+    const denied = capture();
+    expect(
+      await runCli(["run", "read.nxl", "--json"], {
+        cwd: directory,
+        ...denied.environment,
+      }),
+    ).toBe(1);
+    expect(JSON.parse(denied.stdout())).toMatchObject({
+      status: "denied",
+      diagnostics: [expect.objectContaining({ code: "E_PERMISSION_DENIED" })],
+    });
+
+    const allowed = capture();
+    expect(
+      await runCli(["run", "read.nxl", "--allow-read", data, "--json"], {
+        cwd: directory,
+        ...allowed.environment,
+      }),
+    ).toBe(0);
+    expect(JSON.parse(allowed.stdout())).toMatchObject({
+      status: "completed",
+      value: "host-backed value",
+    });
+  });
+
+  it("enforces write roots and never mocks an unknown tool", async () => {
+    const outputDirectory = join(directory, "output");
+    const outsideDirectory = join(directory, "outside");
+    await Promise.all([mkdir(outputDirectory), mkdir(outsideDirectory)]);
+    const deniedTarget = join(outsideDirectory, "denied.txt");
+    await writeFile(
+      join(directory, "write.nxl"),
+      `space write
+task main
+  give Text
+  let receipt [call File.writeText :path «${deniedTarget}» :text «no escape»]
+  yield «done»
+/task
+launch main
+`,
+      "utf8",
+    );
+    const denied = capture();
+    expect(
+      await runCli(["run", "write.nxl", "--allow-write", outputDirectory, "--json"], {
+        cwd: directory,
+        ...denied.environment,
+      }),
+    ).toBe(1);
+    expect(JSON.parse(denied.stdout())).toMatchObject({
+      status: "failed",
+      diagnostics: [
+        expect.objectContaining({
+          code: "E_RUNTIME",
+          message: expect.stringMatching(/escapes every authorized root/u),
+        }),
+      ],
+    });
+    await expect(readFile(deniedTarget, "utf8")).rejects.toMatchObject({ code: "ENOENT" });
+
+    const allowedTarget = join(outputDirectory, "result.txt");
+    await writeFile(
+      join(directory, "write.nxl"),
+      `space write
+task main
+  give Text
+  let receipt [call File.writeText :path «${allowedTarget}» :text «written by Nexilume»]
+  yield «done»
+/task
+launch main
+`,
+      "utf8",
+    );
+    const allowed = capture();
+    expect(
+      await runCli(["run", "write.nxl", "--allow-write", outputDirectory, "--json"], {
+        cwd: directory,
+        ...allowed.environment,
+      }),
+    ).toBe(0);
+    expect(await readFile(allowedTarget, "utf8")).toBe("written by Nexilume");
+
+    await writeFile(
+      join(directory, "unknown.nxl"),
+      `space unknown
+task main
+  give Text
+  yield [call Missing.tool :value «not mocked»]
+/task
+launch main
+`,
+      "utf8",
+    );
+    const unknown = capture();
+    expect(
+      await runCli(["run", "unknown.nxl", "--json"], {
+        cwd: directory,
+        ...unknown.environment,
+      }),
+    ).toBe(1);
+    expect(JSON.parse(unknown.stdout())).toMatchObject({
+      status: "failed",
+      diagnostics: [expect.objectContaining({ code: "E_TOOL_NOT_BOUND" })],
+    });
+  });
+
+  it("denies Http.get before any network request when no host is allowed", async () => {
+    await writeFile(
+      join(directory, "network.nxl"),
+      `space network
+task main
+  give Record
+  yield [call Http.get :url «https://example.invalid/never-requested»]
+/task
+launch main
+`,
+      "utf8",
+    );
+    const output = capture();
+    expect(
+      await runCli(["run", "network.nxl", "--json"], {
+        cwd: directory,
+        ...output.environment,
+      }),
+    ).toBe(1);
+    expect(JSON.parse(output.stdout())).toMatchObject({
+      status: "denied",
+      diagnostics: [expect.objectContaining({ code: "E_PERMISSION_DENIED" })],
+    });
   });
 });
 

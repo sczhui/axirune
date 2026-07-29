@@ -1,55 +1,96 @@
 # Why Nexilume exists
 
-A Nexilume program is a **typed intent graph**, wrapped in an **authority
-envelope**, executed as a **replayable event log**.
+Nexilume is a **deterministic general-purpose language** with a deliberately
+separate layer for external effects and optional AI.
 
-It is not a replacement for Java, Rust, Python, or the systems already written
-in them. Those systems expose HTTP, MCP, stdio, or WASM Component contracts.
-Nexilume coordinates intent, evidence, inference, authority, and durable work
-around those contracts.
+Its first question is not “which model should run this?” It is “what value does
+this program compute?” A model key is never required to parse, compile, or
+execute ordinary Nexilume programs.
+
+## Language philosophy
+
+Nexilume is optimized for programs that people and LLMs will repeatedly read,
+change, verify, and repair:
+
+- semantic frames close with their own kind, giving parsers strong recovery
+  anchors;
+- calls use named arguments, so adding a parameter does not shift every call;
+- user tasks are ordinary typed callables and may recurse;
+- values are immutable and there is no ambient mutable heap;
+- control flow is expressed through lazy, typed operations rather than hidden
+  jumps;
+- failure is represented by `Outcome`, not a second invisible exception
+  channel;
+- pure computation and host effects have different semantics;
+- the formatter emits one canonical spelling;
+- AST, IR, manifests, diagnostics, and traces are machine-readable contracts.
+
+The syntax is not a thin variation of braces, indentation blocks, bytecode
+classes, or object method dispatch. Frames, prefix expressions, guillemet text,
+and named clauses are chosen to keep structure locally obvious.
 
 ## Four semantic planes
 
-### Value
+### 1. Deterministic values
 
-`shape`, `choice`, and `task` describe deterministic data and computation.
-Values are immutable; resources are affine leases. No address, pointer, hidden
-global, inheritance tree, unchecked cast, universal null, or operator overload
-is part of the model.
+`shape` defines record data. `task` defines a callable transformation.
+`Number`, `Bool`, `Text`, `List`, `Record`, `Json`, and `Outcome` are pure
+builtins. A task can call another task—or itself—with named arguments.
 
-### Epistemic
+The interpreter resolves a value from source plus input. Pure evaluation does
+not consult network state, a model, a clock, or an adapter.
 
-`Observed`, `Claim`, `Verified`, `prompt`, `context`, and `memory` describe what
-is known and why. Schema-valid input is not automatically true. Tool results
-are observed, model results are claims, and only deterministic validators can
-mint verified evidence.
+### 2. Explicit results
 
-### Effect
+`Outcome<Value Fault>` makes expected failure an ordinary return value.
+`Core.if` chooses one lazy branch. Recursion and list processing are visible in
+the task call graph and bounded by interpreter fuel.
 
-`tool`, `mcp`, `capability`, `permission`, and `sandbox` define all contact with
-the outside world. A model never executes a tool. It proposes a typed intent;
-the runtime checks schema, trust, capability, sandbox, and permission in that
-order before an adapter may run.
+`List.map`, `List.filter`, and `List.fold` do not capture hidden closures.
+`:using «task-name»` names the callback task explicitly, keeping the call graph
+serializable.
 
-### Time
+### 3. Bounded effects
 
-`weave`, `agent`, and `workflow` describe bounded concurrency, inference loops,
-and durable graphs. Children belong to a structured scope. Workflows checkpoint
-effects, carry stable stage IDs, and express compensation without claiming that
-arbitrary remote systems can provide magical exactly-once execution.
+Filesystem, process, network, tools, and MCP are effects. `capability` describes
+what may be named, `permission` decides whether it may run now, and `sandbox`
+limits what the host can actually reach.
 
-## Built for model-authored maintenance
+A pure invoice or factorial program has no authority. Adding a file reader
+changes the manifest in a reviewable way.
 
-- explicit frame closers are strong parser recovery anchors;
-- named call arguments do not shift when a field is inserted;
-- public declarations, branches, and workflow stages have stable names;
-- declaration order is non-semantic unless an edge says otherwise;
-- the formatter emits one canonical spelling;
-- AST, IR, privilege manifest, and trace are stable JSON surfaces;
-- authority diffs can be reviewed separately from ordinary code diffs;
-- no macros, implicit imports, ambient context, or overload resolution hide the
-  meaning a refactoring model must preserve.
+### 4. Optional cognition
 
-The result is intentionally more explicit than a scripting language. Nexilume
-optimizes for the cost of understanding, verifying, repairing, and safely
-changing a program over its lifetime.
+`prompt`, `context`, `memory`, and `agent` are available for programs that
+benefit from model inference. They are not prerequisites for tasks, data,
+errors, I/O, or workflows.
+
+Model output is a value with an explicit trust boundary. A model adapter uses
+the same capability and sandbox machinery as every other effect. It receives no
+special path to tools, files, or network.
+
+## Determinism
+
+For a pure program, the same checked IR and input produce the same value,
+emissions, and semantic trace. Evaluation order is defined. `Core.if` evaluates
+only the selected branch. List transforms visit elements in list order.
+
+External adapters can observe changing systems. Their receipts and trace events
+make that nondeterminism explicit rather than silently contaminating the core
+language.
+
+## Built for LLM-authored maintenance
+
+Nexilume welcomes LLM-generated code without making an LLM part of runtime:
+
+- explicit frame closers reduce structural ambiguity;
+- named call arguments survive signature evolution;
+- task callbacks are names, not opaque closures;
+- public declarations have stable semantic names;
+- declaration order is non-semantic unless a dependency says otherwise;
+- pure builtins form a small documented registry;
+- effect and authority diffs can be reviewed separately from value logic;
+- canonical formatting removes stylistic search space.
+
+The result is intentionally explicit. Nexilume optimizes for the lifetime cost
+of understanding and safely changing software, not for minimizing keystrokes.

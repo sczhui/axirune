@@ -133,7 +133,7 @@ function formatStatement(
     case "let":
       value = `let ${statement.binding}${
         statement.valueType ? ` ${formatType(statement.valueType)}` : ""
-      } ${formatExpression(statement.value)}`;
+      } = ${formatExpression(statement.value)}`;
       break;
     case "emit":
       value = `emit ${formatExpression(statement.value)}`;
@@ -251,9 +251,16 @@ export function formatExpression(expression: Expression): string {
           : ""
       }]`;
     case "RecordExpression":
-      return `[${expression.entries
-        .map((entry) => `${formatRecordKey(entry.key)}: ${formatExpression(entry.value)}`)
-        .join(", ")}]`;
+      return `[record${
+        expression.entries.length > 0
+          ? ` ${expression.entries
+              .map(
+                (entry) =>
+                  `:${formatRecordKey(entry.key)} ${formatExpression(entry.value)}`,
+              )
+              .join(" ")}`
+          : ""
+      }]`;
     case "GroupExpression":
       return `(${formatExpression(expression.value)})`;
     case "CallExpression":
@@ -312,5 +319,7 @@ function formatString(
 }
 
 function formatRecordKey(key: string): string {
-  return /^[\p{L}_][\p{L}\p{N}_-]*$/u.test(key) ? key : JSON.stringify(key);
+  return /^[\p{L}_][\p{L}\p{N}_-]*$/u.test(key)
+    ? key
+    : `«${key.replaceAll("\\", "\\\\").replaceAll("»", "\\»")}»`;
 }

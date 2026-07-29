@@ -27,79 +27,42 @@ const projectFiles: ProjectFile[] = [
   {
     path: 'src/main.nxl',
     kind: 'source',
-    code: samples[1]?.code ?? samples[0]?.code ?? '',
+    code: samples.find((sample) => sample.slug === 'invoice-total')?.code ?? '',
   },
   {
-    path: 'src/prompts/review.nxl',
-    kind: 'prompt',
-    code: `space refunds
-edition 1
-
-shape RefundRequest
-  field id Text
-  field reason Text trust untrusted
-/shape
-
-shape RefundDecision
-  field outcome Text
-  field rationale Text
-/shape
-
-prompt review_refund
-  slot request RefundRequest trust untrusted
-  instruction «Check policy and evidence. Never invent a payment state.»
-  attach request as data
-  expect RefundDecision
-/prompt
-
-task main
-  give Text
-  emit «Typed refund prompt compiled with untrusted input.»
-  yield «review-ready»
-/task
-
-launch main`,
+    path: 'src/hello.nxl',
+    kind: 'source',
+    code: samples.find((sample) => sample.slug === 'hello')?.code ?? '',
   },
   {
-    path: 'src/policies/finance.nxl',
+    path: 'src/factorial.nxl',
+    kind: 'source',
+    code: samples.find((sample) => sample.slug === 'factorial')?.code ?? '',
+  },
+  {
+    path: 'src/outcome.nxl',
+    kind: 'source',
+    code: samples.find((sample) => sample.slug === 'outcome-division')?.code ?? '',
+  },
+  {
+    path: 'src/word-frequency.nxl',
     kind: 'policy',
-    code: `space refunds
-edition 1
-
-grant ledger_read to main
-
-capability ledger_read
-  effect network.read
-  resource «https://ledger.internal»
-  limit calls 4
-/capability
-
-sandbox finance_readonly
-  network allow «ledger.internal»
-  filesystem deny all
-  process deny all
-/sandbox
-
-task main
-  give Text
-  need ledger_read
-  within finance_readonly
-  emit «Ledger access is capability and sandbox bounded.»
-  yield «policy-ready»
-/task
-
-launch main`,
+    code: samples.find((sample) => sample.slug === 'word-frequency')?.code ?? '',
+  },
+  {
+    path: 'src/optional-ai.nxl',
+    kind: 'prompt',
+    code: samples.find((sample) => sample.slug === 'optional-ai')?.code ?? '',
   },
   {
     path: 'nexilume.pack',
     kind: 'manifest',
-    code: `package refund-review
-  version «0.1.0»
-  edition «first-intent»
+    code: `package general-programs
+  version «0.2.0»
+  edition «2»
   source «src/**/*.nxl»
   entry «src/main.nxl»
   runtime «web»
-  require «mcp:ledger@1.4.2»
   authority «manifest»
   diagnostics «canonical_json»
 /package`,
@@ -139,12 +102,12 @@ export function IdePage({ locale }: { locale: Locale }) {
           <span className="eyebrow">
             <CircleDot size={12} /> NEXILUME WORKSPACE / WEB
           </span>
-          <h1>{locale === 'zh' ? '意图、权限与执行，在同一个工作区。' : 'Intent, authority, and execution in one workspace.'}</h1>
+          <h1>{locale === 'zh' ? '确定性应用，也值得一间 AI 原生工作室。' : 'Deterministic applications deserve an AI-native studio.'}</h1>
         </div>
         <p>
           {locale === 'zh'
-            ? '这是完整的浏览器 IDE：切换项目文件，运行编译器，检查最小权限清单，并把源码保存到本地。'
-            : 'A complete browser IDE: switch project files, run the compiler, inspect minimum authority, and save source locally.'}
+            ? '在浏览器中编译并运行普通程序：Hello、递归、集合、Outcome 与文件 I/O。前五个文件不需要模型；AI 示例被单独标记为可选扩展。'
+            : 'Compile and run ordinary programs in the browser: Hello, recursion, collections, Outcome, and file I/O. The first five files need no model; AI is a separately labelled optional extension.'}
         </p>
       </section>
 
@@ -159,7 +122,7 @@ export function IdePage({ locale }: { locale: Locale }) {
           </div>
           <div className="ide-titlebar__project">
             <PackageCheck size={14} />
-            <span>refund-review</span>
+            <span>general-programs</span>
             <small>LOCAL</small>
           </div>
           <div className="ide-titlebar__actions">
@@ -201,7 +164,7 @@ export function IdePage({ locale }: { locale: Locale }) {
               <div className="file-tree">
                 <div className="file-tree__folder">
                   <FolderOpen size={14} />
-                  <strong>refund-review</strong>
+                  <strong>general-programs</strong>
                 </div>
                 <div className="file-tree__folder file-tree__folder--nested">
                   <FolderOpen size={14} />
@@ -264,14 +227,19 @@ export function IdePage({ locale }: { locale: Locale }) {
             <span>
               <TerminalSquare size={13} /> WEB RUNTIME
             </span>
-            <span>nexilume 0.1.0</span>
+            <span>nexilume 0.2.0</span>
           </div>
           <div>
             <span>UTF-8</span>
             <span>LF</span>
             <span>Nexilume</span>
             <span className="ide-statusbar__safe">
-              <Shield size={13} /> SANDBOXED
+              <Shield size={13} />{' '}
+              {activeFile.kind === 'prompt'
+                ? 'OPTIONAL AI'
+                : activeFile.kind === 'policy'
+                  ? 'CAPABILITY I/O'
+                  : 'PURE CORE'}
             </span>
           </div>
         </div>
@@ -285,18 +253,18 @@ export function IdePage({ locale }: { locale: Locale }) {
         <div className="ide-feature-grid">
           <article>
             <span>01</span>
-            <h2>{locale === 'zh' ? '语义补全' : 'Semantic completion'}</h2>
-            <p>{locale === 'zh' ? '补全建议基于当前 frame、类型与可用 capability，而不只是相似文本。' : 'Suggestions follow the current frame, types, and available capabilities—not merely similar text.'}</p>
+            <h2>{locale === 'zh' ? 'Task 调用图' : 'Task call graph'}</h2>
+            <p>{locale === 'zh' ? '命名参数、递归边与 List 回调都进入同一份可检查调用图。' : 'Named arguments, recursive edges, and List callbacks all enter one inspectable call graph.'}</p>
           </article>
           <article>
             <span>02</span>
-            <h2>{locale === 'zh' ? '权限差异' : 'Authority diffs'}</h2>
-            <p>{locale === 'zh' ? '重构前后新增、收窄或移除的 effect 会像类型变化一样进入审查。' : 'Effects added, narrowed, or removed by a refactor enter review like type changes.'}</p>
+            <h2>{locale === 'zh' ? '数据流可见' : 'Visible dataflow'}</h2>
+            <p>{locale === 'zh' ? '纯 builtin、惰性分支与 Outcome 在 IR 和 trace 中保留语义边界。' : 'Pure builtins, lazy branches, and Outcome retain their semantic boundaries in IR and traces.'}</p>
           </article>
           <article>
             <span>03</span>
-            <h2>{locale === 'zh' ? 'Trace 定位' : 'Trace navigation'}</h2>
-            <p>{locale === 'zh' ? '从某次工具调用或拒绝决策直接跳回产生它的语义帧。' : 'Jump from a tool call or denied decision directly to the semantic frame that produced it.'}</p>
+            <h2>{locale === 'zh' ? 'Effect 差异' : 'Effect diffs'}</h2>
+            <p>{locale === 'zh' ? '只有 I/O、MCP 或模型跨出纯核心；重构产生的 authority 变化可以单独审查。' : 'Only I/O, MCP, or models cross the pure core; authority changes introduced by a refactor can be reviewed separately.'}</p>
           </article>
         </div>
       </section>

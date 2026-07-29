@@ -228,37 +228,13 @@ export async function compileProgram(source: string): Promise<CompileView> {
 }
 
 const demoTools = {
-  search: async (input: unknown) => {
-    const namedArguments =
-      isRecord(input) && isRecord(input.namedArguments) ? input.namedArguments : input
-    const query =
-      isRecord(namedArguments) && typeof namedArguments.query === 'string'
-        ? namedArguments.query
-        : isRecord(namedArguments) && typeof namedArguments.value === 'string'
-          ? namedArguments.value
-          : 'Nexilume'
-    return {
-      query,
-      summary: 'Nexilume keeps intent, authority, and execution evidence in one program.',
-      sources: 3,
-    }
-  },
-  'weather.read': async (input: unknown) => ({
-    city:
-      isRecord(input) && isRecord(input.namedArguments)
-        ? String(input.namedArguments.city ?? 'Singapore')
-        : 'Singapore',
-    summary: 'Light rain, 29°C. Outdoor window: 16:00–18:00.',
-    observedAt: new Date(0).toISOString(),
-  }),
-  'ledger.read': async () => ({ paid: 128, currency: 'USD' }),
-  'refund.prepare': async (input: unknown) => ({ draft: 'rf_demo_2048', input }),
+  'File.readText': async () => 'Nexilume makes intent explicit nexilume makes effects explicit',
 }
 
 export async function runProgram(source: string): Promise<RunView> {
   try {
     const options = {
-      capabilities: ['net.read', 'weather.read', 'ledger.read', 'refund.prepare'],
+      capabilities: ['host.fs.read'],
       tools: demoTools,
       sandbox: { maxSteps: 100 },
       mockTools: true,

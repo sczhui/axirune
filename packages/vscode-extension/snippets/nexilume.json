@@ -1,4 +1,23 @@
 {
+  "Nexilume deterministic program": {
+    "prefix": "program",
+    "description": "Create a complete deterministic Nexilume program",
+    "body": [
+      "space ${1:application}",
+      "edition 2",
+      "",
+      "task main",
+      "  give Text",
+      "  let message [call Text.join",
+      "    :parts [list «${2:Hello, }» «${3:Nexilume}»]",
+      "  ]",
+      "  emit message",
+      "  yield message",
+      "/task",
+      "",
+      "launch main"
+    ]
+  },
   "Nexilume task": {
     "prefix": "task",
     "description": "Create a typed Nexilume task frame",
@@ -8,6 +27,31 @@
       "  give ${4:Text}",
       "  ${5:yield ${2:input}}",
       "/task"
+    ]
+  },
+  "Nexilume task call": {
+    "prefix": "calltask",
+    "description": "Call a deterministic task as an expression",
+    "body": [
+      "let ${1:result} [call ${2:task_name}",
+      "  :${3:input} ${4:value}",
+      "]"
+    ]
+  },
+  "Nexilume file application": {
+    "prefix": "fileapp",
+    "description": "Read a real file through explicit CLI host authority",
+    "body": [
+      "space ${1:file_application}",
+      "edition 2",
+      "",
+      "task main",
+      "  give Text",
+      "  let content [call File.readText :path «${2:data/input.txt}»]",
+      "  yield content",
+      "/task",
+      "",
+      "launch main"
     ]
   },
   "Nexilume tool": {

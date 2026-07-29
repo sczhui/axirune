@@ -81,6 +81,14 @@ export async function runBenchmarkSuite(
         .join("; ");
       throw new Error(`Benchmark fixture ${current.name} does not compile: ${summary}`);
     }
+    const preflight = await runSource(current.source, { mockTools: false });
+    if (preflight.status !== "completed") {
+      const summary = preflight.diagnostics
+        .filter((item) => item.severity === "error")
+        .map((item) => `${item.code}: ${item.message}`)
+        .join("; ");
+      throw new Error(`Benchmark fixture ${current.name} does not run: ${summary}`);
+    }
 
     cases.push({
       name: "parse",
@@ -100,7 +108,12 @@ export async function runBenchmarkSuite(
       name: "run",
       fixture: fixtureMetadata(current),
       timing: await measure(samples, warmup, async () => {
-        await runSource(current.source);
+        const result = await runSource(current.source, { mockTools: false });
+        if (result.status !== "completed") {
+          throw new Error(
+            `Benchmark fixture ${current.name} changed runtime status to ${result.status}.`,
+          );
+        }
       }),
     });
   }

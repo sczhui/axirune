@@ -1,4 +1,11 @@
 import { emptySpan, type Program, type SourceSpan } from "./ast.js";
+import {
+  BuiltinFault,
+  invokeBuiltin,
+  isBuiltinName,
+  type BuiltinArgument,
+  type BuiltinValue,
+} from "./builtins.js";
 import { compileProgram, compileSource } from "./compiler.js";
 import { diagnostic, type Diagnostic } from "./diagnostics.js";
 import type {
@@ -9,10 +16,7 @@ import type {
 } from "./ir.js";
 
 export type RuntimeScalar = null | boolean | number | string;
-export type RuntimeValue =
-  | RuntimeScalar
-  | RuntimeValue[]
-  | { [key: string]: RuntimeValue };
+export type RuntimeValue = BuiltinValue;
 
 export type RunStatus =
   | "completed"
@@ -31,6 +35,8 @@ export type TraceKind =
   | "instruction"
   | "binding"
   | "call"
+  | "builtin.call"
+  | "function.call"
   | "tool.call"
   | "tool.result"
   | "tool.mock"
@@ -309,7 +315,9 @@ function indexFrames(frames: readonly IRFrame[]): Map<string, IRFrame> {
 }
 
 function resolveFrame(state: ExecutionState, target: string): IRFrame | undefined {
-  return state.frames.get(target) ?? state.frames.get(target.split(".").at(-1) ?? target);
+  const exact = state.frames.get(target);
+  if (exact || target.includes(".")) return exact;
+  return state.frames.get(target.split(".").at(-1) ?? target);
 }
 
 function createScope(
@@ -452,7 +460,7 @@ async function executeInstructions(
       }
       case "give":
         value = await evaluate(state, instruction.value, scope);
-        pushOutput(state, value, instruction.span);
+        if (scope.depth <= 1) pushOutput(state, value, instruction.span);
         break;
       case "grant":
         for (const capability of instruction.capabilities) {
@@ -503,7 +511,7 @@ async function executeInstructions(
       }
       case "yield": {
         value = await evaluate(state, instruction.value, scope);
-        pushOutput(state, value, instruction.span);
+        if (scope.depth <= 1) pushOutput(state, value, instruction.span);
         trace(
           state,
           "yield",
@@ -570,38 +578,143 @@ async function evaluate(
       return result;
     }
     case "call": {
-      const named: Record<string, RuntimeValue> = Object.create(null) as Record<
-        string,
-        RuntimeValue
-      >;
-      for (const [key, argument] of Object.entries(value.arguments)) {
-        named[key] = await evaluate(state, argument, scope);
-      }
       trace(
         state,
         "call",
         `Call ${value.target}.`,
         scope.frame ?? undefined,
         undefined,
-        named,
+        { target: value.target },
       );
-      if (value.target === "Text.join") {
-        const parts = named.parts;
-        if (!Array.isArray(parts)) {
-          throw new RuntimeFault(
-            "E_ARGUMENT",
-            "failed",
-            "Text.join requires :parts [list ...].",
-            scope.frame?.sourceSpan ?? state.ir.sourceSpan,
-          );
+      if (isBuiltinName(value.target)) {
+        trace(
+          state,
+          "builtin.call",
+          `Builtin ${value.target}.`,
+          scope.frame ?? undefined,
+          undefined,
+          { target: value.target },
+        );
+        const lazyArguments: Record<string, BuiltinArgument> = Object.create(
+          null,
+        ) as Record<string, BuiltinArgument>;
+        for (const [name, argumentValue] of Object.entries(value.arguments)) {
+          let pending: Promise<RuntimeValue> | undefined;
+          lazyArguments[name] = () => {
+            pending ??= evaluate(state, argumentValue, scope);
+            return pending;
+          };
         }
-        return parts.map(displayText).join("");
+        try {
+          return await invokeBuiltin(value.target, {
+            arguments: lazyArguments,
+            maxCollectionItems: state.limits.maxCollectionItems,
+            callTask: (taskName, namedArguments) =>
+              invokeUserTask(
+                state,
+                taskName,
+                namedArguments,
+                scope,
+                value.span,
+              ),
+          });
+        } catch (error) {
+          if (error instanceof BuiltinFault) {
+            throw new RuntimeFault(error.code, "failed", error.message, value.span);
+          }
+          throw error;
+        }
       }
-      return callTool(state, value.target, [], named, scope);
+
+      const named = await evaluateNamedArguments(state, value.arguments, scope);
+      const frame = resolveFrame(state, value.target);
+      if (frame?.kind === "task") {
+        return invokeUserTask(state, value.target, named, scope, value.span);
+      }
+      if (frame && frame.kind !== "tool") {
+        throw new RuntimeFault(
+          "E_CALL_TARGET",
+          "failed",
+          `${frame.kind} ${value.target} is not a deterministic task or tool.`,
+          value.span,
+        );
+      }
+      return callTool(
+        state,
+        value.target,
+        Object.values(named),
+        named,
+        scope,
+      );
     }
     case "missing":
       return null;
   }
+}
+
+async function evaluateNamedArguments(
+  state: ExecutionState,
+  arguments_: Readonly<Record<string, IRValue>>,
+  scope: FrameScope,
+): Promise<Record<string, RuntimeValue>> {
+  const named: Record<string, RuntimeValue> = Object.create(null) as Record<
+    string,
+    RuntimeValue
+  >;
+  for (const [name, value] of Object.entries(arguments_)) {
+    named[name] = await evaluate(state, value, scope);
+  }
+  return named;
+}
+
+async function invokeUserTask(
+  state: ExecutionState,
+  taskName: string,
+  namedArguments: Readonly<Record<string, RuntimeValue>>,
+  scope: FrameScope,
+  span: SourceSpan,
+): Promise<RuntimeValue> {
+  const frame = resolveFrame(state, taskName);
+  if (!frame || frame.kind !== "task") {
+    throw new RuntimeFault(
+      "E_TASK_NOT_FOUND",
+      "failed",
+      `Task ${taskName} is not declared.`,
+      span,
+    );
+  }
+  const parameters = new Map(
+    frame.contract.inputs.map((input) => [input.name, input]),
+  );
+  for (const name of Object.keys(namedArguments)) {
+    if (!parameters.has(name)) {
+      throw new RuntimeFault(
+        "E_TASK_UNKNOWN_ARGUMENT",
+        "failed",
+        `Task ${taskName} does not accept named argument :${name}.`,
+        span,
+      );
+    }
+  }
+  for (const input of frame.contract.inputs) {
+    if (input.source === null && !Object.hasOwn(namedArguments, input.name)) {
+      throw new RuntimeFault(
+        "E_TASK_MISSING_ARGUMENT",
+        "failed",
+        `Task ${taskName} requires named argument :${input.name}.`,
+        span,
+      );
+    }
+  }
+  trace(
+    state,
+    "function.call",
+    `Task ${taskName}.`,
+    scope.frame ?? undefined,
+    undefined,
+    { target: taskName, arguments: { ...namedArguments } },
+  );
+  return (await executeFrame(state, frame, namedArguments, scope.depth)).value;
 }
 
 async function invokeTarget(
@@ -645,7 +758,10 @@ async function launchTarget(
   trace(state, "launch", `Launch ${target}.`, scope.frame ?? undefined, undefined, {
     target,
   });
-  const input = argumentsToInput(frame, arguments_);
+  const input =
+    arguments_.length === 0 && scope.frame === null
+      ? { ...scope.input }
+      : argumentsToInput(frame, arguments_);
   return (await executeFrame(state, frame, input, scope.depth)).value;
 }
 
@@ -740,7 +856,7 @@ async function callTool(
     { name, namedArguments: { ...namedArguments } },
   );
   if (!definition) {
-    if (state.options.mockTools ?? true) {
+    if (state.options.mockTools ?? false) {
       const mocked = normalizeRuntimeValue(
         { mock: true, tool: name, arguments: [...arguments_], namedArguments: { ...namedArguments } },
         state.limits,
@@ -1032,13 +1148,6 @@ function durationMilliseconds(value: IRValue): number | null {
     h: 3_600_000,
   };
   return value.value * (value.unit ? factors[value.unit] ?? 1 : 1);
-}
-
-function displayText(value: RuntimeValue): string {
-  if (value === null) return "";
-  if (typeof value === "string") return value;
-  if (typeof value === "number" || typeof value === "boolean") return String(value);
-  return JSON.stringify(value);
 }
 
 function now(): number {

@@ -24,7 +24,7 @@ task main
   give Text
   use shell
   within sandbox preview
-  let result [call shell :command «rm -rf /»]
+  let result = [call shell :command «rm -rf /»]
   yield result
 /task
 

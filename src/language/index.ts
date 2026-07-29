@@ -1,4 +1,5 @@
 export * from "./metadata.js";
+export * from "./builtins.js";
 export * from "./ast.js";
 export * from "./tokens.js";
 export * from "./diagnostics.js";

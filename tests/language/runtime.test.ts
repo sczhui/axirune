@@ -67,7 +67,7 @@ task main
 /task
 
 launch main
-`);
+`, { mockTools: true });
 
     expect(result.status).toBe("completed");
     expect(result.value).toEqual(
@@ -87,4 +87,3 @@ launch main
     );
   });
 });
-

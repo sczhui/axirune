@@ -52,6 +52,7 @@ export const KEYWORDS = [
   "limit",
   "settle",
   "list",
+  "record",
   "data",
   "choice",
   "fault",

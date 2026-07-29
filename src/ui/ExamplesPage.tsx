@@ -1,6 +1,6 @@
 import { ArrowRight, Check, Copy, Download, FileCode2, Play } from 'lucide-react'
 import { useState } from 'react'
-import { samples, type Locale } from '../content/site'
+import { runtimeLabels, samples, type Locale } from '../content/site'
 import { CodeEditor } from './CodeEditor'
 import { Link } from './Router'
 
@@ -38,11 +38,11 @@ export function ExamplesPage({ locale }: { locale: Locale }) {
           <span className="eyebrow">
             <FileCode2 size={13} /> WORKING PROGRAMS
           </span>
-          <h1>{locale === 'zh' ? '从完整意图开始，而不是零散语法。' : 'Start from complete intent, not syntax fragments.'}</h1>
+          <h1>{locale === 'zh' ? '先学会计算，再按需连接外部世界。' : 'Learn computation first. Connect the outside world only when needed.'}</h1>
           <p>
             {locale === 'zh'
-              ? '每个示例都展示一条完整路径：输入、权限、工具、结果、失败和可回放证据。'
-              : 'Every example shows an end-to-end path: input, authority, tools, result, failure, and replayable evidence.'}
+              ? 'Hello、递归、发票、Outcome 都完全不依赖 LLM；文件 I/O、MCP 与 AI 示例单独标识自己的 effect。'
+              : 'Hello, recursion, invoices, and Outcome need no LLM. File I/O, MCP, and AI examples label their effects separately.'}
           </p>
         </div>
       </section>
@@ -61,6 +61,9 @@ export function ExamplesPage({ locale }: { locale: Locale }) {
               <div>
                 <strong>{sample.title[locale]}</strong>
                 <small>{sample.eyebrow}</small>
+                <em className={`runtime-label runtime-label--${sample.runtime}`}>
+                  {runtimeLabels[sample.runtime][locale]}
+                </em>
               </div>
               <ArrowRight size={15} />
             </button>
@@ -71,6 +74,9 @@ export function ExamplesPage({ locale }: { locale: Locale }) {
           <header>
             <div>
               <span>{active.eyebrow}</span>
+              <em className={`runtime-label runtime-label--${active.runtime}`}>
+                {runtimeLabels[active.runtime][locale]}
+              </em>
               <h2>{active.title[locale]}</h2>
               <p>{active.description[locale]}</p>
             </div>
@@ -111,8 +117,8 @@ export function ExamplesPage({ locale }: { locale: Locale }) {
         <span className="eyebrow">DESIGN RULE / COMPLETE PATHS</span>
         <blockquote>
           {locale === 'zh'
-            ? '“不展示没有失败出口的成功路径；不展示没有权限来源的工具调用。”'
-            : '“Never show a success path without failure routes—or a tool call without authority provenance.”'}
+            ? '“纯计算无需权限；一旦程序触及文件、网络或模型，effect 必须在源码里出现。”'
+            : '“Pure computation needs no authority. The moment code touches files, network, or a model, the effect must appear in source.”'}
         </blockquote>
         <Link to="/docs">
           {locale === 'zh' ? '阅读语言规则' : 'Read the language rules'} <ArrowRight size={16} />
@@ -121,4 +127,3 @@ export function ExamplesPage({ locale }: { locale: Locale }) {
     </>
   )
 }
-

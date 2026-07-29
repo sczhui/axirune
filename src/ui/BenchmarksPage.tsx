@@ -1,5 +1,5 @@
 import { Activity, BarChart3, Check, Clock3, Download, Gauge, LoaderCircle, Play, TerminalSquare } from 'lucide-react'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { samples, type Locale } from '../content/site'
 import { compileProgram, formatProgram, parseProgram } from './languageBridge'
 
@@ -9,6 +9,43 @@ type BenchResult = {
   median: number
   p95: number
   runs: number
+}
+
+type BenchmarkReport = {
+  schema: string
+  generatedAt: string
+  languageVersion: string
+  runtime: {
+    node: string
+    platform: string
+    architecture: string
+    cpu: string
+    logicalCpus: number
+  }
+  configuration: {
+    samples: number
+    warmup: number
+  }
+  cases: Array<{
+    name: string
+    fixture: {
+      name: string
+      bytes: number
+      lines: number
+    }
+    timing: {
+      samples: number
+      medianMs: number
+      p95Ms: number
+    }
+  }>
+}
+
+function titleCase(value: string) {
+  return value
+    .split(/[-_]/u)
+    .map((part) => `${part.slice(0, 1).toUpperCase()}${part.slice(1)}`)
+    .join(' ')
 }
 
 async function measure(
@@ -34,21 +71,53 @@ async function measure(
 export function BenchmarksPage({ locale }: { locale: Locale }) {
   const [running, setRunning] = useState(false)
   const [results, setResults] = useState<BenchResult[]>([])
+  const [releaseResults, setReleaseResults] = useState<BenchResult[]>([])
+  const [releaseReport, setReleaseReport] = useState<BenchmarkReport | null>(null)
+  const [releaseError, setReleaseError] = useState('')
+  const [resultMode, setResultMode] = useState<'release' | 'local'>('release')
   const [runAt, setRunAt] = useState('')
   const smallSource = samples[0]?.code ?? ''
   const workflowSource = samples[1]?.code ?? smallSource
   const corpus = useMemo(() => samples.map((sample) => sample.code).join('\n\n'), [])
   const lineCount = corpus.split('\n').length
 
+  useEffect(() => {
+    const controller = new AbortController()
+    const loadReleaseReport = async () => {
+      try {
+        const response = await fetch('/benchmark-results.json', { signal: controller.signal })
+        if (!response.ok) throw new Error(`HTTP ${response.status}`)
+        const report = (await response.json()) as BenchmarkReport
+        if (!Array.isArray(report.cases)) throw new Error('Missing benchmark cases')
+        setReleaseReport(report)
+        setReleaseResults(
+          report.cases.map((benchmarkCase) => ({
+            name: `${titleCase(benchmarkCase.name)} / ${titleCase(benchmarkCase.fixture.name)}`,
+            detail: `${benchmarkCase.fixture.lines} lines · ${benchmarkCase.fixture.bytes} bytes`,
+            median: benchmarkCase.timing.medianMs,
+            p95: benchmarkCase.timing.p95Ms,
+            runs: benchmarkCase.timing.samples,
+          })),
+        )
+      } catch (error) {
+        if (error instanceof DOMException && error.name === 'AbortError') return
+        setReleaseError(error instanceof Error ? error.message : String(error))
+      }
+    }
+    void loadReleaseReport()
+    return () => controller.abort()
+  }, [])
+
   const runBenchmarks = async () => {
     setRunning(true)
+    setResultMode('local')
     setResults([])
     await new Promise<void>((resolve) => window.setTimeout(resolve, 30))
     const cases = [
       () => measure('Parse / small', `${smallSource.split('\n').length} lines`, 60, () => parseProgram(smallSource)),
       () => measure('Format / workflow', `${workflowSource.split('\n').length} lines`, 40, () => formatProgram(workflowSource)),
       () => measure('Compile / workflow', `${workflowSource.split('\n').length} lines`, 30, () => compileProgram(workflowSource)),
-      () => measure('Parse / corpus', `${lineCount} lines · 4 framesets`, 24, () => parseProgram(corpus)),
+      () => measure('Parse / corpus', `${lineCount} lines · ${samples.length} files`, 24, () => parseProgram(corpus)),
     ]
     const next: BenchResult[] = []
     for (const benchmarkCase of cases) {
@@ -60,7 +129,11 @@ export function BenchmarksPage({ locale }: { locale: Locale }) {
     setRunning(false)
   }
 
-  const maxP95 = Math.max(...results.map((result) => result.p95), 1)
+  const displayResults = resultMode === 'local' ? results : releaseResults
+  const maxP95 = Math.max(...displayResults.map((result) => result.p95), 1)
+  const releaseTimestamp = releaseReport
+    ? new Date(releaseReport.generatedAt).toLocaleString()
+    : ''
 
   return (
     <>
@@ -85,8 +158,18 @@ export function BenchmarksPage({ locale }: { locale: Locale }) {
             <Gauge size={22} />
             <span>LOCAL MICROBENCH</span>
           </div>
-          <strong>{results.length ? `${results.length} / 4` : 'READY'}</strong>
-          <p>{runAt ? `${locale === 'zh' ? '上次运行' : 'LAST RUN'} ${runAt}` : locale === 'zh' ? '尚未执行' : 'NOT RUN YET'}</p>
+          <strong>{displayResults.length ? `${displayResults.length} CASES` : 'LOADING'}</strong>
+          <p>
+            {resultMode === 'local' && runAt
+              ? `${locale === 'zh' ? '本机运行' : 'LOCAL RUN'} ${runAt}`
+              : releaseTimestamp
+                ? `${locale === 'zh' ? '发布数据' : 'RELEASE DATA'} ${releaseTimestamp}`
+                : releaseError
+                  ? `${locale === 'zh' ? '发布数据不可用' : 'RELEASE DATA UNAVAILABLE'}`
+                  : locale === 'zh'
+                    ? '正在读取发布 JSON'
+                    : 'LOADING RELEASE JSON'}
+          </p>
           <button type="button" onClick={runBenchmarks} disabled={running}>
             {running ? <LoaderCircle className="spin" size={15} /> : <Play size={15} fill="currentColor" />}
             {running
@@ -103,7 +186,11 @@ export function BenchmarksPage({ locale }: { locale: Locale }) {
       <section className="benchmark-lab">
         <div className="benchmark-lab__head">
           <div>
-            <span className="eyebrow">BROWSER LAB / WASM-FREE TYPESCRIPT CORE</span>
+            <span className="eyebrow">
+              {resultMode === 'release'
+                ? `RELEASE JSON / NEXILUME ${releaseReport?.languageVersion ?? '0.2.0'}`
+                : 'BROWSER LAB / REAL COMPILER CORE'}
+            </span>
             <h2>{locale === 'zh' ? '编译器微基准' : 'Compiler microbenchmarks'}</h2>
           </div>
           <div className="benchmark-lab__legend">
@@ -124,30 +211,24 @@ export function BenchmarksPage({ locale }: { locale: Locale }) {
             <span role="columnheader">P95</span>
             <span role="columnheader">RELATIVE SCALE</span>
           </div>
-          {[
-            ['Parse / small', `${smallSource.split('\n').length} lines`, '60'],
-            ['Format / workflow', `${workflowSource.split('\n').length} lines`, '40'],
-            ['Compile / workflow', `${workflowSource.split('\n').length} lines`, '30'],
-            ['Parse / corpus', `${lineCount} lines`, '24'],
-          ].map(([name, detail, runs], index) => {
-            const result = results.find((item) => item.name === name)
-            const medianWidth = result ? Math.max(2, (result.median / maxP95) * 100) : 0
-            const p95Width = result ? Math.max(3, (result.p95 / maxP95) * 100) : 0
+          {displayResults.map((result, index) => {
+            const medianWidth = Math.max(2, (result.median / maxP95) * 100)
+            const p95Width = Math.max(3, (result.p95 / maxP95) * 100)
             return (
-              <div className="benchmark-table__row" role="row" key={name}>
+              <div className="benchmark-table__row" role="row" key={`${result.name}-${index}`}>
                 <span role="cell">
                   <small>{String(index + 1).padStart(2, '0')}</small>
-                  <strong>{name}</strong>
+                  <strong>{result.name}</strong>
                 </span>
                 <span role="cell">
-                  {detail}
-                  <small>{runs} RUNS</small>
+                  {result.detail}
+                  <small>{result.runs} RUNS</small>
                 </span>
                 <span role="cell" className="benchmark-number">
-                  {result ? `${result.median.toFixed(2)} ms` : '—'}
+                  {`${result.median.toFixed(3)} ms`}
                 </span>
                 <span role="cell" className="benchmark-number">
-                  {result ? `${result.p95.toFixed(2)} ms` : '—'}
+                  {`${result.p95.toFixed(3)} ms`}
                 </span>
                 <span role="cell">
                   <span className="benchmark-bar">
@@ -158,6 +239,18 @@ export function BenchmarksPage({ locale }: { locale: Locale }) {
               </div>
             )
           })}
+          {!displayResults.length ? (
+            <div className="benchmark-table__row" role="row">
+              <span role="cell">
+                <small>—</small>
+                <strong>{releaseError ? 'Release JSON unavailable' : 'Loading measured results…'}</strong>
+              </span>
+              <span role="cell">{releaseError || '/benchmark-results.json'}</span>
+              <span role="cell" className="benchmark-number">—</span>
+              <span role="cell" className="benchmark-number">—</span>
+              <span role="cell" />
+            </div>
+          ) : null}
         </div>
 
         <div className="benchmark-method">
@@ -169,7 +262,7 @@ export function BenchmarksPage({ locale }: { locale: Locale }) {
           <article>
             <BarChart3 size={18} />
             <h3>{locale === 'zh' ? '读数' : 'Reading'}</h3>
-            <p>{locale === 'zh' ? 'Median 表示典型延迟，P95 显示慢尾。相对条只用于比较本次运行的四个 case。' : 'Median represents typical latency; P95 exposes the slow tail. Bars compare only the four cases in this run.'}</p>
+            <p>{locale === 'zh' ? 'Median 表示典型延迟，P95 显示慢尾。页面初始读数直接来自发布的 benchmark-results.json。' : 'Median represents typical latency; P95 exposes the slow tail. Initial readings come directly from the published benchmark-results.json.'}</p>
           </article>
           <article>
             <Check size={18} />

@@ -1,4 +1,6 @@
 import {
+  BUILTIN_NAMES,
+  BUILTIN_REGISTRY,
   compileSource,
   formatSource,
   KEYWORDS,
@@ -8,6 +10,8 @@ import {
   type Program,
   type SourceSpan,
   type Token,
+  type BuiltinParameter,
+  type BuiltinSignature,
 } from "../language/index.js";
 import {
   fullDocumentRange,
@@ -98,6 +102,60 @@ const FRAME_SNIPPETS = [
   },
 ] as const;
 
+interface CallableHelp {
+  name: string;
+  parameters: readonly BuiltinParameter[];
+  returns: string;
+  pure: boolean;
+  capability?: string;
+  summary?: string;
+}
+
+const HOST_CALLABLES: readonly CallableHelp[] = [
+  hostCallable(
+    "File.readText",
+    [["path", "Text"]],
+    "Text",
+    "host.fs.read",
+    "Read one UTF-8 text file below an explicitly authorized root.",
+  ),
+  hostCallable(
+    "File.writeText",
+    [["path", "Text"], ["text", "Text"]],
+    "Record",
+    "host.fs.write",
+    "Write one UTF-8 text file below an explicitly authorized root.",
+  ),
+  hostCallable(
+    "File.exists",
+    [["path", "Text"]],
+    "Bool",
+    "host.fs.read",
+    "Check whether a path exists without escaping an authorized read root.",
+  ),
+  hostCallable(
+    "File.list",
+    [["path", "Text"]],
+    "List",
+    "host.fs.read",
+    "List names in an authorized directory in stable sorted order.",
+  ),
+  hostCallable(
+    "Http.get",
+    [["url", "Text"]],
+    "Record",
+    "host.net.fetch",
+    "Perform an HTTP GET to an exact authorized host; every redirect is rechecked.",
+  ),
+];
+
+const CALLABLES: readonly CallableHelp[] = [
+  ...BUILTIN_NAMES.map((name) => BUILTIN_REGISTRY[name]!).filter(Boolean),
+  ...HOST_CALLABLES,
+];
+
+const CALLABLE_BY_NAME = new Map(CALLABLES.map((signature) => [signature.name, signature]));
+
 export function diagnosticsFor(document: TextDocument): LspDiagnostic[] {
   return compileSource(document.text).diagnostics.map(toLspDiagnostic);
 }
@@ -124,9 +182,23 @@ export function completionsFor(document: TextDocument, _position: Position): unk
     insertTextFormat: 2,
     sortText: `0-${snippet.label}`,
   }));
+  const callableItems = CALLABLES.map((signature) => ({
+    label: signature.name,
+    kind: COMPLETION_ITEM_KIND.function,
+    detail: formatCallableSignature(signature),
+    documentation: callableDocumentation(signature),
+    insertText: callableSnippet(signature),
+    insertTextFormat: 2,
+    sortText: `0b-${signature.name}`,
+  }));
   return {
     isIncomplete: false,
-    items: uniqueByLabel([...snippetItems, ...declarationItems, ...keywordItems]),
+    items: uniqueByLabel([
+      ...snippetItems,
+      ...callableItems,
+      ...declarationItems,
+      ...keywordItems,
+    ]),
   };
 }
 
@@ -138,6 +210,18 @@ export function hoverFor(
   const offset = positionToOffset(document.text, position);
   const token = tokenAtOffset(parsed.tokens, offset);
   if (!token || token.kind === "eof" || token.kind === "newline") return null;
+
+  const qualified = qualifiedNameAtOffset(parsed.tokens, offset);
+  const callable = qualified ? CALLABLE_BY_NAME.get(qualified.name) : undefined;
+  if (callable && qualified) {
+    return {
+      contents: {
+        kind: "markdown",
+        value: callableDocumentation(callable),
+      },
+      range: spanToRange(qualified.span),
+    };
+  }
 
   const help = KEYWORD_HELP[token.lexeme];
   if (help) {
@@ -270,6 +354,50 @@ function tokenAtOffset(tokens: readonly Token[], offset: number): Token | undefi
   );
 }
 
+function qualifiedNameAtOffset(
+  tokens: readonly Token[],
+  offset: number,
+): { name: string; span: SourceSpan } | null {
+  const index = tokens.findIndex(
+    (token) => token.span.start.offset <= offset && offset <= token.span.end.offset,
+  );
+  if (index < 0) return null;
+  let wordIndex = index;
+  if (tokens[wordIndex]?.kind === "dot") {
+    if (isNameToken(tokens[wordIndex - 1])) wordIndex -= 1;
+    else if (isNameToken(tokens[wordIndex + 1])) wordIndex += 1;
+  }
+  if (!isNameToken(tokens[wordIndex])) return null;
+
+  let start = wordIndex;
+  let end = wordIndex;
+  while (start >= 2 && tokens[start - 1]?.kind === "dot" && isNameToken(tokens[start - 2])) {
+    start -= 2;
+  }
+  while (
+    end + 2 < tokens.length &&
+    tokens[end + 1]?.kind === "dot" &&
+    isNameToken(tokens[end + 2])
+  ) {
+    end += 2;
+  }
+  const parts: string[] = [];
+  for (let cursor = start; cursor <= end; cursor += 2) {
+    parts.push(tokens[cursor]!.lexeme);
+  }
+  return {
+    name: parts.join("."),
+    span: {
+      start: tokens[start]!.span.start,
+      end: tokens[end]!.span.end,
+    },
+  };
+}
+
+function isNameToken(token: Token | undefined): token is Token {
+  return token?.kind === "identifier" || token?.kind === "keyword";
+}
+
 function frameCompletionKind(kind: Frame["frameKind"]): number {
   if (kind === "task" || kind === "workflow") return COMPLETION_ITEM_KIND.function;
   if (kind === "tool" || kind === "mcp") return COMPLETION_ITEM_KIND.method;
@@ -294,4 +422,57 @@ function uniqueByLabel<T extends { label: string }>(items: readonly T[]): T[] {
     labels.add(item.label);
     return true;
   });
+}
+
+function hostCallable(
+  name: string,
+  parameters: readonly (readonly [string, BuiltinParameter["type"]])[],
+  returns: string,
+  capability: string,
+  summary: string,
+): CallableHelp {
+  return {
+    name,
+    parameters: parameters.map(([parameterName, type]) => ({
+      name: parameterName,
+      type,
+      required: true,
+    })),
+    returns,
+    pure: false,
+    capability,
+    summary,
+  };
+}
+
+function formatCallableSignature(signature: CallableHelp | BuiltinSignature): string {
+  const parameters = signature.parameters
+    .map(
+      (parameter) =>
+        `:${parameter.name}${parameter.required ? "" : "?"} ${parameter.type}${
+          parameter.lazy ? " lazy" : ""
+        }`,
+    )
+    .join(", ");
+  return `${signature.name}(${parameters}) → ${signature.returns}`;
+}
+
+function callableSnippet(signature: CallableHelp): string {
+  const arguments_ = signature.parameters.map((parameter, index) => {
+    const placeholder = "${" + `${index + 1}:${parameter.name}` + "}";
+    return `:${parameter.name} ${placeholder}`;
+  });
+  return [signature.name, ...arguments_].join(" ");
+}
+
+function callableDocumentation(signature: CallableHelp): string {
+  const authority = signature.pure
+    ? "**pure** · deterministic · no host authority"
+    : `**host effect** · requires \`${signature.capability ?? "explicit authority"}\``;
+  return [
+    `\`${formatCallableSignature(signature)}\``,
+    "",
+    authority,
+    ...(signature.summary ? ["", signature.summary] : []),
+  ].join("\n");
 }

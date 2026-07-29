@@ -2,9 +2,13 @@ import { promises as fs } from 'node:fs'
 import path from 'node:path'
 
 const root = process.cwd()
+const packageManifest = JSON.parse(
+  await fs.readFile(path.join(root, 'package.json'), 'utf8'),
+)
+const version = packageManifest.version
 const extensionRoot = path.join(root, 'packages', 'vscode-extension')
 const outputDir = path.join(root, 'public', 'downloads')
-const outputFile = path.join(outputDir, 'nexilume-0.1.0.vsix')
+const outputFile = path.join(outputDir, `nexilume-${version}.vsix`)
 
 const crcTable = Array.from({ length: 256 }, (_, value) => {
   let current = value
@@ -114,10 +118,10 @@ const contentTypes = `<?xml version="1.0" encoding="utf-8"?>
 const manifest = `<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011">
   <Metadata>
-    <Identity Language="en-US" Id="nexilume-language" Version="0.1.0" Publisher="nexilume" />
+    <Identity Language="en-US" Id="nexilume-language" Version="${version}" Publisher="nexilume" />
     <DisplayName>Nexilume Language</DisplayName>
-    <Description xml:space="preserve">Language support and bundled server for the Nexilume agent language.</Description>
-    <Tags>nexilume,agent,ai,workflow,mcp,capability</Tags>
+    <Description xml:space="preserve">Language support and bundled server for the deterministic Nexilume programming language.</Description>
+    <Tags>nexilume,programming-language,interpreter,agent,ai,mcp,capability</Tags>
     <Categories>Programming Languages,Linters,Formatters</Categories>
     <Properties>
       <Property Id="Microsoft.VisualStudio.Code.Engine" Value="^1.96.0" />

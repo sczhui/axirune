@@ -27,4 +27,27 @@ describe("CLI arguments", () => {
       UsageError,
     );
   });
+
+  it("collects repeatable host authority and entry input", () => {
+    expect(
+      parseArguments([
+        "run",
+        "app.nxl",
+        "--allow-read",
+        "data",
+        "--allow-read=fixtures",
+        "--allow-write",
+        "output",
+        "--allow-net=127.0.0.1:43100",
+        "--input-json",
+        "{\"invoice\":42}",
+      ]),
+    ).toMatchObject({
+      command: "run",
+      allowRead: ["data", "fixtures"],
+      allowWrite: ["output"],
+      allowNet: ["127.0.0.1:43100"],
+      inputJson: "{\"invoice\":42}",
+    });
+  });
 });

@@ -32,7 +32,7 @@ services:
       homepage.name: "Nexilume Language"
       homepage.icon: "mdi-code-block-braces"
       homepage.href: "https://nexilume.velhu.com"
-      homepage.description: "AI Agent 原生编程语言与在线 IDE"
+      homepage.description: "无需大模型的 AI 原生通用编程语言"
     healthcheck:
       test:
         - CMD

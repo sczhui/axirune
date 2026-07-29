@@ -36,4 +36,34 @@ sandbox preview
       policies: [{ name: "network" }],
     });
   });
+
+  it("surfaces deployment-bound capabilities implied by CLI host calls", () => {
+    const compiled = compileSource(`space host_manifest
+task main
+  give Text
+  let source [call File.readText :path «input.txt»]
+  let receipt [call File.writeText :path «output.txt» :text source]
+  yield [call Http.get :url «https://example.test/data»]
+/task
+launch main
+`);
+    expect(compiled.ok).toBe(true);
+    const manifest = capabilityManifestFromIR(compiled.ir);
+    expect(manifest.capabilities).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          name: "host.fs.read",
+          requiredBy: ["main"],
+        }),
+        expect.objectContaining({
+          name: "host.fs.write",
+          requiredBy: ["main"],
+        }),
+        expect.objectContaining({
+          name: "host.net.fetch",
+          requiredBy: ["main"],
+        }),
+      ]),
+    );
+  });
 });

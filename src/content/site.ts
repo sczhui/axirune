@@ -1,4 +1,13 @@
+import factorialSource from '../../examples/factorial.nxl?raw'
+import helloSource from '../../examples/hello.nxl?raw'
+import invoiceSource from '../../examples/invoice-total.nxl?raw'
+import mcpSource from '../../examples/mcp-native.nxl?raw'
+import optionalAiSource from '../../examples/optional-ai.nxl?raw'
+import outcomeSource from '../../examples/outcome-division.nxl?raw'
+import wordFrequencySource from '../../examples/word-frequency.nxl?raw'
+
 export type Locale = 'zh' | 'en'
+export type RuntimeClass = 'core' | 'io' | 'ai'
 
 export type Sample = {
   slug: string
@@ -7,6 +16,7 @@ export type Sample = {
   description: Record<Locale, string>
   code: string
   tags: string[]
+  runtime: RuntimeClass
 }
 
 export type DocSection = {
@@ -36,228 +46,167 @@ export const navItems = [
   { path: '/download', label: { zh: '下载', en: 'Download' } },
 ] as const
 
-export const heroSource = `space hello
-edition 1
+export const heroSource = invoiceSource.trim()
 
-grant text.compose to greet
-
-task greet
-  give Text
-  need text.compose
-  let message [call Text.join
-    :parts [list «Hello, » «Nexilume» «!»]
-  ]
-  emit message
-  yield message
-/task
-
-launch greet`
+export const runtimeLabels: Record<RuntimeClass, Record<Locale, string>> = {
+  core: { zh: '纯核心 · 无需 LLM', en: 'PURE CORE · NO LLM' },
+  io: { zh: '可选 I/O · 无需 LLM', en: 'OPTIONAL I/O · NO LLM' },
+  ai: { zh: '可选 AI / MCP', en: 'OPTIONAL AI / MCP' },
+}
 
 export const samples: Sample[] = [
   {
-    slug: 'hello-boundary',
-    title: { zh: '最小权限的问候', en: 'Minimum-authority greeting' },
-    eyebrow: 'TASK · CAPABILITY · CALL',
+    slug: 'invoice-total',
+    title: { zh: '发票汇总', en: 'Invoice total' },
+    eyebrow: 'SHAPE · TASK · FOLD · JSON',
     description: {
-      zh: '一个任务声明它需要文本组合能力；只有部署根显式授权后，调用才合法。',
-      en: 'A task declares that it needs text composition; the call is legal only after the deployment root grants it.',
+      zh: '用 shape、用户 task、算术、List.fold 与 Json.encode 汇总三条发票明细。整个程序不调用模型、工具或网络。',
+      en: 'Summarize three invoice lines with shapes, user tasks, arithmetic, List.fold, and Json.encode. No model, tool, or network is involved.',
     },
-    code: heroSource,
-    tags: ['task', 'capability', 'call'],
+    code: invoiceSource.trim(),
+    tags: ['shape', 'task', 'List.fold', 'Json.encode'],
+    runtime: 'core',
   },
   {
-    slug: 'tool-receipt',
-    title: { zh: '有回执的天气工具', en: 'Weather tool with a receipt' },
-    eyebrow: 'TOOL · CAPABILITY · SANDBOX',
+    slug: 'factorial',
+    title: { zh: '递归阶乘', en: 'Recursive factorial' },
+    eyebrow: 'TASK CALL · RECURSION · LAZY IF',
     description: {
-      zh: '外部调用同时经过 capability 与 sandbox；输入、权限决定和结果自动进入 trace。',
-      en: 'An external call passes both capability and sandbox gates; input, authority decision, and result enter the trace.',
+      zh: '用户 task 在表达式中调用自身；Core.if 只求值选中的分支，因此递归能确定终止。',
+      en: 'A user task calls itself inside an expression. Core.if evaluates only the selected branch, so recursion terminates deterministically.',
     },
-    code: `space tool_receipt
-edition 1
-
-grant weather.read to main
-
-capability weather.read
-  effect network.read
-  resource «https://weather.example/v1»
-/capability
-
-tool weather.current
-  take city Text trust untrusted
-  give Text
-  need capability weather.read
-  permission ask
-  fault ServiceUnavailable
-/tool
-
-sandbox weather_demo
-  network allow «weather.example»
-  clock allow
-  limit calls 4
-/sandbox
-
-task main
-  give Text
-  use weather.current
-  within weather_demo
-  let forecast [call weather.current
-    :city «Singapore»
-  ]
-  emit «Tool receipt attached to trace.»
-  yield forecast
-/task
-
-launch main`,
-    tags: ['tool', 'capability', 'sandbox'],
+    code: factorialSource.trim(),
+    tags: ['recursion', 'Core.if', 'Number'],
+    runtime: 'core',
+  },
+  {
+    slug: 'hello',
+    title: { zh: '用户 Task 调用', en: 'User task call' },
+    eyebrow: 'TASK · NAMED ARGUMENTS · TEXT',
+    description: {
+      zh: '最小完整程序：main 以命名参数调用 greet，再输出确定性文本。',
+      en: 'The smallest complete program: main calls greet with a named argument and emits deterministic text.',
+    },
+    code: helloSource.trim(),
+    tags: ['task', 'named call', 'Text.join'],
+    runtime: 'core',
+  },
+  {
+    slug: 'outcome-division',
+    title: { zh: '安全除法 Outcome', en: 'Safe division Outcome' },
+    eyebrow: 'OUTCOME · LAZY BRANCH · JSON',
+    description: {
+      zh: '除数为零不是隐藏异常：safe_divide 返回显式失败值，未选择的除法分支不会运行。',
+      en: 'Division by zero is not a hidden exception. safe_divide returns an explicit failure value and the unselected division branch never runs.',
+    },
+    code: outcomeSource.trim(),
+    tags: ['Outcome', 'Core.if', 'Json.encode'],
+    runtime: 'core',
+  },
+  {
+    slug: 'word-frequency',
+    title: { zh: '文件词频 CLI', en: 'File word-frequency CLI' },
+    eyebrow: 'FILE I/O · CAPABILITY · FOLD',
+    description: {
+      zh: '读取文件是显式 effect；分词、计数与 JSON 编码仍由确定性核心完成，不需要 LLM。',
+      en: 'Reading a file is an explicit effect; splitting, counting, and JSON encoding remain deterministic and require no LLM.',
+    },
+    code: wordFrequencySource.trim(),
+    tags: ['filesystem', 'capability', 'Record', 'List.fold'],
+    runtime: 'io',
   },
   {
     slug: 'mcp-codegraph',
-    title: { zh: 'MCP 代码图谱', en: 'MCP code graph' },
-    eyebrow: 'MCP · CONTEXT · SANDBOX',
+    title: { zh: '可选 MCP 代码图谱', en: 'Optional MCP code graph' },
+    eyebrow: 'OPTIONAL · MCP · CAPABILITY',
     description: {
-      zh: 'MCP server 先固定协议与 schema，再生成类型化工具；传输细节不会渗入任务逻辑。',
-      en: 'An MCP server pins protocol and schema before exposing typed tools; transport details stay out of task logic.',
+      zh: 'MCP 是独立的可选适配器。协议、导入工具与资源权限均在源码中显式声明。',
+      en: 'MCP is an independent optional adapter. Protocol, imported tools, and resource authority are explicit in source.',
     },
-    code: `space mcp_native
-edition 1
-
-grant repository.read to main
-
-capability repository.read
-  effect network.read
-  resource «mcp://codegraph»
-/capability
-
-mcp codegraph
-  transport stdio
-  command «gitnexus mcp»
-  protocol «2025-06-18»
-  import tool query_graph
-  import resource repository_context
-  need capability repository.read
-/mcp
-
-task main
-  give Text
-  use codegraph.query_graph
-  let graph [call codegraph.query_graph
-    :query «calls:CheckoutService»
-  ]
-  emit «MCP response passed schema and capability checks.»
-  yield graph
-/task
-
-launch main`,
-    tags: ['mcp', 'schema', 'capability'],
+    code: mcpSource.trim(),
+    tags: ['optional', 'MCP', 'schema', 'capability'],
+    runtime: 'ai',
   },
   {
-    slug: 'parallel-triage',
-    title: { zh: '结构化并行分诊', en: 'Structured parallel triage' },
-    eyebrow: 'FLOW · PARALLEL · TRACE',
+    slug: 'optional-ai',
+    title: { zh: '可选 AI 工单分类', en: 'Optional AI ticket triage' },
+    eyebrow: 'OPTIONAL · PROMPT · AGENT · MODEL',
     description: {
-      zh: '并发不是裸线程：每个分支拥有预算、取消规则和合并契约。',
-      en: 'Concurrency is not a raw thread: every branch owns a budget, cancellation rule, and merge contract.',
+      zh: '只有这个被明确标记的示例需要模型能力；prompt、非可信数据、预算和权限都有独立 frame。',
+      en: 'Only this explicitly labelled example needs model authority. Prompt, untrusted data, budget, and permission each have a separate frame.',
     },
-    code: `space triage
-edition 1
-
-task inspect_logs
-  give Text
-  budget tokens 4000
-  yield «log clue»
-/task
-
-task inspect_metrics
-  give Text
-  budget tokens 2000
-  yield «metric clue»
-/task
-
-task inspect_changes
-  give Text
-  budget tokens 2000
-  yield «deploy clue»
-/task
-
-task main
-  give Text
-  weave inspect_logs | inspect_metrics | inspect_changes as evidence
-  emit evidence
-  yield «Triage evidence settled.»
-/task
-
-launch main`,
-    tags: ['parallel', 'budget', 'trace'],
+    code: optionalAiSource.trim(),
+    tags: ['optional AI', 'prompt', 'agent', 'capability'],
+    runtime: 'ai',
   },
 ]
 
 export const concepts: Concept[] = [
   {
     index: '01',
-    name: 'Intent',
-    group: 'SEMANTICS',
-    title: { zh: '意图是一等值', en: 'Intent is a value' },
+    name: 'Value',
+    group: 'DATA',
+    title: { zh: '值是不可变数据', en: 'Values are immutable data' },
     description: {
-      zh: '目标、约束与完成条件由编译器共同检查，不再散落在注释和字符串里。',
-      en: 'Goals, constraints, and completion conditions are checked together—not scattered across comments and strings.',
+      zh: 'Number、Bool、Text、List 与 Record 组成确定性值世界；shape 为业务数据命名。',
+      en: 'Number, Bool, Text, List, and Record form the deterministic value world; shapes name domain data.',
     },
-    syntax: 'intent resolve · until verified · /intent',
+    syntax: '[record :sku «paper» :quantity 2]',
   },
   {
     index: '02',
-    name: 'Authority',
-    group: 'SAFETY',
-    title: { zh: '权限沿数据流传播', en: 'Authority follows dataflow' },
+    name: 'Task',
+    group: 'COMPUTATION',
+    title: { zh: 'Task 是命名函数', en: 'Tasks are named functions' },
     description: {
-      zh: 'Capability 可组合、可收窄、可耗尽。调用链无法凭空获得调用者没有的权力。',
-      en: 'Capabilities compose, narrow, and expire. A call chain cannot invent authority its caller never had.',
+      zh: 'task 只接受命名参数，可在表达式中调用其他 task，也可以递归调用自身。',
+      en: 'Tasks accept named arguments, call other tasks in expressions, and may call themselves recursively.',
     },
-    syntax: 'agent scout · need weather_read · /agent',
+    syntax: '[call factorial :n 6]',
   },
   {
     index: '03',
-    name: 'Memory',
-    group: 'STATE',
-    title: { zh: '记忆有形状，也有寿命', en: 'Memory has shape and lifetime' },
+    name: 'Data',
+    group: 'TRANSFORM',
+    title: { zh: '集合变换可检查', en: 'Collection transforms are inspectable' },
     description: {
-      zh: '工作记忆、会话记忆和持久记忆都有 schema、保留策略与来源标记。',
-      en: 'Working, session, and durable memory have schemas, retention policies, and provenance.',
+      zh: 'List.map、filter、fold 通过 :using 指定回调 task，不捕获隐藏闭包。',
+      en: 'List.map, filter, and fold name callback tasks through :using and capture no hidden closure.',
     },
-    syntax: 'remember trip :city city :forecast forecast',
+    syntax: '[call List.fold :list xs :using «sum» :initial 0]',
   },
   {
     index: '04',
-    name: 'Failure',
-    group: 'RECOVERY',
-    title: { zh: '错误是下一步的协议', en: 'Errors are next-step protocols' },
+    name: 'Outcome',
+    group: 'FAILURE',
+    title: { zh: '错误是返回值', en: 'Failure is a return value' },
     description: {
-      zh: '错误携带恢复路径、重试预算与是否需要人类介入；未知状态不能被吞掉。',
-      en: 'Failures carry recovery routes, retry budgets, and escalation rules; uncertainty cannot be swallowed.',
+      zh: 'Outcome.ok 与 Outcome.fail 让预期失败进入类型与数据流，而不是进入隐藏异常通道。',
+      en: 'Outcome.ok and Outcome.fail keep expected failure in types and dataflow, not a hidden exception channel.',
     },
-    syntax: 'route result · when fail recover · /route',
+    syntax: '[call Outcome.fail :fault reason]',
   },
   {
     index: '05',
-    name: 'Trace',
-    group: 'OBSERVABILITY',
-    title: { zh: '每次运行都是可回放证据', en: 'Every run is replayable evidence' },
+    name: 'Effect',
+    group: 'AUTHORITY',
+    title: { zh: '外部世界按需接入', en: 'The outside world is opt-in' },
     description: {
-      zh: 'Prompt、工具调用、权限决策和状态变化产生同一条结构化 trace。',
-      en: 'Prompts, tool calls, authority decisions, and state changes share one structured trace.',
+      zh: '文件、网络与进程需要 capability、permission 与 sandbox；纯程序的权限清单为空。',
+      en: 'Files, network, and processes need capability, permission, and sandbox; a pure program has an empty manifest.',
     },
-    syntax: 'checkpoint «finance-approval»',
+    syntax: 'need capability host.fs.read',
   },
   {
     index: '06',
-    name: 'Flow',
-    group: 'CONCURRENCY',
-    title: { zh: '并发是结构，不是时序猜谜', en: 'Concurrency is structure' },
+    name: 'Optional AI',
+    group: 'EXTENSION',
+    title: { zh: 'AI 扩展语言，不定义语言', en: 'AI extends; it does not define' },
     description: {
-      zh: '并行分支必须声明预算、终止条件与合并规则，取消会结构化地向下传播。',
-      en: 'Parallel branches declare budgets, finish conditions, and merge rules; cancellation propagates structurally.',
+      zh: 'Prompt、Context、Memory、Agent 与 MCP 仅在需要推理或外部协议时启用。',
+      en: 'Prompt, Context, Memory, Agent, and MCP activate only when inference or an external protocol is needed.',
     },
-    syntax: 'weave evidence · settle first_valid · /weave',
+    syntax: 'need capability model.infer',
   },
 ]
 
@@ -265,318 +214,307 @@ export const docSections: DocSection[] = [
   {
     id: 'why-nexilume',
     kicker: '00 / ORIENTATION',
-    title: { zh: '为什么是 Nexilume', en: 'Why Nexilume' },
+    title: { zh: '确定性优先，AI 可选', en: 'Deterministic first, AI optional' },
     summary: {
-      zh: 'Nexilume 不是让传统程序“调用一下模型”，而是把 Agent 的语义提升到语言层。',
-      en: 'Nexilume does not bolt a model call onto a conventional program. It lifts agent semantics into the language.',
+      zh: 'Nexilume 0.2 是具备可选 Agent 扩展的确定性通用语言与解释器。',
+      en: 'Nexilume 0.2 is a deterministic general-purpose language and interpreter with optional agent extensions.',
     },
     body: {
       zh: [
-        'LLM 很擅长生成局部正确的文本，却很难长期维护隐藏在字符串、配置、框架约定和运行时副作用里的真实意图。Nexilume 把这些约定变成编译器看得见的结构。',
-        '源代码优先表达“允许发生什么、完成意味着什么、失败后做什么”。编译器再生成确定性执行计划、权限清单和可回放 trace。',
+        'shape、task、递归、控制流、集合处理、JSON 与 Outcome 足以表达完整业务计算。它们由纯核心执行，不需要模型、工具、网络或 API key。',
+        '文件、进程、网络、MCP 与 AI 仍是一等语言概念，但它们位于显式 effect 边界后面。选择 AI 是程序的能力决定，不是语言的运行前提。',
       ],
       en: [
-        'LLMs can generate locally plausible text, yet struggle to maintain intent hidden across strings, configuration, framework conventions, and runtime side effects. Nexilume makes those contracts visible to the compiler.',
-        'Source expresses what may happen, what completion means, and what follows failure. The compiler produces a deterministic plan, authority manifest, and replayable trace.',
+        'Shapes, tasks, recursion, control flow, collection processing, JSON, and Outcome express complete business computation. The pure core executes them without a model, tool, network, or API key.',
+        'Files, processes, network, MCP, and AI remain first-class language concepts, but live behind explicit effect boundaries. Choosing AI is a program capability decision, never a runtime prerequisite.',
       ],
     },
   },
   {
-    id: 'spaces',
-    kicker: '01 / PROGRAM SHAPE',
-    title: { zh: 'Space 与帧', en: 'Spaces and frames' },
+    id: 'syntax',
+    kicker: '01 / SOURCE SHAPE',
+    title: { zh: 'Frame、表达式与命名参数', en: 'Frames, expressions, and named arguments' },
     summary: {
-      zh: '一个文件属于一个 space；程序由有名字、有边界的语义帧组成。',
-      en: 'A file belongs to one space; a program is made of named, bounded semantic frames.',
+      zh: '语义边界显式闭合；调用不会因参数顺序而改变含义。',
+      en: 'Semantic boundaries close explicitly; call meaning never depends on parameter order.',
     },
     body: {
       zh: [
-        'Nexilume 不用 class 充当万能容器。memory、capability、tool、prompt、agent、workflow、context 和 sandbox 各自拥有不同的静态规则。',
-        '这让模型可以从局部结构推断意图，也让自动重构只触碰目标语义帧。',
+        '源文件以 space 和 edition 开始。task、shape、tool 等 frame 使用 /task、/shape、/tool 关闭；缩进只负责排版。',
+        '表达式写成 [call target :name value]。文本使用 «…»；list 与 record 也使用前缀构造。',
       ],
       en: [
-        'Nexilume does not use classes as universal containers. memory, capability, tool, prompt, agent, workflow, context, and sandbox each have distinct static rules.',
-        'A model can infer intent from local shape, while automated refactors touch only the semantic frame in scope.',
+        'A source file begins with space and edition. Frames such as task, shape, and tool close with /task, /shape, and /tool; indentation is presentation only.',
+        'Expressions use [call target :name value]. Text uses «…»; list and record are prefix constructors too.',
       ],
     },
-    code: `space support
-edition 1
-
-memory case_record
-  field id Text
-  field state CaseState
-  retain 30d
-  provenance required
-/memory
-
-capability crm_read
-  allow tool crm.read
-/capability
-
-agent resolver
-  need crm_read
-  use memory case_record
-/agent`,
-  },
-  {
-    id: 'types',
-    kicker: '02 / TYPE SYSTEM',
-    title: { zh: '证据类型与渐进确定性', en: 'Evidence types and progressive certainty' },
-    summary: {
-      zh: '值不仅有形状，还携带来源、置信度、敏感级别和权限要求。',
-      en: 'Values carry shape, provenance, confidence, sensitivity, and authority requirements.',
-    },
-    body: {
-      zh: [
-        '普通结构类型描述数据；evidence 类型描述“我们凭什么相信它”。未经验证的模型输出不能直接流入需要 Verified<T> 的工具。',
-        'Unknown 不是 null 的别名。它必须被 refine、defer 或显式交给人类，编译器会追踪未解决的不确定性。',
-      ],
-      en: [
-        'Structural types describe data; evidence types describe why it can be trusted. Unverified model output cannot flow into a tool requiring Verified<T>.',
-        'Unknown is not another spelling of null. It must be refined, deferred, or explicitly handed to a person; the compiler tracks unresolved uncertainty.',
-      ],
-    },
-    code: `task verify_route
-  take guess [Claim Route]
-  give [Outcome [Verified Route map_policy] VerifyFault]
-  let checked [call map.check
-    :route guess
-    :policy map_policy
+    code: `task greet
+  take name Text
+  give Text
+  yield [call Text.join
+    :parts [list «Hello, » name «!»]
   ]
-  yield checked
-/task`,
+/task
+
+let message = [call greet :name «Nexilume»]`,
   },
   {
-    id: 'authority',
-    kicker: '03 / AUTHORITY',
-    title: { zh: 'Capability 与 Permission', en: 'Capabilities and permission' },
+    id: 'values',
+    kicker: '02 / VALUES & SHAPES',
+    title: { zh: '标量、集合与业务数据', en: 'Scalars, collections, and domain data' },
     summary: {
-      zh: '权力不是环境变量，而是可检查、可传递、可耗尽的值。',
-      en: 'Authority is not an environment variable. It is a checkable, transferable, exhaustible value.',
+      zh: '不可变值组成核心；shape 给 Record 结构稳定的业务名字。',
+      en: 'Immutable values form the core; shapes give stable domain names to record structures.',
     },
     body: {
       zh: [
-        'capability 声明可用工具和硬限制；agent 或 workflow 必须通过 uses 明确接收。子流程只能获得父流程权限的子集。',
-        '静态清单处理已知边界，运行时 permit 处理依赖真实参数的决策。所有 allow、deny 与 escalate 都进入 trace。',
+        '核心值包括 Nothing、Bool、Number、Text、List、Record 与 Outcome。Json.encode 把值编码成稳定文本，Json.decode 把 JSON 文本恢复为值。',
+        'shape 声明字段契约；运行时 record 构造仍然是普通不可变值，可由 Record.get、put、keys、values 与 merge 处理。',
       ],
       en: [
-        'A capability declares tools and hard limits; agents and workflows receive it explicitly through uses. A child flow can only inherit a subset.',
-        'The static manifest handles known boundaries; runtime permits decide parameter-dependent requests. Every allow, deny, and escalation enters the trace.',
+        'Core values are Nothing, Bool, Number, Text, List, Record, and Outcome. Json.encode produces stable text; Json.decode restores JSON text to values.',
+        'A shape declares a field contract. Runtime record constructors remain ordinary immutable values processed by Record.get, put, keys, values, and merge.',
       ],
     },
-    code: `capability billing_read
-  allow tool invoice.read
-  allow tool refund.prepare
-  deny tool refund.commit
-  limit calls 8
-/capability
+    code: `shape Line
+  field sku Text
+  field quantity Number
+  field unit_price Number
+/shape
 
-permission finance_approval
-  take request RefundRequest
-  when approved
-    mint refund_commit for 10m
-  /when
-/permission`,
-  },
-  {
-    id: 'tools-mcp',
-    kicker: '04 / EXTERNAL WORLD',
-    title: { zh: 'Tool Call 与 MCP', en: 'Tool calls and MCP' },
-    summary: {
-      zh: '外部调用是语言级 effect；MCP 是有 schema 的模块边界。',
-      en: 'External calls are language-level effects; MCP is a schema-bearing module boundary.',
-    },
-    body: {
-      zh: [
-        '每个 tool call 的输入、输出、超时、幂等性和权限要求都进入 IR。调用结果默认携带来源信息。',
-        'mcp 帧把远程 server 转成可检查的命名空间。传输方式不会泄漏到业务逻辑，测试时可由模拟端口替换。',
-      ],
-      en: [
-        'Every tool call contributes input, output, timeout, idempotency, and authority requirements to IR. Results carry provenance by default.',
-        'An mcp frame turns a remote server into a checkable namespace. Transport does not leak into business logic and can be replaced by a simulated port in tests.',
-      ],
-    },
-    code: `mcp papers
-  transport stdio
-  endpoint «paper-index»
-  pin schema «sha256:91b7»
-  expose search
-  expose fetch
-/mcp
-
-let hits [call papers.search
-  :query query
-  :limit 6
+let line = [record
+  :sku «paper»
+  :quantity 2
+  :unit_price 12.5
 ]`,
   },
   {
-    id: 'context-memory',
-    kicker: '05 / COGNITION',
-    title: { zh: 'Prompt、Context 与 Memory', en: 'Prompt, context, and memory' },
+    id: 'tasks',
+    kicker: '03 / FUNCTIONS & RECURSION',
+    title: { zh: '用户 Task 与递归', en: 'User tasks and recursion' },
     summary: {
-      zh: '给模型看的、模型记住的、程序持久化的是三种不同东西。',
-      en: 'What a model sees, what it remembers, and what a program persists are three different things.',
+      zh: 'task 是真正可调用的用户函数；递归使用同一套命名调用语义。',
+      en: 'A task is a real user-defined callable; recursion uses the same named-call semantics.',
     },
     body: {
       zh: [
-        'prompt 是版本化模板，输入与输出有类型；context 是一次推理可见的受预算视图；memory 是跨步骤或跨运行的显式状态。',
-        '编译器可以计算上下文上限、识别敏感字段泄漏，并在自动重构时保持 prompt 契约。',
+        'take 定义命名输入，give 定义结果，yield 返回值。在 let、yield、builtin 参数或其他表达式位置都可以 [call task-name :arg value]。',
+        '递归不是特殊语法。解释器为所有调用统一执行 frame-depth、step、time 与 output 限制，因此失控递归会以预算耗尽结束。',
       ],
       en: [
-        'A prompt is a versioned, typed template; context is a budgeted view visible to one inference; memory is explicit state across steps or runs.',
-        'The compiler can bound context, catch sensitive-field leakage, and preserve prompt contracts through automated refactors.',
+        'take defines named inputs, give defines the result, and yield returns it. [call task-name :arg value] works in let, yield, builtin arguments, and other expression positions.',
+        'Recursion has no special syntax. The interpreter applies frame-depth, step, time, and output limits to every call, so runaway recursion ends as budget exhaustion.',
       ],
     },
-    code: `context brief
-  budget tokens 24000
-  keep goal
-  keep evidence
-  redact customer.ssn
-  forget raw_results after 15m
-/context`,
+    code: `task factorial
+  take n Number
+  give Number
+  yield [call Core.if
+    :when [call Number.lessOrEqual :left n :right 1]
+    :then 1
+    :else [call Number.multiply
+      :left n
+      :right [call factorial
+        :n [call Number.subtract :left n :right 1]
+      ]
+    ]
+  ]
+/task`,
   },
   {
-    id: 'agents-workflows',
-    kicker: '06 / EXECUTION',
-    title: { zh: 'Agent 与 Workflow', en: 'Agents and workflows' },
+    id: 'builtins',
+    kicker: '04 / PURE STANDARD LIBRARY',
+    title: { zh: '纯 Builtin', en: 'Pure builtins' },
     summary: {
-      zh: 'Agent 负责受约束判断；Workflow 负责可预测编排。',
-      en: 'Agents own bounded judgment; workflows own predictable orchestration.',
+      zh: '计算、文本、数据和错误操作由解释器提供，但没有任何环境权限。',
+      en: 'The interpreter provides computation, text, data, and error operations with no ambient authority.',
     },
     body: {
       zh: [
-        'agent 可以观察、推理、调用工具并发出事件，但只能在声明的 capability、context 和 sandbox 内行动。',
-        'workflow 定义 step、依赖、并行、checkpoint 与 merge。两者可组合，但不会混成一个不可分析的回调图。',
+        'Number 提供算术、取整与比较；Bool 提供惰性 and/or；Text 提供 join、split、slice 与常用变换；Record 和 Json 处理结构化数据。',
+        'Builtin 的名称、命名参数、返回类型与惰性规则来自同一个 registry，编译器、CLI、LSP 与浏览器运行时共享它。',
       ],
       en: [
-        'An agent may observe, reason, call tools, and emit events, but only inside its declared capability, context, and sandbox.',
-        'A workflow defines steps, dependencies, parallelism, checkpoints, and merges. The two compose without collapsing into an opaque callback graph.',
+        'Number provides arithmetic, rounding, and comparisons; Bool provides lazy and/or; Text provides join, split, slice, and common transforms; Record and Json handle structured data.',
+        'Builtin names, named parameters, return types, and laziness come from one registry shared by compiler, CLI, LSP, and browser runtime.',
       ],
     },
-    code: `workflow publish
-  stable «publish.v1»
-  take draft Draft
-  give [Outcome Release PublishFault]
-
-  stage verify
-    next approve
-  /stage
-
-  stage approve
-    checkpoint «editor»
-    next release
-  /stage
-
-  stage release
-    yield [ok release]
-    compensate unpublish
-  /stage
-/workflow`,
+    code: `let gross [call Number.multiply :left quantity :right unit_price]
+let words = [call Text.split :text source :separator « »]
+let json = [call Json.encode :value invoice]`,
   },
   {
-    id: 'concurrency',
-    kicker: '07 / CONCURRENCY',
-    title: { zh: '结构化并发', en: 'Structured concurrency' },
+    id: 'collections',
+    kicker: '05 / DATA PIPELINES',
+    title: { zh: 'List.map、filter 与 fold', en: 'List.map, filter, and fold' },
     summary: {
-      zh: '没有失联任务：生命周期、预算与取消都属于父级作用域。',
-      en: 'No orphan work: lifetime, budget, and cancellation belong to a parent scope.',
+      zh: '集合操作调用有名字的 task；没有不可见闭包或宿主函数指针。',
+      en: 'Collection operations call named tasks; there are no invisible closures or host function pointers.',
     },
     body: {
       zh: [
-        'parallel 块必须声明完成策略。first_valid、all、quorum 等策略让结果合并可读，也让资源消耗可计算。',
-        '父级结束会取消未完成分支；分支不能在作用域外偷偷保留权限或上下文。',
+        'map/filter 回调接收 item 与 index；fold 回调接收 accumulator、item 与 index。:using «task-name» 让回调边进入可序列化调用图。',
+        '迭代顺序与结果是确定的，并受 collection-size、step、time 与 frame-depth 上限约束。',
       ],
       en: [
-        'A parallel block declares a completion strategy. first_valid, all, and quorum make merging readable and resource use calculable.',
-        'Finishing the parent cancels unfinished branches; a branch cannot retain authority or context beyond its scope.',
+        'Map/filter callbacks receive item and index; fold callbacks receive accumulator, item, and index. :using «task-name» keeps callback edges in the serializable call graph.',
+        'Iteration order and results are deterministic and bounded by collection-size, step, time, and frame-depth limits.',
       ],
     },
-    code: `weave evidence
-  settle first_valid
-  within 8s
-
-  branch logs
-    budget tokens 4000
-    yield [call inspect.logs :source incident.logs]
-  /branch
-
-  branch metrics
-    budget tokens 2000
-    yield [call inspect.metrics :source incident.metrics]
-  /branch
-/weave`,
+    code: `let subtotal [call List.fold
+  :list lines
+  :using «add_line»
+  :initial 0
+]`,
   },
   {
-    id: 'failure',
-    kicker: '08 / FAILURE',
-    title: { zh: '可恢复错误', en: 'Recoverable failure' },
+    id: 'control',
+    kicker: '06 / CONTROL FLOW',
+    title: { zh: '惰性 Core.if', en: 'Lazy Core.if' },
     summary: {
-      zh: 'Error 描述状态、证据和下一条合法路径，而不是一段待匹配文本。',
-      en: 'An error describes state, evidence, and legal next routes—not a string to pattern-match later.',
+      zh: '只求值被选择的分支，这是递归与安全 fallback 的语义保证。',
+      en: 'Only the selected branch is evaluated—a semantic guarantee for recursion and safe fallback.',
     },
     body: {
       zh: [
-        'retry 需要预算和退避；fallback 需要类型兼容；escalate 需要明确接收者。编译器会拒绝没有出口的 effectful failure。',
-        '当副作用结果未知时，Nexilume 进入 uncertain 状态并要求 reconcile，避免重复扣款一类的“重试成功”。',
+        'Core.if 先求值 :when，然后只运行 :then 或 :else。未选择分支不会调用 task、消耗递归深度或触发 effect。',
+        'Bool.and、Bool.or 与 Core.coalesce 同样对不需要的参数保持惰性。',
       ],
       en: [
-        'Retries need budgets and backoff; fallbacks need compatible types; escalation needs a named receiver. The compiler rejects effectful failures with no route.',
-        'When an effect outcome is unknown, Nexilume enters uncertain state and requires reconciliation, avoiding the classic “successful retry” that charges twice.',
+        'Core.if evaluates :when first, then runs only :then or :else. The unselected branch cannot call a task, consume recursion depth, or trigger an effect.',
+        'Bool.and, Bool.or, and Core.coalesce are likewise lazy for arguments they do not need.',
       ],
     },
-    code: `route charge_result
-  when ok receipt
-    yield receipt
-  /when
-  when fail transient
-    retry 2 backoff exponential
-  /when
-  when fail uncertain
-    reconcile [call ledger.lookup :id charge_id]
-  /when
-  when fail permanent
-    escalate finance_desk
-  /when
-/route`,
+    code: `yield [call Core.if
+  :when is_zero
+  :then [call Outcome.fail :fault reason]
+  :else [call Outcome.ok
+    :value [call Number.divide :left numerator :right denominator]
+  ]
+]`,
   },
   {
-    id: 'sandbox',
-    kicker: '09 / CONTAINMENT',
-    title: { zh: 'Sandbox 是程序边界', en: 'Sandbox is a program boundary' },
+    id: 'outcome',
+    kicker: '07 / ERRORS',
+    title: { zh: 'Outcome 是显式错误通道', en: 'Outcome is the explicit error channel' },
     summary: {
-      zh: '网络、文件、进程、时间和预算限制都是可编译策略。',
-      en: 'Network, filesystem, process, time, and budget limits are compilable policy.',
+      zh: '可预期失败与普通数据一起返回、编码、检查和组合。',
+      en: 'Expected failure is returned, encoded, inspected, and composed with ordinary data.',
     },
     body: {
       zh: [
-        'sandbox 与 capability 分工明确：capability 说明“允许做什么”，sandbox 说明“执行环境最多能触及哪里”。两层都必须通过。',
-        'manifest 命令可以在运行前导出部署所需的最小权限。',
+        'Outcome.ok 包装成功值，Outcome.fail 包装 fault。Outcome.isOk 检查分支；value 与 fault 只允许解包匹配的状态。',
+        'Builtin 参数错误、越界、无效 JSON 或预算耗尽属于运行时 fault；业务可预期错误应由任务主动返回 Outcome。',
       ],
       en: [
-        'Sandbox and capability divide responsibility: capability says what may be done; sandbox says what the execution environment can reach. Both gates must pass.',
-        'The manifest command exports minimum deployment authority before anything runs.',
+        'Outcome.ok wraps success and Outcome.fail wraps a fault. Outcome.isOk checks the branch; value and fault unwrap only the matching state.',
+        'Invalid builtin arguments, bounds errors, invalid JSON, and exhausted budgets are runtime faults. Expected domain failure should be returned deliberately as Outcome.',
       ],
     },
-    code: `sandbox worker
-  network allow «api.example»
-  filesystem allow «/work/out» write
-  process deny all
-  walltime 30s
-/sandbox`,
+    code: `let result [call Outcome.fail
+  :fault [record
+    :code «DIVIDE_BY_ZERO»
+    :message «The denominator must not be zero.»
+  ]
+]`,
+  },
+  {
+    id: 'effects',
+    kicker: '08 / I/O & AUTHORITY',
+    title: { zh: 'I/O 是显式 Effect', en: 'I/O is an explicit effect' },
+    summary: {
+      zh: '普通 task 不会突然读文件；外部操作必须同时通过 capability、permission 与 sandbox。',
+      en: 'An ordinary task cannot suddenly read a file. External operations pass capability, permission, and sandbox.',
+    },
+    body: {
+      zh: [
+        'tool 声明命名输入、结果与所需 capability。调用者 use 工具并在 sandbox 内执行；部署根 grant 不可伪造的运行时权柄。',
+        'nexilume manifest 在运行前导出最小权限。只使用 pure builtins 的程序得到空清单。',
+      ],
+      en: [
+        'A tool declares named input, result, and required capability. The caller uses the tool inside a sandbox; the deployment root grants an unforgeable runtime handle.',
+        'nexilume manifest exports minimum authority before execution. Programs using only pure builtins receive an empty manifest.',
+      ],
+    },
+    code: `capability host.fs.read
+  effect filesystem.read
+  resource «./input.txt»
+/capability
+
+tool File.readText
+  take path Text
+  give Text
+  need capability host.fs.read
+  permission ask
+/tool`,
+  },
+  {
+    id: 'optional-ai',
+    kicker: '09 / OPTIONAL AI & MCP',
+    title: { zh: 'Prompt、Agent 与 MCP 是可选扩展', en: 'Prompt, Agent, and MCP are optional extensions' },
+    summary: {
+      zh: '需要推理时显式加入，不需要时完全不进入程序或运行时。',
+      en: 'Add inference explicitly when useful; otherwise it never enters the program or runtime.',
+    },
+    body: {
+      zh: [
+        'prompt 区分 instruction 与 attached data；context 管理一次推理可见内容；memory 管理跨步骤状态；agent 组合模型配置与预算。',
+        'MCP 固定协议并导入带 schema 的工具。模型和 MCP 都必须通过 capability/sandbox，无法绕过普通 effect 规则。',
+      ],
+      en: [
+        'Prompt separates instruction from attached data; context bounds what one inference sees; memory carries state across steps; agent combines model configuration and budgets.',
+        'MCP pins a protocol and imports schema-bearing tools. Models and MCP both pass capability/sandbox checks and cannot bypass ordinary effect rules.',
+      ],
+    },
+    code: `capability model.infer
+  effect model.infer
+  resource «balanced»
+/capability
+
+agent classifier
+  model balanced
+  use prompt triage
+  need capability model.infer
+  budget turns 1
+/agent`,
+  },
+  {
+    id: 'toolchain',
+    kicker: '10 / EXECUTION',
+    title: { zh: '同一个编译器与解释器', en: 'One compiler and interpreter' },
+    summary: {
+      zh: 'CLI、Playground、在线 IDE 与测试共享语言核心。',
+      en: 'CLI, Playground, online IDE, and tests share the language core.',
+    },
+    body: {
+      zh: [
+        'parseSource、formatSource、compileSource 与 runSource 是公开 API。编译器生成 checked IR；解释器执行 IR 并返回 output、emissions、value、diagnostics 与 trace。',
+        'CLI 提供 check、run、fmt、ast、ir、manifest、build 与 bench。工具链不把 Nexilume 源码转换成宿主脚本再 eval。',
+      ],
+      en: [
+        'parseSource, formatSource, compileSource, and runSource are public APIs. The compiler emits checked IR; the interpreter returns output, emissions, value, diagnostics, and trace.',
+        'The CLI provides check, run, fmt, ast, ir, manifest, build, and bench. The toolchain does not translate Nexilume source into a host script and eval it.',
+      ],
+    },
+    code: `nexilume check examples/invoice-total.nxl
+nexilume run examples/factorial.nxl
+nexilume ir examples/outcome-division.nxl
+nexilume manifest examples/word-frequency.nxl
+nexilume run examples/word-frequency.nxl --allow-read .`,
   },
 ]
 
-export const quickStart = `npm install -g https://nexilume.velhu.com/downloads/nexilume-language-0.1.0.tgz
-nexilume check hello.nxl
-nexilume run hello.nxl`
+export const quickStart = `npm install -g https://nexilume.velhu.com/downloads/nexilume-language-0.2.0.tgz
+nexilume check examples/invoice-total.nxl
+nexilume run examples/invoice-total.nxl`
 
 export const cliCommands = [
   ['nexilume check', '静态检查 / static checks'],
-  ['nexilume run', '解释执行 / execute'],
+  ['nexilume run', '确定性解释运行 / deterministic run'],
   ['nexilume build', '编译 IR / compile IR'],
   ['nexilume fmt', '结构化格式化 / format'],
   ['nexilume ast', '查看语法树 / inspect AST'],
   ['nexilume ir', '查看执行计划 / inspect IR'],
-  ['nexilume manifest', '导出最小权限 / authority manifest'],
-  ['nexilume bench', '运行基准 / benchmark'],
+  ['nexilume manifest', '导出 effect 权限 / effect manifest'],
+  ['nexilume bench', '运行实测基准 / measured benchmark'],
 ] as const

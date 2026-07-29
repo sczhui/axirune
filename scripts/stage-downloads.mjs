@@ -3,11 +3,27 @@ import { spawnSync } from 'node:child_process'
 import path from 'node:path'
 
 const root = process.cwd()
+const packageManifest = JSON.parse(
+  await fs.readFile(path.join(root, 'package.json'), 'utf8'),
+)
+const version = packageManifest.version
 const outputDir = path.join(root, 'public', 'downloads')
-const packageFile = path.join(outputDir, 'nexilume-language-0.1.0.tgz')
-const sourceFile = path.join(outputDir, 'nexilume-source-0.1.0.tar.gz')
+const packageFile = path.join(outputDir, `nexilume-language-${version}.tgz`)
+const sourceFile = path.join(outputDir, `nexilume-source-${version}.tar.gz`)
+const currentArtifacts = new Set([
+  path.basename(packageFile),
+  path.basename(sourceFile),
+  `nexilume-${version}.vsix`,
+])
+const releaseArtifact =
+  /^nexilume-(?:language-\d+\.\d+\.\d+\.tgz|source-\d+\.\d+\.\d+\.tar\.gz|\d+\.\d+\.\d+\.vsix)$/u
 
 await fs.mkdir(outputDir, { recursive: true })
+for (const fileName of await fs.readdir(outputDir)) {
+  if (releaseArtifact.test(fileName) && !currentArtifacts.has(fileName)) {
+    await fs.rm(path.join(outputDir, fileName), { force: true })
+  }
+}
 await fs.rm(packageFile, { force: true })
 await fs.rm(sourceFile, { force: true })
 
@@ -51,6 +67,7 @@ const sourceEntries = [
   'docker-compose.yml',
   'nginx.conf',
   'README.md',
+  'CHANGELOG.md',
   'LICENSE',
 ]
 

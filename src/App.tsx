@@ -17,7 +17,7 @@ const titles = {
   '/docs': 'Language Documentation — Nexilume',
   '/examples': 'Example Programs — Nexilume',
   '/benchmarks': 'Benchmarks — Nexilume',
-  '/download': 'Download Nexilume 0.1.0',
+  '/download': 'Download Nexilume 0.2.0',
 } as const
 
 function initialLocale(): Locale {
@@ -53,4 +53,3 @@ export default function App() {
     </PageFrame>
   )
 }
-

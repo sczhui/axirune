@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { BUILTIN_NAMES } from "../../src/language/index.js";
 import { NexilumeLanguageServer } from "../../src/lsp/server.js";
 import type {
   JsonRpcMessage,
@@ -76,9 +77,25 @@ describe("Nexilume language server", () => {
         position: { line: 4, character: 2 },
       },
     });
-    const completion = responseResult(sent, 2) as { items: { label: string }[] };
+    const completion = responseResult(sent, 2) as {
+      items: { label: string; detail?: string; insertText?: string }[];
+    };
     expect(completion.items.some((item) => item.label === "main")).toBe(true);
     expect(completion.items.some((item) => item.label === "task frame")).toBe(true);
+    expect(completion.items).toContainEqual(
+      expect.objectContaining({
+        label: "Number.add",
+        detail: "Number.add(:left Number, :right Number) → Number",
+      }),
+    );
+    const labels = new Set(completion.items.map((item) => item.label));
+    expect(BUILTIN_NAMES.every((name) => labels.has(name))).toBe(true);
+    expect(completion.items).toContainEqual(
+      expect.objectContaining({
+        label: "File.readText",
+        detail: "File.readText(:path Text) → Text",
+      }),
+    );
 
     await server.handle({
       jsonrpc: "2.0",
@@ -187,6 +204,61 @@ describe("Nexilume language server", () => {
     const latest = publications.at(-1)?.params;
     expect(latest?.version).toBe(2);
     expect(latest?.diagnostics.some((item) => item.severity === 1)).toBe(true);
+  });
+
+  it("hovers pure registry and authority-bounded host signatures", async () => {
+    const source = `space builtin_help
+task main
+  let total [call Number.add :left 20 :right 22]
+  yield [call File.readText :path «data.txt»]
+/task
+launch main
+`;
+    const sent: JsonRpcMessage[] = [];
+    const server = new NexilumeLanguageServer({ send: (message) => sent.push(message) });
+    await server.handle({ jsonrpc: "2.0", id: 1, method: "initialize", params: {} });
+    await server.handle({
+      jsonrpc: "2.0",
+      method: "textDocument/didOpen",
+      params: {
+        textDocument: {
+          uri: "file:///builtins.nxl",
+          languageId: "nexilume",
+          version: 1,
+          text: source,
+        },
+      },
+    });
+    const lines = source.split("\n");
+    await server.handle({
+      jsonrpc: "2.0",
+      id: 2,
+      method: "textDocument/hover",
+      params: {
+        textDocument: { uri: "file:///builtins.nxl" },
+        position: { line: 2, character: lines[2]!.indexOf("add") + 1 },
+      },
+    });
+    expect(responseResult(sent, 2)).toMatchObject({
+      contents: {
+        value: expect.stringMatching(/Number\.add.*pure.*no host authority/su),
+      },
+    });
+
+    await server.handle({
+      jsonrpc: "2.0",
+      id: 3,
+      method: "textDocument/hover",
+      params: {
+        textDocument: { uri: "file:///builtins.nxl" },
+        position: { line: 3, character: lines[3]!.indexOf("readText") + 1 },
+      },
+    });
+    expect(responseResult(sent, 3)).toMatchObject({
+      contents: {
+        value: expect.stringMatching(/File\.readText.*host\.fs\.read/su),
+      },
+    });
   });
 });
 

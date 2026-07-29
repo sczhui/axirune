@@ -16,11 +16,11 @@ import type { Locale } from '../content/site'
 import { Link } from './Router'
 
 const installCommand =
-  'npm install -g https://nexilume.velhu.com/downloads/nexilume-language-0.1.0.tgz'
-const vscodeCommand = 'code --install-extension nexilume-0.1.0.vsix'
-const dockerCommand = `mkdir nexilume-0.1.0
-tar -xzf nexilume-source-0.1.0.tar.gz -C nexilume-0.1.0
-cd nexilume-0.1.0
+  'npm install -g https://nexilume.velhu.com/downloads/nexilume-language-0.2.0.tgz'
+const vscodeCommand = 'code --install-extension nexilume-0.2.0.vsix'
+const dockerCommand = `mkdir nexilume-0.2.0
+tar -xzf nexilume-source-0.2.0.tar.gz -C nexilume-0.2.0
+cd nexilume-0.2.0
 docker compose up -d --build`
 
 function CopyCommand({ value, locale }: { value: string; locale: Locale }) {
@@ -44,16 +44,16 @@ export function DownloadPage({ locale }: { locale: Locale }) {
       <section className="download-hero">
         <div className="download-hero__copy">
           <span className="eyebrow">
-            <PackageOpen size={14} /> NEXILUME 0.1.0 / ALPHA
+            <PackageOpen size={14} /> NEXILUME 0.2.0 / LANGUAGE PREVIEW
           </span>
-          <h1>{locale === 'zh' ? '把边界带进你的工作区。' : 'Bring the boundary into your workspace.'}</h1>
+          <h1>{locale === 'zh' ? '安装一门无需模型即可运行的语言。' : 'Install a language that runs without a model.'}</h1>
           <p>
             {locale === 'zh'
-              ? '获取编译器、CLI、Language Server、VS Code 扩展和可复现的 Docker 源码包。'
-              : 'Get the compiler, CLI, Language Server, VS Code extension, and reproducible Docker source archive.'}
+              ? '获取确定性解释器、编译器、CLI、Language Server、VS Code 扩展和可复现的 Docker 源码包。AI 集成按需启用。'
+              : 'Get the deterministic interpreter, compiler, CLI, Language Server, VS Code extension, and reproducible Docker source archive. Enable AI only when needed.'}
           </p>
           <div className="download-hero__actions">
-            <a className="button button--signal" href="/downloads/nexilume-language-0.1.0.tgz" download>
+            <a className="button button--signal" href="/downloads/nexilume-language-0.2.0.tgz" download>
               <ArrowDownToLine size={16} />
               {locale === 'zh' ? '下载工具链' : 'Download toolchain'}
             </a>
@@ -65,19 +65,19 @@ export function DownloadPage({ locale }: { locale: Locale }) {
         <div className="download-hero__seal">
           <div>
             <span>VERSION</span>
-            <strong>0.1.0</strong>
+            <strong>0.2.0</strong>
           </div>
           <div>
             <span>CHANNEL</span>
-            <strong>ALPHA</strong>
+            <strong>PREVIEW</strong>
           </div>
           <div>
             <span>RUNTIME</span>
             <strong>NODE 22+</strong>
           </div>
           <div>
-            <span>SOURCE</span>
-            <strong>TYPE-SAFE</strong>
+            <span>AI</span>
+            <strong>OPTIONAL</strong>
           </div>
         </div>
       </section>
@@ -90,16 +90,16 @@ export function DownloadPage({ locale }: { locale: Locale }) {
           <h2>{locale === 'zh' ? '语言工具链' : 'Language toolchain'}</h2>
           <p>
             {locale === 'zh'
-              ? '包含 nexilume 与 nexilume-lsp 两个可执行入口。支持检查、运行、格式化、AST、IR、权限清单与基准。'
-              : 'Includes nexilume and nexilume-lsp executables for checking, running, formatting, AST, IR, authority manifests, and benchmarks.'}
+              ? '包含 nexilume 与 nexilume-lsp。支持确定性运行、检查、格式化、AST、IR、权限清单与基准。'
+              : 'Includes nexilume and nexilume-lsp for deterministic execution, checks, formatting, AST, IR, authority manifests, and benchmarks.'}
           </p>
           <div className="release-card__command">
             <code>{installCommand}</code>
             <CopyCommand value={installCommand} locale={locale} />
           </div>
-          <a href="/downloads/nexilume-language-0.1.0.tgz" download>
+          <a href="/downloads/nexilume-language-0.2.0.tgz" download>
             <FileArchive size={15} />
-            nexilume-language-0.1.0.tgz
+            nexilume-language-0.2.0.tgz
             <ArrowDownToLine size={15} />
           </a>
         </article>
@@ -118,9 +118,9 @@ export function DownloadPage({ locale }: { locale: Locale }) {
             <code>{vscodeCommand}</code>
             <CopyCommand value={vscodeCommand} locale={locale} />
           </div>
-          <a href="/downloads/nexilume-0.1.0.vsix" download>
+          <a href="/downloads/nexilume-0.2.0.vsix" download>
             <PlugZap size={15} />
-            nexilume-0.1.0.vsix
+            nexilume-0.2.0.vsix
             <ArrowDownToLine size={15} />
           </a>
         </article>
@@ -139,9 +139,9 @@ export function DownloadPage({ locale }: { locale: Locale }) {
             <code>{dockerCommand}</code>
             <CopyCommand value={dockerCommand} locale={locale} />
           </div>
-          <a href="/downloads/nexilume-source-0.1.0.tar.gz" download>
+          <a href="/downloads/nexilume-source-0.2.0.tar.gz" download>
             <Container size={15} />
-            nexilume-source-0.1.0.tar.gz
+            nexilume-source-0.2.0.tar.gz
             <ArrowDownToLine size={15} />
           </a>
         </article>
@@ -154,34 +154,34 @@ export function DownloadPage({ locale }: { locale: Locale }) {
             <h2>{locale === 'zh' ? '同一个语义核心。' : 'One semantic core.'}</h2>
           </div>
           <p>
-            {locale === 'zh'
-              ? '浏览器、CLI、编辑器和容器共享解析器、类型检查与 IR；没有“演示版语法”。'
-              : 'Browser, CLI, editor, and container share parser, type checks, and IR. There is no demo-only dialect.'}
+              {locale === 'zh'
+              ? '浏览器、CLI、编辑器和容器共享解析器、纯 builtin、类型检查、IR 与解释器；没有“演示版语法”。'
+              : 'Browser, CLI, editor, and container share the parser, pure builtins, type checks, IR, and interpreter. There is no demo-only dialect.'}
           </p>
         </div>
         <div className="toolchain-flow">
           <div>
             <FileArchive size={20} />
             <span>.nxl source</span>
-            <small>INTENT</small>
+            <small>SHAPES · TASKS</small>
           </div>
           <i>→</i>
           <div>
             <Code2 size={20} />
-            <span>compiler core</span>
-            <small>SEMANTICS</small>
+            <span>checked IR</span>
+            <small>TYPES · CALL GRAPH</small>
           </div>
           <i>→</i>
           <div>
             <Box size={20} />
-            <span>Nexilume IR</span>
-            <small>PLAN</small>
+            <span>interpreter</span>
+            <small>DETERMINISTIC CORE</small>
           </div>
           <i>→</i>
           <div>
             <Container size={20} />
-            <span>runtime trace</span>
-            <small>EVIDENCE</small>
+            <span>effect adapters</span>
+            <small>I/O · MCP · AI / OPTIONAL</small>
           </div>
         </div>
       </section>
@@ -216,8 +216,8 @@ export function DownloadPage({ locale }: { locale: Locale }) {
         <span>RELEASE NOTE</span>
         <p>
           {locale === 'zh'
-            ? '0.1.0 是用于验证语言模型、编译器接口与 Agent 执行语义的 alpha 版本。生产采用前请锁定版本、保留 trace，并审查导出的权限清单。'
-            : '0.1.0 is an alpha for validating the language model, compiler interface, and agent execution semantics. Pin versions, retain traces, and review authority manifests before production use.'}
+            ? '0.2.0 是确定性通用解释器的预览版本，包含用户 task 调用、递归、纯数据 builtin 与显式 Outcome。生产采用前请锁定版本、运行测试，并对 I/O 或 AI 程序审查权限清单。'
+            : '0.2.0 previews the deterministic general-purpose interpreter with user task calls, recursion, pure data builtins, and explicit Outcome. Before production, pin versions, run tests, and review authority manifests for programs that choose I/O or AI.'}
         </p>
       </section>
     </>

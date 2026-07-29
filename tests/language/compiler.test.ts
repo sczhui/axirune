@@ -35,7 +35,7 @@ launch main
 
     expect(result.ok).toBe(true);
     expect(result.diagnostics).toEqual([]);
-    expect(result.ir.version).toBe("nexilume-ir/0.1");
+    expect(result.ir.version).toBe("nexilume-ir/0.2");
     expect(result.ir.permissions).toEqual(["net.read"]);
     expect(result.ir.entry.map((instruction) => instruction.op)).toEqual([
       "grant",
@@ -74,4 +74,3 @@ launch main
     expect(first.code).toContain("/task");
   });
 });
-

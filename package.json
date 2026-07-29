@@ -1,13 +1,25 @@
 {
   "name": "nexilume-language",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
-  "description": "Nexilume — an authority-aware language for AI agents.",
+  "description": "A deterministic general-purpose language with optional typed AI capabilities.",
+  "license": "Apache-2.0",
+  "keywords": [
+    "programming-language",
+    "interpreter",
+    "compiler",
+    "ai-agents",
+    "mcp",
+    "capabilities"
+  ],
   "homepage": "https://nexilume.velhu.com/",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/sczhui/nexilume.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sczhui/nexilume/issues"
   },
   "bin": {
     "nexilume": "./dist-toolchain/src/cli/nexilume.js",
@@ -23,6 +35,7 @@
     "nexilume.pack",
     "nexilume.lock",
     "README.md",
+    "CHANGELOG.md",
     "LICENSE"
   ],
   "scripts": {

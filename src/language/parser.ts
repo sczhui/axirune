@@ -48,6 +48,7 @@ import {
 } from "./ast.js";
 import { diagnostic, type Diagnostic } from "./diagnostics.js";
 import { lexSource } from "./lexer.js";
+import { SUPPORTED_EDITIONS } from "./metadata.js";
 import { isWordToken, type Token } from "./tokens.js";
 
 export interface ParseOptions {
@@ -138,15 +139,18 @@ export function parseSource(source: string, _options: ParseOptions = {}): ParseR
     if (first.lexeme === "edition") {
       const valueToken = line.tokens[1];
       const value = valueToken?.kind === "number" ? Number(valueToken.lexeme) : Number.NaN;
-      if (!Number.isInteger(value) || value < 1) {
+      if (
+        !Number.isInteger(value) ||
+        !SUPPORTED_EDITIONS.includes(value as (typeof SUPPORTED_EDITIONS)[number])
+      ) {
         diagnostics.push(
           diagnostic(
             "N2045",
             "error",
             "parse",
-            "edition needs a positive integer.",
+            `Edition ${Number.isFinite(value) ? value : "?"} is not supported.`,
             line.span,
-            "Nexilume 0.1 sources use `edition 1`.",
+            "Use `edition 1` for compatibility or `edition 2` for the pure function kernel.",
           ),
         );
       } else if (edition) {
@@ -789,9 +793,18 @@ function parseLet(
     );
   }
   const equalIndex = findTopLevelKind(tokens, "equal");
-  let typeTokens = equalIndex < 0 ? [] : tokens.slice(1, equalIndex);
+  const tail = tokens.slice(1);
+  const inferredTypeLength =
+    equalIndex < 0 ? leadingTypeTokenCount(tail) : 0;
+  let typeTokens =
+    equalIndex < 0
+      ? tail.slice(0, inferredTypeLength)
+      : tokens.slice(1, equalIndex);
   if (typeTokens[0]?.kind === "colon") typeTokens = typeTokens.slice(1);
-  const valueTokens = equalIndex < 0 ? tokens.slice(1) : tokens.slice(equalIndex + 1);
+  const valueTokens =
+    equalIndex < 0
+      ? tail.slice(inferredTypeLength)
+      : tokens.slice(equalIndex + 1);
   return {
     kind: "Statement",
     verb: "let",
@@ -801,6 +814,54 @@ function parseLet(
     value: parseExpressionTokens(valueTokens, span, diagnostics),
     span,
   };
+}
+
+function leadingTypeTokenCount(tokens: Token[]): number {
+  const first = tokens[0];
+  if (!first) return 0;
+  if (first.kind === "left-bracket") {
+    if (!looksLikeType(tokens)) return 0;
+    let depth = 0;
+    for (let index = 0; index < tokens.length; index += 1) {
+      if (tokens[index]?.kind === "left-bracket") depth += 1;
+      if (tokens[index]?.kind === "right-bracket") {
+        depth -= 1;
+        if (depth === 0) return index + 1;
+      }
+    }
+    return 0;
+  }
+  if (!isWordToken(first)) return 0;
+  const initial = first.lexeme[0] ?? "";
+  if (
+    !builtinTypes.has(first.lexeme) &&
+    initial.toLocaleUpperCase() !== initial
+  ) {
+    return 0;
+  }
+  let index = 1;
+  while (
+    tokens[index]?.kind === "dot" &&
+    isWordToken(tokens[index + 1])
+  ) {
+    index += 2;
+  }
+  if (tokens[index]?.kind === "less") {
+    let depth = 0;
+    while (index < tokens.length) {
+      if (tokens[index]?.kind === "less") depth += 1;
+      if (tokens[index]?.kind === "greater") {
+        depth -= 1;
+        if (depth === 0) {
+          index += 1;
+          break;
+        }
+      }
+      index += 1;
+    }
+  }
+  if (tokens[index]?.kind === "question") index += 1;
+  return index;
 }
 
 function parseInvoke(
@@ -923,7 +984,12 @@ function looksLikeType(tokens: Token[]): boolean {
   const first = tokens[0];
   if (first?.kind === "left-bracket") {
     const constructor = tokens[1];
-    return isWordToken(constructor) && constructor.lexeme !== "call" && constructor.lexeme !== "list";
+    return (
+      isWordToken(constructor) &&
+      constructor.lexeme !== "call" &&
+      constructor.lexeme !== "list" &&
+      constructor.lexeme !== "record"
+    );
   }
   if (!isWordToken(first)) return false;
   const firstCharacter = first.lexeme[0] ?? "";
@@ -1345,6 +1411,67 @@ class ExpressionParser {
           end: close?.kind === "right-bracket"
             ? close.span.end
             : items[items.length - 1]?.span.end ?? open.span.end,
+        },
+      };
+    }
+
+    if (this.peek()?.lexeme === "record") {
+      this.index += 1;
+      const entries: RecordEntry[] = [];
+      while (!this.done() && this.peek()?.kind !== "right-bracket") {
+        const colon = this.peek();
+        if (colon?.kind !== "colon") {
+          this.diagnostics.push(
+            diagnostic(
+              "N2047",
+              "error",
+              "parse",
+              "Record fields must be named with :key.",
+              colon?.span ?? open.span,
+            ),
+          );
+          if (colon) this.index += 1;
+          continue;
+        }
+        this.index += 1;
+        const keyToken = this.peek();
+        if (!isWordToken(keyToken) && keyToken?.kind !== "string") {
+          this.diagnostics.push(
+            diagnostic(
+              "N2048",
+              "error",
+              "parse",
+              "Record field needs a name after :.",
+              keyToken?.span ?? colon.span,
+            ),
+          );
+          if (keyToken) this.index += 1;
+          continue;
+        }
+        this.index += 1;
+        const value = this.parse();
+        entries.push({
+          key: keyToken.value ?? keyToken.lexeme,
+          value,
+          span: { start: colon.span.start, end: value.span.end },
+        });
+      }
+      const close = this.peek();
+      if (close?.kind === "right-bracket") {
+        this.index += 1;
+      } else {
+        this.diagnostics.push(
+          diagnostic("N2049", "error", "parse", "[record ...] is missing ].", open.span),
+        );
+      }
+      return {
+        kind: "RecordExpression",
+        entries,
+        span: {
+          start: open.span.start,
+          end: close?.kind === "right-bracket"
+            ? close.span.end
+            : entries[entries.length - 1]?.span.end ?? open.span.end,
         },
       };
     }

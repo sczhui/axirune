@@ -23,6 +23,10 @@ export interface CliArguments {
   out: string | null;
   samples: number | null;
   warmup: number | null;
+  allowRead: string[];
+  allowWrite: string[];
+  allowNet: string[];
+  inputJson: string | null;
 }
 
 export class UsageError extends Error {
@@ -42,6 +46,10 @@ export function parseArguments(argv: readonly string[]): CliArguments {
     out: null,
     samples: null,
     warmup: null,
+    allowRead: [],
+    allowWrite: [],
+    allowNet: [],
+    inputJson: null,
   };
 
   for (let index = 0; index < argv.length; index += 1) {
@@ -94,6 +102,38 @@ export function parseArguments(argv: readonly string[]): CliArguments {
       parsed.warmup = nonNegativeInteger(argument.slice("--warmup=".length), "--warmup");
       continue;
     }
+    if (argument === "--allow-read") {
+      parsed.allowRead.push(takeValue(argv, ++index, argument));
+      continue;
+    }
+    if (argument.startsWith("--allow-read=")) {
+      parsed.allowRead.push(requireInlineValue(argument, "--allow-read"));
+      continue;
+    }
+    if (argument === "--allow-write") {
+      parsed.allowWrite.push(takeValue(argv, ++index, argument));
+      continue;
+    }
+    if (argument.startsWith("--allow-write=")) {
+      parsed.allowWrite.push(requireInlineValue(argument, "--allow-write"));
+      continue;
+    }
+    if (argument === "--allow-net") {
+      parsed.allowNet.push(takeValue(argv, ++index, argument));
+      continue;
+    }
+    if (argument.startsWith("--allow-net=")) {
+      parsed.allowNet.push(requireInlineValue(argument, "--allow-net"));
+      continue;
+    }
+    if (argument === "--input-json") {
+      parsed.inputJson = takeValue(argv, ++index, argument);
+      continue;
+    }
+    if (argument.startsWith("--input-json=")) {
+      parsed.inputJson = requireInlineValue(argument, "--input-json");
+      continue;
+    }
     if (argument.startsWith("-") && argument !== "-") {
       throw new UsageError(`Unknown option: ${argument}`);
     }
@@ -122,6 +162,12 @@ function takeValue(argv: readonly string[], index: number, option: string): stri
   if (!value || value.startsWith("-")) {
     throw new UsageError(`${option} requires a value.`);
   }
+  return value;
+}
+
+function requireInlineValue(argument: string, option: string): string {
+  const value = argument.slice(option.length + 1);
+  if (value.length === 0) throw new UsageError(`${option} requires a value.`);
   return value;
 }
 
@@ -161,6 +207,10 @@ Options:
   --samples <count>   Timed samples per benchmark
   --warmup <count>    Warmup samples per benchmark
   --markdown          Emit benchmark Markdown
+  --input-json <json> Pass a JSON object to the entry task (run only)
+  --allow-read <root> Allow reads below root; repeat for another root
+  --allow-write <root> Allow writes below root; repeat for another root
+  --allow-net <host>  Allow an exact host (including port); repeatable
   --help, -h          Show this help
   --version, -V       Show the language version
 

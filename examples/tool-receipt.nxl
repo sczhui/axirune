@@ -25,7 +25,7 @@ task main
   give Text
   use weather.current
   within sandbox weather_demo
-  let forecast [call weather.current :city «Singapore»]
+  let forecast = [call weather.current :city «Singapore»]
   emit «Tool call completed; receipt attached to the trace.»
   yield forecast
 /task

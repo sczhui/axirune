@@ -27,7 +27,7 @@ export function Header({ route, locale, onLocaleChange }: HeaderProps) {
             <i />
           </span>
           <span className="wordmark__name">nexilume</span>
-          <span className="wordmark__version">0.1</span>
+          <span className="wordmark__version">0.2</span>
         </Link>
 
         <nav className={`primary-nav ${open ? 'primary-nav--open' : ''}`} aria-label="Primary">
@@ -88,7 +88,7 @@ export function Footer({ locale }: { locale: Locale }) {
   return (
     <footer className="site-footer">
       <div className="site-footer__statement">
-        <span className="eyebrow">NEXILUME / 0.1.0</span>
+        <span className="eyebrow">NEXILUME / 0.2.0</span>
         <p>Illuminate intent.</p>
         <p>Bound every effect.</p>
       </div>
@@ -103,20 +103,20 @@ export function Footer({ locale }: { locale: Locale }) {
           <span className="site-footer__label">{locale === 'zh' ? '理解' : 'LEARN'}</span>
           <Link to="/docs">Language docs</Link>
           <Link to="/benchmarks">Benchmarks</Link>
-          <a href="/downloads/nexilume-source-0.1.0.tar.gz">
+          <a href="/downloads/nexilume-source-0.2.0.tar.gz">
             Source archive <ArrowUpRight size={13} />
           </a>
         </div>
         <div>
           <span className="site-footer__label">{locale === 'zh' ? '构建' : 'BUILD'}</span>
-          <a href="/downloads/nexilume-language-0.1.0.tgz">Compiler + LSP</a>
-          <a href="/downloads/nexilume-0.1.0.vsix">VS Code extension</a>
+          <a href="/downloads/nexilume-language-0.2.0.tgz">Compiler + LSP</a>
+          <a href="/downloads/nexilume-0.2.0.vsix">VS Code extension</a>
           <Link to="/download">Docker deployment</Link>
         </div>
       </div>
       <div className="site-footer__base">
         <span>© 2026 NEXILUME LANGUAGE PROJECT</span>
-        <span>{locale === 'zh' ? '为 Agent 可验证执行而设计' : 'DESIGNED FOR VERIFIABLE AGENT EXECUTION'}</span>
+        <span>{locale === 'zh' ? '确定性通用核心 · AI 可选' : 'DETERMINISTIC GENERAL CORE · OPTIONAL AI'}</span>
       </div>
     </footer>
   )

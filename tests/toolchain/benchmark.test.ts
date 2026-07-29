@@ -4,7 +4,10 @@ import {
   runBenchmarkSuite,
   statistics,
 } from "../../benchmarks/suite.js";
-import { fixture } from "../../benchmarks/fixtures.js";
+import {
+  builtinBenchmarkFixtures,
+  fixture,
+} from "../../benchmarks/fixtures.js";
 
 describe("benchmark reporting", () => {
   it("computes distribution statistics from samples", () => {
@@ -24,7 +27,7 @@ describe("benchmark reporting", () => {
       schema: "nexilume-benchmark/1",
       checksum: "sha256:test",
       generatedAt: "2026-07-28T00:00:00.000Z",
-      languageVersion: "0.1.0",
+      languageVersion: "0.2.0",
       runtime: {
         node: "v24",
         platform: "linux",
@@ -77,5 +80,32 @@ launch main
       expect(entry.timing.valuesMs).toHaveLength(2);
       expect(entry.timing.valuesMs.every((value) => value >= 0)).toBe(true);
     }
+  });
+
+  it("executes realistic invoice, transform and recursive fixtures", async () => {
+    const realisticNames = new Set([
+      "invoice-calculation",
+      "data-transform",
+      "recursive-factorial",
+    ]);
+    const fixtures = builtinBenchmarkFixtures().filter((entry) =>
+      realisticNames.has(entry.name),
+    );
+    expect(fixtures.map((entry) => entry.name)).toEqual([
+      "invoice-calculation",
+      "data-transform",
+      "recursive-factorial",
+    ]);
+    const report = await runBenchmarkSuite({
+      samples: 1,
+      warmup: 0,
+      fixtures,
+    });
+    expect(report.cases).toHaveLength(9);
+    expect(
+      report.cases.every(
+        (entry) => entry.timing.samples === 1 && entry.timing.valuesMs[0]! >= 0,
+      ),
+    ).toBe(true);
   });
 });

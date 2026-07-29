@@ -192,7 +192,7 @@ function start(context) {
       processId: process.pid,
       rootUri: vscode.workspace.workspaceFolders?.[0]?.uri.toString() || null,
       capabilities: {},
-      clientInfo: { name: 'Nexilume VS Code', version: '0.1.0' },
+      clientInfo: { name: 'Nexilume VS Code', version: '0.2.0' },
     }).catch((error) => console.error(`[Nexilume LSP] ${error.message}`))
   send({ jsonrpc: '2.0', method: 'initialized', params: {} })
   vscode.workspace.textDocuments.filter((doc) => doc.languageId === 'nexilume').forEach(openDocument)

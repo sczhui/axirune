@@ -16,6 +16,7 @@ import {
   parseSource,
   runSource,
   type Diagnostic,
+  type RuntimeValue,
 } from "../language/index.js";
 import { fixture } from "../../benchmarks/fixtures.js";
 import {
@@ -30,6 +31,7 @@ import {
 } from "./arguments.js";
 import { formatDiagnostics, stableJson } from "./output.js";
 import { capabilityManifestFromIR } from "./manifest.js";
+import { createHostAdapters } from "./host-adapters.js";
 
 export interface CliEnvironment {
   cwd?: string;
@@ -155,8 +157,26 @@ async function runCommand(
   stdout: (chunk: string) => void,
   stderr: (chunk: string) => void,
 ): Promise<number> {
-  rejectOptions(args, ["json"]);
-  const result = await runSource(loaded.source);
+  rejectOptions(args, [
+    "json",
+    "allow-read",
+    "allow-write",
+    "allow-net",
+    "input-json",
+  ]);
+  const host = await createHostAdapters({
+    cwd: loaded.workingDirectory,
+    readRoots: args.allowRead,
+    writeRoots: args.allowWrite,
+    networkHosts: args.allowNet,
+  });
+  const input = args.inputJson === null ? undefined : parseInputJson(args.inputJson);
+  const result = await runSource(loaded.source, {
+    mockTools: false,
+    tools: host.tools,
+    capabilities: host.capabilities,
+    ...(input ? { input } : {}),
+  });
   const ok = result.status === "completed" && !hasErrors(result.diagnostics);
   if (args.json) {
     stdout(
@@ -499,7 +519,7 @@ function printDiagnostics(
 }
 
 function rejectOptions(args: CliArguments, allowed: readonly string[]): void {
-  const used: [keyof CliArguments, boolean][] = [
+  const used: [string, boolean][] = [
     ["json", args.json],
     ["write", args.write],
     ["check", args.check],
@@ -507,6 +527,10 @@ function rejectOptions(args: CliArguments, allowed: readonly string[]): void {
     ["out", args.out !== null],
     ["samples", args.samples !== null],
     ["warmup", args.warmup !== null],
+    ["allow-read", args.allowRead.length > 0],
+    ["allow-write", args.allowWrite.length > 0],
+    ["allow-net", args.allowNet.length > 0],
+    ["input-json", args.inputJson !== null],
   ];
   const rejected = used.find(([name, enabled]) => enabled && !allowed.includes(name));
   if (rejected) throw new UsageError(`--${rejected[0]} is not valid for ${args.command}.`);
@@ -520,6 +544,58 @@ function renderValue(value: unknown): string {
 
 function sha256(value: string): string {
   return `sha256:${createHash("sha256").update(value, "utf8").digest("hex")}`;
+}
+
+function parseInputJson(value: string): Readonly<Record<string, RuntimeValue>> {
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(value);
+  } catch (error) {
+    throw new UsageError(
+      `--input-json is not valid JSON: ${error instanceof Error ? error.message : String(error)}`,
+    );
+  }
+  if (parsed === null || typeof parsed !== "object" || Array.isArray(parsed)) {
+    throw new UsageError("--input-json must contain a JSON object.");
+  }
+  return normalizeInputObject(parsed as Record<string, unknown>, 0);
+}
+
+function normalizeInputObject(
+  value: Record<string, unknown>,
+  depth: number,
+): Readonly<Record<string, RuntimeValue>> {
+  if (depth > 64) throw new UsageError("--input-json exceeds the maximum nesting depth.");
+  const normalized: Record<string, RuntimeValue> = Object.create(null) as Record<
+    string,
+    RuntimeValue
+  >;
+  for (const [key, entry] of Object.entries(value)) {
+    if (key === "__proto__" || key === "prototype" || key === "constructor") {
+      throw new UsageError(`--input-json contains unsafe key ${JSON.stringify(key)}.`);
+    }
+    normalized[key] = normalizeInputValue(entry, depth + 1);
+  }
+  return normalized;
+}
+
+function normalizeInputValue(value: unknown, depth: number): RuntimeValue {
+  if (
+    value === null ||
+    typeof value === "string" ||
+    typeof value === "boolean" ||
+    (typeof value === "number" && Number.isFinite(value))
+  ) {
+    return value;
+  }
+  if (Array.isArray(value)) {
+    if (depth > 64) throw new UsageError("--input-json exceeds the maximum nesting depth.");
+    return value.map((entry) => normalizeInputValue(entry, depth + 1));
+  }
+  if (typeof value === "object") {
+    return normalizeInputObject(value as Record<string, unknown>, depth);
+  }
+  throw new UsageError("--input-json contains a value that cannot be represented.");
 }
 
 function messageOf(error: unknown): string {

@@ -33,40 +33,42 @@ type Operation = 'idle' | 'parsing' | 'formatting' | 'compiling' | 'running'
 const previewTrace: TraceView[] = [
   {
     id: 'preview-1',
-    kind: 'workflow',
+    kind: 'launch',
     label: 'main entered',
-    detail: 'stable execution scope created',
+    detail: 'deterministic root task',
     status: 'done',
     elapsed: '0.18 ms',
   },
   {
     id: 'preview-2',
-    kind: 'capability.check',
-    label: 'net.read admitted',
-    detail: 'authority narrowed for scout',
+    kind: 'call',
+    label: 'List.fold',
+    detail: '3 invoice lines · using add_line',
     status: 'done',
     elapsed: '0.04 ms',
   },
   {
     id: 'preview-3',
-    kind: 'tool.call',
-    label: 'search',
-    detail: 'Observed<Text> · provenance attached',
+    kind: 'call',
+    label: 'Json.encode',
+    detail: 'pure builtin · no capability',
     status: 'done',
-    elapsed: '18 ms',
+    elapsed: '0.12 ms',
   },
   {
     id: 'preview-4',
     kind: 'emit',
-    label: 'report emitted',
-    detail: '1 typed value',
+    label: 'invoice summary emitted',
+    detail: 'deterministic JSON value',
     status: 'done',
     elapsed: '0.09 ms',
   },
 ]
 
 function extractAuthority(source: string): string[] {
-  const matches = source.matchAll(/^\s*(?:need|grant)\s+([A-Za-z0-9_.-]+)/gm)
+  const matches = source.matchAll(
+    /^\s*(?:need\s+(?:capability\s+)?|grant\s+)([A-Za-z0-9_.-]+)/gm,
+  )
   return [...new Set([...matches].map((match) => match[1]).filter(Boolean) as string[])]
 }
 
@@ -175,7 +177,7 @@ export function LanguageWorkbench({
       <div className="workbench__topbar">
         <div className="workbench__file">
           <span className="workbench__file-dot" />
-          <span>{compact ? 'hello.nxl' : 'main.nxl'}</span>
+          <span>{compact ? 'invoice.nxl' : 'main.nxl'}</span>
           <small>NEXILUME</small>
         </div>
         <div className="workbench__top-actions">

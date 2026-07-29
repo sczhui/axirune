@@ -48,15 +48,15 @@ export function DocsPage({ locale }: { locale: Locale }) {
       <section className="docs-hero">
         <div className="docs-hero__icon">
           <BookOpen size={28} />
-          <span>DOCS / 0.1</span>
+          <span>DOCS / 0.2</span>
         </div>
         <div>
           <span className="eyebrow">LANGUAGE REFERENCE</span>
-          <h1>{locale === 'zh' ? '从意图开始，直到每个 effect 都有边界。' : 'Start with intent. End with every effect bounded.'}</h1>
+          <h1>{locale === 'zh' ? '从纯值开始。需要外部世界时，再声明 effect。' : 'Start with pure values. Declare effects only when the outside world is needed.'}</h1>
           <p>
             {locale === 'zh'
-              ? 'Nexilume 语言模型、语法、工具链与运行时的完整导览。'
-              : 'A complete tour of the Nexilume language model, syntax, toolchain, and runtime.'}
+              ? 'Nexilume 0.2 通用语言核心、任务调用、递归、数据处理、错误、I/O 与可选 AI 的完整导览。'
+              : 'A complete Nexilume 0.2 tour: general-purpose core, task calls, recursion, data, errors, I/O, and optional AI.'}
         </p>
         </div>
       </section>
@@ -103,8 +103,8 @@ export function DocsPage({ locale }: { locale: Locale }) {
               <h2>{locale === 'zh' ? '安装、检查、运行。' : 'Install. Check. Run.'}</h2>
               <p>
                 {locale === 'zh'
-                  ? '工具包同时包含编译器、CLI 与 Language Server。Node.js 22+ 可直接安装。'
-                  : 'The package includes compiler, CLI, and Language Server. Install directly with Node.js 22+.'}
+                  ? '工具包包含确定性解释器、编译器、CLI 与 Language Server。Node.js 22+ 可直接安装，不需要模型密钥。'
+                  : 'The package includes the deterministic interpreter, compiler, CLI, and Language Server. Install on Node.js 22+ with no model key.'}
               </p>
             </div>
             <div className="install-block">
@@ -171,7 +171,7 @@ export function DocsPage({ locale }: { locale: Locale }) {
           <section className="docs-next">
             <span>{locale === 'zh' ? '下一步' : 'NEXT'}</span>
             <div>
-              <h2>{locale === 'zh' ? '从一段能运行的 Agent 开始。' : 'Start from an agent that runs.'}</h2>
+              <h2>{locale === 'zh' ? '从递归、集合与 Outcome 示例开始。' : 'Start with recursion, collections, and Outcome.'}</h2>
               <Link to="/examples">
                 {locale === 'zh' ? '浏览示例' : 'Browse examples'} <ArrowRight size={16} />
               </Link>
@@ -182,4 +182,3 @@ export function DocsPage({ locale }: { locale: Locale }) {
     </>
   )
 }
-

@@ -26,9 +26,9 @@ export function HomePage({ locale }: { locale: Locale }) {
         <div className="hero__copy">
           <div className="hero__meta">
             <span className="live-mark">
-              <i /> OPEN LANGUAGE · 0.1.0
+              <i /> GENERAL-PURPOSE LANGUAGE · 0.2.0
             </span>
-            <span>FOR AGENTIC SOFTWARE</span>
+            <span>DETERMINISTIC BY DEFAULT</span>
           </div>
           <h1>
             <span>Illuminate</span>
@@ -38,8 +38,8 @@ export function HomePage({ locale }: { locale: Locale }) {
           </h1>
           <p className="hero__lead">
             {locale === 'zh'
-              ? '一门为 AI Agent 原生设计的新语言。让意图、权限、工具、记忆与恢复路径都成为编译器能看见的程序。'
-              : 'A new language native to AI agents—where intent, authority, tools, memory, and recovery routes are all visible to the compiler.'}
+              ? '一门面向人类与 LLM 共同维护的确定性通用语言。无需模型即可编译、解释运行完整程序；AI、MCP 与工具调用只是受权限约束的可选能力。'
+              : 'A deterministic general-purpose language designed for humans and LLMs to maintain together. Compile and run complete programs without a model; AI, MCP, and tools are optional, capability-gated effects.'}
           </p>
           <div className="hero__actions">
             <Link to="/playground" className="button button--signal">
@@ -53,12 +53,12 @@ export function HomePage({ locale }: { locale: Locale }) {
           </div>
           <div className="hero__facts" aria-label="Project facts">
             <div>
-              <strong>8</strong>
-              <span>{locale === 'zh' ? '原生语义帧' : 'NATIVE FRAMES'}</span>
+              <strong>0</strong>
+              <span>{locale === 'zh' ? '必需模型' : 'REQUIRED MODELS'}</span>
             </div>
             <div>
-              <strong>0</strong>
-              <span>{locale === 'zh' ? '隐式权限' : 'IMPLICIT AUTHORITY'}</span>
+              <strong>PURE</strong>
+              <span>{locale === 'zh' ? '确定性核心' : 'DETERMINISTIC CORE'}</span>
             </div>
             <div>
               <strong>.nxl</strong>
@@ -83,15 +83,15 @@ export function HomePage({ locale }: { locale: Locale }) {
         <div>
           <span>INTENT</span>
           <i>→</i>
-          <span>TYPE</span>
+          <span>VALUE</span>
           <i>→</i>
-          <span>AUTHORITY</span>
+          <span>TASK</span>
           <i>→</i>
-          <span>PLAN</span>
+          <span>OUTCOME</span>
           <i>→</i>
-          <span>TRACE</span>
+          <span>EFFECT</span>
           <i>→</i>
-          <span>RECOVERY</span>
+          <span>OPTIONAL AI</span>
         </div>
       </div>
 
@@ -105,32 +105,32 @@ export function HomePage({ locale }: { locale: Locale }) {
           <h2>
             {locale === 'zh' ? (
               <>
-                Agent 不是函数。
+                程序先是确定的。
                 <br />
-                Prompt 不是字符串。
+                Effect 必须有边界。
                 <br />
-                权限不是配置。
+                AI 永远是可选项。
               </>
             ) : (
               <>
-                An agent is not a function.
+                Programs are deterministic.
                 <br />
-                A prompt is not a string.
+                Effects have boundaries.
                 <br />
-                Authority is not config.
+                AI stays optional.
               </>
             )}
           </h2>
           <div className="manifesto__columns">
             <p>
               {locale === 'zh'
-                ? '传统语言把 Agent 的真实行为藏在 SDK、回调、环境变量与自然语言里。人类难以审查，模型更难安全重构。'
-                : 'Traditional languages hide agent behavior in SDKs, callbacks, environment variables, and prose—hard for people to audit and harder for models to refactor safely.'}
+                ? 'Nexilume 可以只用 shape、task、递归、集合变换、Outcome 与纯 builtin 写业务程序。相同源码与输入产生相同的值和语义 trace。'
+                : 'Nexilume can express complete applications with shapes, tasks, recursion, collection transforms, Outcome, and pure builtins. The same source and input produce the same value and semantic trace.'}
             </p>
             <p>
               {locale === 'zh'
-                ? 'Nexilume 直接描述目标、可用权力、认知预算与失败出口。代码更接近意图，同时保留机器可验证的硬边界。'
-                : 'Nexilume directly describes goals, available authority, cognition budgets, and failure routes. Code stays close to intent without giving up machine-verifiable boundaries.'}
+                ? '只有当程序选择文件、网络、MCP 或模型时，capability 与 sandbox 才进入执行路径。AI 扩展语言，但不定义语言。'
+                : 'Capabilities and sandboxes enter the path only when a program chooses files, network, MCP, or a model. AI extends the language; it does not define it.'}
             </p>
           </div>
         </div>
@@ -140,12 +140,12 @@ export function HomePage({ locale }: { locale: Locale }) {
         <div className="section-heading">
           <div>
             <span className="eyebrow">02 / SEMANTIC CORE</span>
-            <h2>{locale === 'zh' ? '为 Agent 重新发明基本单元' : 'Reinventing the unit of software'}</h2>
+            <h2>{locale === 'zh' ? '足以编写完整程序的确定性核心' : 'A deterministic core for complete programs'}</h2>
           </div>
           <p>
-            {locale === 'zh'
-              ? '每个概念都有自己的静态规则、运行时行为与 trace 形状。'
-              : 'Every concept has its own static rules, runtime behavior, and trace shape.'}
+              {locale === 'zh'
+              ? '数据、函数、递归、控制流与错误都是语言本体；外部世界和 AI 被隔离在显式 effect 边界之外。'
+              : 'Data, functions, recursion, control flow, and errors live in the language core; the outside world and AI remain behind explicit effect boundaries.'}
           </p>
         </div>
         <div className="concept-grid">
@@ -156,12 +156,12 @@ export function HomePage({ locale }: { locale: Locale }) {
                 <span>{concept.group}</span>
               </div>
               <div className="concept-card__glyph" aria-hidden="true">
-                {concept.name === 'Intent' ? <Braces /> : null}
-                {concept.name === 'Authority' ? <KeyRound /> : null}
-                {concept.name === 'Memory' ? <Cpu /> : null}
-                {concept.name === 'Failure' ? <ShieldCheck /> : null}
-                {concept.name === 'Trace' ? <Network /> : null}
-                {concept.name === 'Flow' ? <GitBranch /> : null}
+                {concept.name === 'Value' ? <Braces /> : null}
+                {concept.name === 'Task' ? <Cpu /> : null}
+                {concept.name === 'Data' ? <GitBranch /> : null}
+                {concept.name === 'Outcome' ? <ShieldCheck /> : null}
+                {concept.name === 'Effect' ? <KeyRound /> : null}
+                {concept.name === 'Optional AI' ? <Network /> : null}
               </div>
               <span className="concept-card__name">{concept.name}</span>
               <h3>{concept.title[locale]}</h3>
@@ -177,31 +177,31 @@ export function HomePage({ locale }: { locale: Locale }) {
           <div className="section-heading section-heading--light">
             <div>
               <span className="eyebrow">03 / COMPILATION MODEL</span>
-              <h2>{locale === 'zh' ? '从意图到证据，不跳步' : 'Intent to evidence, with no hidden step'}</h2>
+              <h2>{locale === 'zh' ? 'Deterministic Core / Optional AI' : 'Deterministic Core / Optional AI'}</h2>
             </div>
             <p>
               {locale === 'zh'
-                ? '编译结果不只是一段机器码，而是可执行计划、最小权限清单与审计协议。'
-                : 'Compilation produces more than code: an execution plan, minimum-authority manifest, and audit protocol.'}
+                ? '纯程序直接进入确定性解释器；文件、网络、MCP 与模型只能通过可检查的 effect 网关接入。'
+                : 'Pure programs go straight to the deterministic interpreter. Files, network, MCP, and models connect only through checked effect gateways.'}
             </p>
           </div>
           <div className="pipeline">
             <article>
               <span className="pipeline__number">01</span>
               <Braces size={22} />
-              <h3>Semantic frames</h3>
-              <p>{locale === 'zh' ? '识别 Agent、工具、记忆、上下文与工作流的边界。' : 'Resolve agents, tools, memory, context, and workflow boundaries.'}</p>
-              <small>PARSE · RESOLVE · REFINE</small>
+              <h3>Shapes & tasks</h3>
+              <p>{locale === 'zh' ? '解析数据结构、命名参数、用户 task、递归与显式结果类型。' : 'Resolve data shapes, named arguments, user tasks, recursion, and explicit result types.'}</p>
+              <small>PARSE · TYPE · RESOLVE</small>
             </article>
             <span className="pipeline__arrow" aria-hidden="true">
               →
             </span>
             <article>
               <span className="pipeline__number">02</span>
-              <KeyRound size={22} />
-              <h3>Authority graph</h3>
-              <p>{locale === 'zh' ? '证明每个 effect 都有来源明确、范围足够的 capability。' : 'Prove every effect has a sourced, sufficiently narrow capability.'}</p>
-              <small>PROVE · NARROW · MANIFEST</small>
+              <Cpu size={22} />
+              <h3>Pure builtins</h3>
+              <p>{locale === 'zh' ? 'Number、Bool、Text、List、Record、Json 与 Outcome 不需要任何外部权限。' : 'Number, Bool, Text, List, Record, Json, and Outcome require no external authority.'}</p>
+              <small>CALCULATE · TRANSFORM · ENCODE</small>
             </article>
             <span className="pipeline__arrow" aria-hidden="true">
               →
@@ -209,19 +209,19 @@ export function HomePage({ locale }: { locale: Locale }) {
             <article>
               <span className="pipeline__number">03</span>
               <GitBranch size={22} />
-              <h3>Deterministic IR</h3>
-              <p>{locale === 'zh' ? '固定并发、预算、checkpoint、失败与补偿路径。' : 'Fix concurrency, budgets, checkpoints, failure, and compensation routes.'}</p>
-              <small>PLAN · BUDGET · BIND</small>
+              <h3>Checked IR</h3>
+              <p>{locale === 'zh' ? '编译为可检查 IR，再由有 fuel 上限的解释器执行并生成语义 trace。' : 'Compile to inspectable IR, then execute in a fuel-bounded interpreter with a semantic trace.'}</p>
+              <small>COMPILE · INTERPRET · TRACE</small>
             </article>
             <span className="pipeline__arrow" aria-hidden="true">
               →
             </span>
             <article>
               <span className="pipeline__number">04</span>
-              <Network size={22} />
-              <h3>Replayable trace</h3>
-              <p>{locale === 'zh' ? '把判断、权限、工具结果与状态变化连接成证据链。' : 'Join decisions, authority, tool results, and state changes into evidence.'}</p>
-              <small>RUN · OBSERVE · REPLAY</small>
+              <KeyRound size={22} />
+              <h3>Optional effects</h3>
+              <p>{locale === 'zh' ? 'I/O、工具、MCP 与模型是可替换适配器，必须获得 capability 才能运行。' : 'I/O, tools, MCP, and models are replaceable adapters and run only with explicit capabilities.'}</p>
+              <small>FILES · MCP · MODEL / OPTIONAL</small>
             </article>
           </div>
         </div>
@@ -230,12 +230,12 @@ export function HomePage({ locale }: { locale: Locale }) {
       <section className="ai-readability section-shell">
         <div className="section-index">
           <span>04</span>
-          <p>LLM-NATIVE MAINTENANCE</p>
+          <p>LLM-LEGIBLE · HUMAN-AUDITABLE</p>
         </div>
         <div className="ai-readability__content">
           <div>
-            <span className="eyebrow">{locale === 'zh' ? '为模型可读，不为模型放权' : 'MODEL-LEGIBLE, NOT MODEL-PRIVILEGED'}</span>
-            <h2>{locale === 'zh' ? '局部结构足够清楚，自动重构才值得信任。' : 'Local structure clear enough to trust automated refactoring.'}</h2>
+            <span className="eyebrow">{locale === 'zh' ? '适合 LLM 编写，不依赖 LLM 运行' : 'LLM-WRITABLE, LLM-INDEPENDENT AT RUNTIME'}</span>
+            <h2>{locale === 'zh' ? '让模型理解程序，不让模型成为程序的前提。' : 'Let models understand the program—never become its prerequisite.'}</h2>
           </div>
           <div className="readability-list">
             {[
@@ -246,18 +246,18 @@ export function HomePage({ locale }: { locale: Locale }) {
               },
               {
                 code: '02',
-                zh: '所有调用只允许命名参数，重排不会改变语义。',
-                en: 'Named-only calls make reordering semantics-safe.',
+                zh: '用户 task 只用命名参数调用，签名扩展不会挪动位置。',
+                en: 'User tasks use named arguments, so signatures can evolve without positional drift.',
               },
               {
                 code: '03',
-                zh: '语义帧各司其职，修改 prompt 不会误触权限。',
-                en: 'Purpose-built frames keep prompt edits away from authority.',
+                zh: '纯 builtin 与 effect adapter 分层，重构计算不会意外获得 I/O。',
+                en: 'Pure builtins and effect adapters are separate, so refactoring computation cannot gain I/O.',
               },
               {
                 code: '04',
-                zh: '编译器导出机器可读的意图、effect 与权限差异。',
-                en: 'The compiler exports machine-readable intent, effect, and authority diffs.',
+                zh: 'AST、IR、Outcome 与 trace 提供机器可读的验证表面。',
+                en: 'AST, IR, Outcome, and traces provide machine-readable verification surfaces.',
               },
             ].map((item) => (
               <div key={item.code}>
@@ -273,8 +273,8 @@ export function HomePage({ locale }: { locale: Locale }) {
       <section className="home-cta">
         <div className="home-cta__grid" aria-hidden="true" />
         <div>
-          <span className="eyebrow">WRITE THE BOUNDARY. RUN THE INTENT.</span>
-          <h2>{locale === 'zh' ? '让第一个 Agent 程序拥有可证明的边界。' : 'Give your first agent a boundary it can prove.'}</h2>
+          <span className="eyebrow">WRITE A VALUE. CALL A TASK. RUN DETERMINISTICALLY.</span>
+          <h2>{locale === 'zh' ? '从一个不需要 AI 的完整程序开始。' : 'Start with a complete program that needs no AI.'}</h2>
           <div className="home-cta__actions">
             <Link to="/playground" className="button button--ink">
               {locale === 'zh' ? '打开 Playground' : 'Open Playground'} <ArrowRight size={16} />

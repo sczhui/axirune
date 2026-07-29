@@ -19,7 +19,7 @@ mcp codegraph
 task main
   give Text
   use codegraph.query_graph
-  let graph [call codegraph.query_graph :query «calls:CheckoutService»]
+  let graph = [call codegraph.query_graph :query «calls:CheckoutService»]
   emit «MCP response passed schema and capability checks.»
   yield graph
 /task

@@ -609,7 +609,8 @@
 
 .sample-picker__items {
   display: grid;
-  grid-template-columns: repeat(4, minmax(150px, 1fr));
+  grid-template-columns: repeat(7, minmax(150px, 1fr));
+  overflow-x: auto;
 }
 
 .sample-picker__items button {
@@ -653,6 +654,22 @@
   color: inherit;
   font: 600 7px/1.4 var(--mono);
   letter-spacing: 0.04em;
+}
+
+.sample-picker__items .runtime-label {
+  color: inherit;
+}
+
+.sample-picker__items button.is-active .runtime-label--core {
+  color: var(--signal);
+}
+
+.sample-picker__items button.is-active .runtime-label--io {
+  color: var(--sky);
+}
+
+.sample-picker__items button.is-active .runtime-label--ai {
+  color: var(--coral);
 }
 
 .playground-notes {
@@ -1523,6 +1540,29 @@
   letter-spacing: 0.05em;
 }
 
+.runtime-label {
+  display: inline-flex;
+  width: fit-content;
+  margin-top: 2px;
+  padding: 5px 7px;
+  border: 1px solid currentColor;
+  font: 650 7px/1 var(--mono);
+  font-style: normal;
+  letter-spacing: 0.06em;
+}
+
+.runtime-label--core {
+  color: var(--signal-deep);
+}
+
+.runtime-label--io {
+  color: #4086a8;
+}
+
+.runtime-label--ai {
+  color: var(--coral);
+}
+
 .example-viewer {
   min-width: 0;
 }
@@ -1541,6 +1581,23 @@
   color: var(--coral);
   font: 650 8px/1 var(--mono);
   letter-spacing: 0.1em;
+}
+
+.example-viewer > header .runtime-label {
+  margin-top: 12px;
+  color: var(--ink);
+}
+
+.example-viewer > header .runtime-label--core {
+  background: var(--signal);
+}
+
+.example-viewer > header .runtime-label--io {
+  background: var(--sky);
+}
+
+.example-viewer > header .runtime-label--ai {
+  background: var(--coral);
 }
 
 .example-viewer > header h2 {

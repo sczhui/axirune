@@ -1,8 +1,8 @@
 {
   "name": "nexilume-language",
   "displayName": "Nexilume Language",
-  "description": "Language support for Nexilume: diagnostics, formatting, hover, symbols, and agent-aware snippets.",
-  "version": "0.1.0",
+  "description": "Language support for deterministic Nexilume programs and authority-bounded agent workflows.",
+  "version": "0.2.0",
   "publisher": "nexilume",
   "type": "module",
   "license": "Apache-2.0",
@@ -10,7 +10,7 @@
     "vscode": "^1.96.0"
   },
   "categories": ["Programming Languages", "Linters", "Formatters"],
-  "keywords": ["nexilume", "agent", "ai", "workflow", "mcp", "capability"],
+  "keywords": ["nexilume", "deterministic", "task", "agent", "ai", "workflow", "mcp", "capability"],
   "activationEvents": ["onLanguage:nexilume"],
   "main": "./extension.cjs",
   "contributes": {

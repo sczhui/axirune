@@ -2,11 +2,17 @@ import {
   referenceName,
   type Expression,
   type Frame,
+  type NamedArgument,
   type Program,
   type SourceSpan,
   type Statement,
   type TypeNode,
 } from "./ast.js";
+import {
+  BUILTIN_NAMES,
+  getBuiltinSignature,
+  type BuiltinValueType,
+} from "./builtins.js";
 import { diagnostic, hasErrors, type Diagnostic } from "./diagnostics.js";
 import {
   type IRContract,
@@ -76,6 +82,8 @@ export function compileProgram(
       );
     }
   }
+
+  analyzeTypesAndCalls(program, frameBySimpleName, diagnostics);
 
   const resolveReference = (target: string, span: SourceSpan): void => {
     if (
@@ -588,7 +596,7 @@ export function compileProgram(
   return { ir, program, diagnostics, ok: !hasErrors(diagnostics) };
 }
 
-const builtinTargets = new Set(["Text.join"]);
+const builtinTargets = new Set(BUILTIN_NAMES);
 
 function compileType(type: TypeNode): IRType {
   switch (type.kind) {
@@ -667,6 +675,7 @@ function compileValue(expression: Expression, diagnostics: Diagnostic[]): IRValu
         verb: expression.verb,
         target: referenceName(expression.target),
         arguments: arguments_,
+        span: expression.span,
       };
     }
     case "MissingExpression":
@@ -718,4 +727,459 @@ function checkExpressionReferences(
     default:
       break;
   }
+}
+
+type StaticType = BuiltinValueType | "Unknown";
+
+interface TaskParameterSignature {
+  name: string;
+  type: StaticType;
+  required: boolean;
+}
+
+interface TaskSignature {
+  name: string;
+  parameters: TaskParameterSignature[];
+  returns: StaticType;
+}
+
+function analyzeTypesAndCalls(
+  program: Program,
+  framesByName: ReadonlyMap<string, Frame[]>,
+  diagnostics: Diagnostic[],
+): void {
+  const tasks = new Map<string, TaskSignature>();
+  for (const [name, matches] of framesByName) {
+    if (matches.length !== 1 || matches[0]?.frameKind !== "task") continue;
+    const frame = matches[0];
+    const statements = frame.body.filter(
+      (node): node is Statement => node.kind === "Statement",
+    );
+    const parameters = statements
+      .filter((statement) => statement.verb === "take")
+      .map((statement) => ({
+        name: statement.binding,
+        type: statement.valueType ? staticTypeFromTypeNode(statement.valueType) : "Unknown",
+        required: statement.source === null,
+      }));
+    const output = statements.find(
+      (statement) => statement.verb === "give" && statement.valueType,
+    );
+    tasks.set(name, {
+      name,
+      parameters,
+      returns:
+        output?.verb === "give" && output.valueType
+          ? staticTypeFromTypeNode(output.valueType)
+          : "Unknown",
+    });
+  }
+
+  const analyzeFrame = (frame: Frame): void => {
+    const bindings = new Map<string, StaticType>();
+    const statements = frame.body.filter(
+      (node): node is Statement => node.kind === "Statement",
+    );
+    const outputStatement = statements.find(
+      (statement) => statement.verb === "give" && statement.valueType,
+    );
+    const outputType =
+      outputStatement?.verb === "give" && outputStatement.valueType
+        ? staticTypeFromTypeNode(outputStatement.valueType)
+        : "Unknown";
+
+    for (const node of frame.body) {
+      if (node.kind === "Frame") {
+        analyzeFrame(node);
+        continue;
+      }
+      analyzeStatement(node, bindings, outputType, tasks, diagnostics);
+    }
+  };
+
+  const rootBindings = new Map<string, StaticType>();
+  for (const item of program.items) {
+    if (item.kind === "Frame") analyzeFrame(item);
+    else analyzeStatement(item, rootBindings, "Unknown", tasks, diagnostics);
+  }
+}
+
+function analyzeStatement(
+  statement: Statement,
+  bindings: Map<string, StaticType>,
+  outputType: StaticType,
+  tasks: ReadonlyMap<string, TaskSignature>,
+  diagnostics: Diagnostic[],
+): void {
+  switch (statement.verb) {
+    case "take": {
+      const declared = statement.valueType
+        ? staticTypeFromTypeNode(statement.valueType)
+        : "Unknown";
+      if (statement.source) {
+        const sourceType = inferExpressionType(
+          statement.source,
+          bindings,
+          tasks,
+          diagnostics,
+        );
+        reportTypeMismatch(
+          declared,
+          sourceType,
+          statement.source.span,
+          `take ${statement.binding}`,
+          diagnostics,
+        );
+      }
+      bindings.set(statement.binding, declared);
+      break;
+    }
+    case "give": {
+      const value = statement.source ?? statement.value;
+      if (value) {
+        const actual = inferExpressionType(value, bindings, tasks, diagnostics);
+        const expected = statement.valueType
+          ? staticTypeFromTypeNode(statement.valueType)
+          : outputType;
+        reportTypeMismatch(expected, actual, value.span, "give", diagnostics);
+      }
+      break;
+    }
+    case "let": {
+      const actual = inferExpressionType(
+        statement.value,
+        bindings,
+        tasks,
+        diagnostics,
+      );
+      const declared = statement.valueType
+        ? staticTypeFromTypeNode(statement.valueType)
+        : actual;
+      reportTypeMismatch(
+        declared,
+        actual,
+        statement.value.span,
+        `let ${statement.binding}`,
+        diagnostics,
+      );
+      bindings.set(statement.binding, declared);
+      break;
+    }
+    case "yield": {
+      const actual = inferExpressionType(
+        statement.value,
+        bindings,
+        tasks,
+        diagnostics,
+      );
+      reportTypeMismatch(outputType, actual, statement.value.span, "yield", diagnostics);
+      break;
+    }
+    case "emit":
+    case "instruction":
+      inferExpressionType(statement.value, bindings, tasks, diagnostics);
+      break;
+    case "attach":
+      inferExpressionType(statement.value, bindings, tasks, diagnostics);
+      break;
+    case "within":
+      inferExpressionType(statement.limit, bindings, tasks, diagnostics);
+      break;
+    case "budget":
+      inferExpressionType(statement.limit, bindings, tasks, diagnostics);
+      break;
+    case "invoke":
+    case "call":
+    case "launch":
+      for (const argument of statement.arguments) {
+        inferExpressionType(argument, bindings, tasks, diagnostics);
+      }
+      if (statement.binding) bindings.set(statement.binding, "Unknown");
+      break;
+    case "weave":
+      for (const branch of statement.branches) {
+        for (const argument of branch.arguments) {
+          inferExpressionType(argument, bindings, tasks, diagnostics);
+        }
+      }
+      if (statement.binding) bindings.set(statement.binding, "Record");
+      break;
+    case "field":
+    case "effect":
+    case "transport":
+    case "endpoint":
+    case "pin":
+    case "overflow":
+    case "filesystem":
+    case "network":
+    case "process":
+    case "limit":
+    case "settle":
+    case "stage":
+    case "recover":
+    case "compensate":
+    case "resource":
+    case "needs":
+    case "model":
+    case "remember":
+    case "handle":
+    case "slot":
+    case "expect":
+    case "lifetime":
+    case "merge":
+    case "retention":
+    case "compact":
+    case "trust":
+    case "import":
+    case "command":
+    case "protocol":
+    case "clock":
+    case "shape":
+    case "permission":
+    case "context":
+    case "fault":
+    case "version":
+    case "edition":
+    case "source":
+    case "entry":
+    case "runtime":
+    case "expose":
+    case "require":
+    case "authority":
+    case "diagnostics":
+      for (const argument of statement.arguments) {
+        inferExpressionType(argument, bindings, tasks, diagnostics);
+      }
+      break;
+    case "use":
+    case "need":
+    case "grant":
+    case "fail":
+      break;
+  }
+}
+
+function inferExpressionType(
+  expression: Expression,
+  bindings: ReadonlyMap<string, StaticType>,
+  tasks: ReadonlyMap<string, TaskSignature>,
+  diagnostics: Diagnostic[],
+): StaticType {
+  switch (expression.kind) {
+    case "StringLiteral":
+      return "Text";
+    case "NumberLiteral":
+      return "Number";
+    case "BooleanLiteral":
+      return "Bool";
+    case "NothingLiteral":
+      return "Nothing";
+    case "ReferenceExpression":
+      return bindings.get(expression.path[0] ?? "") ?? "Unknown";
+    case "ListExpression":
+      for (const item of expression.items) {
+        inferExpressionType(item, bindings, tasks, diagnostics);
+      }
+      return "List";
+    case "RecordExpression":
+      for (const entry of expression.entries) {
+        inferExpressionType(entry.value, bindings, tasks, diagnostics);
+      }
+      return "Record";
+    case "GroupExpression":
+      return inferExpressionType(expression.value, bindings, tasks, diagnostics);
+    case "MissingExpression":
+      return "Unknown";
+    case "CallExpression":
+      return inferCallType(expression, bindings, tasks, diagnostics);
+  }
+}
+
+function inferCallType(
+  expression: Extract<Expression, { kind: "CallExpression" }>,
+  bindings: ReadonlyMap<string, StaticType>,
+  tasks: ReadonlyMap<string, TaskSignature>,
+  diagnostics: Diagnostic[],
+): StaticType {
+  const target = referenceName(expression.target);
+  const argumentTypes = new Map<string, StaticType>();
+  for (const argument of expression.arguments) {
+    argumentTypes.set(
+      argument.name,
+      inferExpressionType(argument.value, bindings, tasks, diagnostics),
+    );
+  }
+
+  const builtin = getBuiltinSignature(target);
+  if (builtin) {
+    validateNamedArguments(
+      "builtin",
+      target,
+      expression.arguments,
+      builtin.parameters,
+      argumentTypes,
+      expression.span,
+      diagnostics,
+    );
+    if (target === "Core.if") {
+      return mergeStaticTypes(argumentTypes.get("then"), argumentTypes.get("else"));
+    }
+    if (target === "Core.coalesce") {
+      return mergeStaticTypes(argumentTypes.get("value"), argumentTypes.get("fallback"));
+    }
+    return builtin.returns;
+  }
+
+  const task = tasks.get(target);
+  if (task) {
+    validateNamedArguments(
+      "task",
+      target,
+      expression.arguments,
+      task.parameters,
+      argumentTypes,
+      expression.span,
+      diagnostics,
+    );
+    return task.returns;
+  }
+  return "Unknown";
+}
+
+function validateNamedArguments(
+  kind: "builtin" | "task",
+  target: string,
+  arguments_: readonly NamedArgument[],
+  parameters: readonly {
+    name: string;
+    type: BuiltinValueType | StaticType;
+    required: boolean;
+    aliases?: readonly string[];
+  }[],
+  argumentTypes: ReadonlyMap<string, StaticType>,
+  callSpan: SourceSpan,
+  diagnostics: Diagnostic[],
+): void {
+  const parameterByName = new Map(
+    parameters.flatMap((parameter) => [
+      [parameter.name, parameter] as const,
+      ...(parameter.aliases ?? []).map(
+        (alias) => [alias, parameter] as const,
+      ),
+    ]),
+  );
+  const supplied = new Set(arguments_.map((argument) => argument.name));
+  const codePrefix = kind === "builtin" ? "BUILTIN" : "TASK";
+  for (const parameter of parameters) {
+    const acceptedNames = [
+      parameter.name,
+      ...(parameter.aliases ?? []),
+    ];
+    if (
+      parameter.required &&
+      !acceptedNames.some((name) => supplied.has(name))
+    ) {
+      diagnostics.push(
+        diagnostic(
+          `E_${codePrefix}_MISSING_ARGUMENT`,
+          "error",
+          "compile",
+          `${target} requires named argument :${parameter.name}.`,
+          callSpan,
+        ),
+      );
+    }
+  }
+  for (const argument of arguments_) {
+    const parameter = parameterByName.get(argument.name);
+    if (!parameter) {
+      diagnostics.push(
+        diagnostic(
+          `E_${codePrefix}_UNKNOWN_ARGUMENT`,
+          "error",
+          "compile",
+          `${target} does not accept named argument :${argument.name}.`,
+          argument.span,
+        ),
+      );
+      continue;
+    }
+    reportTypeMismatch(
+      parameter.type,
+      argumentTypes.get(argument.name) ?? "Unknown",
+      argument.value.span,
+      `${target} :${argument.name}`,
+      diagnostics,
+    );
+  }
+}
+
+function staticTypeFromTypeNode(type: TypeNode): StaticType {
+  switch (type.kind) {
+    case "MissingType":
+      return "Unknown";
+    case "OptionalType":
+      return staticTypeFromTypeNode(type.value);
+    case "UnionType": {
+      const types = type.options.map(staticTypeFromTypeNode);
+      return types.every((candidate) => candidate === types[0])
+        ? types[0] ?? "Unknown"
+        : "Unknown";
+    }
+    case "TypeApplication":
+      return staticTypeFromName(type.base.path.at(-1) ?? "");
+    case "TypeReference":
+      return staticTypeFromName(type.path.at(-1) ?? "");
+  }
+}
+
+function staticTypeFromName(name: string): StaticType {
+  if (name === "Bool" || name === "Boolean") return "Bool";
+  if (["Number", "Int", "Decimal", "Duration"].includes(name)) return "Number";
+  if (["Text", "String", "Url", "Bytes"].includes(name)) return "Text";
+  if (["List", "Stream"].includes(name)) return "List";
+  if (["Record", "Map", "Json"].includes(name)) return "Record";
+  if (["Outcome", "Result"].includes(name)) return "Outcome";
+  if (["Nothing", "None"].includes(name)) return "Nothing";
+  if (name === "Any") return "Any";
+  return "Unknown";
+}
+
+function reportTypeMismatch(
+  expected: StaticType,
+  actual: StaticType,
+  span: SourceSpan,
+  context: string,
+  diagnostics: Diagnostic[],
+): void {
+  if (
+    expected === "Any" ||
+    expected === "Unknown" ||
+    actual === "Any" ||
+    actual === "Unknown" ||
+    expected === actual
+  ) {
+    return;
+  }
+  diagnostics.push(
+    diagnostic(
+      "E_TYPE_MISMATCH",
+      "error",
+      "compile",
+      `${context} requires ${expected}, received ${actual}.`,
+      span,
+    ),
+  );
+}
+
+function mergeStaticTypes(
+  left: StaticType | undefined,
+  right: StaticType | undefined,
+): StaticType {
+  if (!left) return right ?? "Unknown";
+  if (!right) return left;
+  if (left === right) return left;
+  if (left === "Nothing") return right;
+  if (right === "Nothing") return left;
+  return "Unknown";
 }

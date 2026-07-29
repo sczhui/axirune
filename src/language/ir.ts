@@ -54,7 +54,13 @@ export type IRValue =
   | { kind: "reference"; path: string[] }
   | { kind: "list"; items: IRValue[] }
   | { kind: "record"; entries: Record<string, IRValue> }
-  | { kind: "call"; verb: string; target: string; arguments: Record<string, IRValue> }
+  | {
+      kind: "call";
+      verb: string;
+      target: string;
+      arguments: Record<string, IRValue>;
+      span: SourceSpan;
+    }
   | { kind: "missing" };
 
 export interface IRRequirement {
@@ -193,4 +199,3 @@ export type IRInstruction =
   | IRAttachInstruction
   | IRDirectiveInstruction
   | IRInstructionTextInstruction;
-

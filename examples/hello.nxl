@@ -1,12 +1,18 @@
 space hello
 
-edition 1
+edition 2
+
+task greet
+  take name Text
+  give Text
+  yield [call Text.join :parts [list «Hello, » name «!»]]
+/task
 
 task main
   give Text
-  let greeting «Hello from Nexilume.»
-  emit greeting
-  yield greeting
+  let message = [call greet :name «Nexilume»]
+  emit message
+  yield message
 /task
 
 launch main

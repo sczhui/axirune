@@ -1,6 +1,6 @@
 import { ArrowDown, ArrowRight, CircleDot, FlaskConical, Layers3, ShieldCheck } from 'lucide-react'
 import { useState } from 'react'
-import { samples, type Locale } from '../content/site'
+import { runtimeLabels, samples, type Locale } from '../content/site'
 import { LanguageWorkbench } from './LanguageWorkbench'
 import { Link } from './Router'
 
@@ -19,18 +19,18 @@ export function PlaygroundPage({ locale }: { locale: Locale }) {
         </div>
         <div className="page-hero__copy">
           <span className="eyebrow">
-            <CircleDot size={12} /> BROWSER RUNTIME · NO SETUP
+            <CircleDot size={12} /> DETERMINISTIC BROWSER RUNTIME · NO MODEL
           </span>
-          <h1>{locale === 'zh' ? '直接改写意图，然后看它如何执行。' : 'Change the intent. Watch execution change with it.'}</h1>
+          <h1>{locale === 'zh' ? '写一个普通程序。立即编译并运行。' : 'Write an ordinary program. Compile and run it now.'}</h1>
           <p>
             {locale === 'zh'
-              ? '解析、格式化、编译并运行真实 Nexilume 源码。每一步都能展开为语法树、执行计划、权限清单和 trace。'
-              : 'Parse, format, compile, and run real Nexilume source. Every step opens into syntax, execution IR, authority, and trace.'}
+              ? '默认示例使用 shape、用户 task、算术、List.fold 与 Json.encode 完成发票汇总。整个运行不调用模型、工具或网络。'
+              : 'The default invoice uses shapes, user tasks, arithmetic, List.fold, and Json.encode. The entire run uses no model, tool, or network.'}
           </p>
         </div>
         <div className="page-hero__aside">
-          <strong>{locale === 'zh' ? '浏览器内运行' : 'RUNS IN BROWSER'}</strong>
-          <span>{locale === 'zh' ? '内置模拟工具 · 不发送源码' : 'MOCK TOOLS · SOURCE STAYS LOCAL'}</span>
+          <strong>{locale === 'zh' ? '确定性解释运行' : 'DETERMINISTIC INTERPRETER'}</strong>
+          <span>{locale === 'zh' ? '无模型 · 无网络 · 源码留在本地' : 'NO MODEL · NO NETWORK · SOURCE STAYS LOCAL'}</span>
           <ArrowDown size={18} />
         </div>
       </section>
@@ -55,6 +55,9 @@ export function PlaygroundPage({ locale }: { locale: Locale }) {
                 <div>
                   <strong>{sample.title[locale]}</strong>
                   <small>{sample.eyebrow}</small>
+                  <em className={`runtime-label runtime-label--${sample.runtime}`}>
+                    {runtimeLabels[sample.runtime][locale]}
+                  </em>
                 </div>
               </button>
             ))}
@@ -71,32 +74,32 @@ export function PlaygroundPage({ locale }: { locale: Locale }) {
         <div className="section-heading">
           <div>
             <span className="eyebrow">READ WHAT THE COMPILER READS</span>
-            <h2>{locale === 'zh' ? '不只看结果，也看边界。' : 'Inspect the boundary, not only the answer.'}</h2>
+            <h2>{locale === 'zh' ? '从值到结果，每一步都可检查。' : 'Every step from value to result is inspectable.'}</h2>
           </div>
           <p>
-            {locale === 'zh'
-              ? 'Agent 的“正确”不仅是输出看起来合理，还要证明每个 effect 都来自合法的权力。'
-              : 'An agent is not correct merely because its output looks plausible. Every effect must prove its authority.'}
+              {locale === 'zh'
+              ? '纯计算不需要 capability；只有选择 I/O 或 AI 时，权限清单才会出现对应 effect。'
+              : 'Pure computation needs no capability. Effects appear in the authority manifest only when the program chooses I/O or AI.'}
           </p>
         </div>
         <div className="playground-note-grid">
           <article>
             <FlaskConical size={20} />
             <span>01 / SOURCE</span>
-            <h3>{locale === 'zh' ? '改一个真实约束' : 'Change a real constraint'}</h3>
-            <p>{locale === 'zh' ? '删掉 capability、压缩预算，或更换失败出口；语言会告诉你哪条路径失去合法性。' : 'Remove a capability, shrink a budget, or change a failure route; the language shows which path stops being legal.'}</p>
+            <h3>{locale === 'zh' ? '改一个真实输入' : 'Change a real input'}</h3>
+            <p>{locale === 'zh' ? '修改商品数量、价格或折扣；确定性结果与 JSON 输出会同步变化。' : 'Change item quantity, price, or discount; the deterministic result and JSON output update together.'}</p>
           </article>
           <article>
             <Layers3 size={20} />
             <span>02 / IR</span>
             <h3>{locale === 'zh' ? '展开确定性计划' : 'Open the deterministic plan'}</h3>
-            <p>{locale === 'zh' ? '编译视图展示 frame、effect、依赖、预算与合并规则，不需要猜测运行时魔法。' : 'The compile view exposes frames, effects, dependencies, budgets, and merges—no runtime magic to guess.'}</p>
+            <p>{locale === 'zh' ? '编译视图展示 shape、task 调用、递归边、builtin 与 Outcome，不需要猜测运行时魔法。' : 'The compile view exposes shapes, task calls, recursion edges, builtins, and Outcome—no runtime magic to guess.'}</p>
           </article>
           <article>
             <ShieldCheck size={20} />
             <span>03 / TRACE</span>
-            <h3>{locale === 'zh' ? '验证实际发生的事' : 'Verify what actually happened'}</h3>
-            <p>{locale === 'zh' ? '权限决策、工具输入、模型输出与记忆写入构成同一条可回放证据链。' : 'Authority decisions, tool input, model output, and memory writes become one replayable evidence chain.'}</p>
+            <h3>{locale === 'zh' ? '验证实际计算过程' : 'Verify the actual computation'}</h3>
+            <p>{locale === 'zh' ? 'task 调用、fold 步骤、条件分支、emit 与最终值构成可回放的语义 trace。' : 'Task calls, fold steps, condition branches, emissions, and the final value form a replayable semantic trace.'}</p>
           </article>
         </div>
         <div className="inline-cta">
@@ -109,4 +112,3 @@ export function PlaygroundPage({ locale }: { locale: Locale }) {
     </>
   )
 }
-
