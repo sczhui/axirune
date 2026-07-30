@@ -1,0 +1,103 @@
+tests/toolchain/lsp.test.ts
+  s_25ab203f1b07d0::t_7dbd4b5a30c4fb 42
+src/ui/IdePage.tsx
+  s_25ab203f1b07d0::t_4b6c72fc0349a3 61,230
+package.json
+  s_25ab203f1b07d0::t_7dbd4b5a30c4fb 3
+  s_25ab203f1b07d0::t_02d838d28ee515 36
+src/ui/HomePage.tsx
+  s_25ab203f1b07d0::t_0662b5d0715cff 276-281,283-284,286-287
+  s_25ab203f1b07d0::t_4b6c72fc0349a3 29
+src/language/builtins.ts
+  s_25ab203f1b07d0::t_0339f2b2e6ac72 151-159,221-228
+src/ui/BenchmarksPage.tsx
+  s_25ab203f1b07d0::t_4b6c72fc0349a3 191
+src/ui/LedgerShowcasePage.tsx
+  s_25ab203f1b07d0::t_98281a609596b5 429,927
+  s_25ab203f1b07d0::t_0609e8733194ec 1-428,430-440,450,452-916,920-926,928-969
+  s_25ab203f1b07d0::t_6608dfc555656e 441-449,451,917-919
+src/language/metadata.ts
+  s_25ab203f1b07d0::t_7dbd4b5a30c4fb 2
+apps/axiledger/sample-input.json
+  s_25ab203f1b07d0::t_0339f2b2e6ac72 1-74
+tests/toolchain/benchmark.test.ts
+  s_25ab203f1b07d0::t_7dbd4b5a30c4fb 30
+src/content/ledgerData.ts
+  s_25ab203f1b07d0::t_0609e8733194ec 1-114
+tests/toolchain/ledger-showcase.test.ts
+  s_25ab203f1b07d0::t_dba53b6fe24c42 1-49,57-257
+  s_25ab203f1b07d0::t_7f3e1e55ecc393 50-56
+CHANGELOG.md
+  s_25ab203f1b07d0::t_7dbd4b5a30c4fb 3-13
+tests/language/axiledger.test.ts
+  s_25ab203f1b07d0::t_be28d067e71b8e 1-68,75-80,82-88,90-97,99,101-133
+  s_25ab203f1b07d0::t_c708e4bbeace9a 69-74,81,89,98,100
+index.html
+  s_25ab203f1b07d0::t_e33049768751fb 7,19
+src/ui/languageBridge.ts
+  s_25ab203f1b07d0::t_745f4f90e14739 234-237,262-294
+packages/vscode-extension/package.json
+  s_25ab203f1b07d0::t_7dbd4b5a30c4fb 5
+src/ui/Router.tsx
+  s_25ab203f1b07d0::t_ede375e81fb47a 9,19
+docs/SPEC.md
+  s_25ab203f1b07d0::t_7dbd4b5a30c4fb 5
+src/ui/DownloadPage.tsx
+  s_25ab203f1b07d0::t_4b6c72fc0349a3 19-23,47,56,68,100,102,121,123,142,144,219-220
+axirune.pack
+  s_25ab203f1b07d0::t_7dbd4b5a30c4fb 2
+scripts/stage-downloads.mjs
+  s_25ab203f1b07d0::t_02d838d28ee515 58
+src/content/site.ts
+  s_25ab203f1b07d0::t_4b6c72fc0349a3 507
+tests/language/kernel-0.3.test.ts
+  s_25ab203f1b07d0::t_7dbd4b5a30c4fb 51
+README.md
+  s_25ab203f1b07d0::t_98281a609596b5 26-28,85-86,89-91,161
+docs/LEDGER_SHOWCASE.md
+  s_25ab203f1b07d0::t_69b64bd75e9f28 1-116
+src/ui/ledger-showcase.css
+  s_25ab203f1b07d0::t_b7552a0e10c064 5-6
+  s_25ab203f1b07d0::t_ade818087d2cc0 530,638,1181,1244
+  s_25ab203f1b07d0::t_9673348296e645 1-4,7,9-521,523-529,531-534,540-637,639-1180,1182-1243,1245-1390
+  s_25ab203f1b07d0::t_6e1d570cdb3d6b 522
+  s_25ab203f1b07d0::t_0b116063749a8a 535-539
+  s_25ab203f1b07d0::t_c798c13966f736 8
+tests/language/builtins.test.ts
+  s_25ab203f1b07d0::t_be28d067e71b8e 35,37,110-114,128-133
+packages/vscode-extension/extension.cjs
+  s_25ab203f1b07d0::t_7dbd4b5a30c4fb 195
+packages/vscode-extension/syntaxes/axirune.tmLanguage.json
+  s_25ab203f1b07d0::t_018e4562559f3b 75
+apps/axiledger/main.axi
+  s_25ab203f1b07d0::t_c708e4bbeace9a 138,146,148,150,152-156
+  s_25ab203f1b07d0::t_0339f2b2e6ac72 1-20,26-40,51-52,66-76,134-137,139-140,145,147,149,151,157-158,166,168-197
+  s_25ab203f1b07d0::t_c7f4af40d6912a 21-25,41-50,53-65,77-133,141-144,159-165,167
+src/ui/Shell.tsx
+  s_25ab203f1b07d0::t_54a3a448e31a13 99,115,121-122
+  s_25ab203f1b07d0::t_ede375e81fb47a 51-58,108
+src/App.tsx
+  s_25ab203f1b07d0::t_54a3a448e31a13 22
+  s_25ab203f1b07d0::t_ede375e81fb47a 9,20,53
+apps/axiledger/expected-output.json
+  s_25ab203f1b07d0::t_0339f2b2e6ac72 1-18
+apps/axiledger/README.md
+  s_25ab203f1b07d0::t_c708e4bbeace9a 24
+  s_25ab203f1b07d0::t_0339f2b2e6ac72 1-23,25-28
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "3603db6e9b1a33bcaee33d4bb01495e63f2e4324",
+  "prompts": {},
+  "sessions": {
+    "s_25ab203f1b07d0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019fa44a-76f2-7673-90ad-3fd964bf68ef",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "sczhui <3062629+sczhui@users.noreply.github.com>"
+    }
+  }
+}
