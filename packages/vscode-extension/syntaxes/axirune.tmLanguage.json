@@ -72,7 +72,7 @@
       "patterns": [
         {
           "name": "support.function.builtin.axirune",
-          "match": "\\b(?:Core\\.(?:if|coalesce|type)|Number\\.(?:add|subtract|multiply|divide|remainder|power|abs|min|max|floor|ceil|round|equal|notEqual|less|lessOrEqual|greater|greaterOrEqual)|Bool\\.(?:not|and|or)|Text\\.(?:join|concat|length|upper|lower|trim|contains|startsWith|endsWith|replace|slice|split)|List\\.(?:length|at|append|prepend|concat|slice|contains|reverse|range|map|filter|fold)|Record\\.(?:get|put|has|keys|values|merge)|Json\\.(?:encode|decode)|Outcome\\.(?:ok|fail|isOk|value|fault)|File\\.(?:readText|writeText|exists|list)|Http\\.get)\\b"
+          "match": "\\b(?:Core\\.(?:if|coalesce|type)|Number\\.(?:add|subtract|multiply|divide|remainder|power|abs|min|max|floor|ceil|round|isInteger|equal|notEqual|less|lessOrEqual|greater|greaterOrEqual)|Bool\\.(?:not|and|or)|Text\\.(?:equal|join|concat|length|upper|lower|trim|contains|startsWith|endsWith|replace|slice|split)|List\\.(?:length|at|append|prepend|concat|slice|contains|reverse|range|map|filter|fold)|Record\\.(?:get|put|has|keys|values|merge)|Json\\.(?:encode|decode)|Outcome\\.(?:ok|fail|isOk|value|fault)|File\\.(?:readText|writeText|exists|list)|Http\\.get)\\b"
         }
       ]
     },

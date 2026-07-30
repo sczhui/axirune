@@ -55,6 +55,7 @@ const sourceEntries = [
   'src',
   'tests',
   'benchmarks',
+  'apps',
   'docs',
   'examples',
   'packages',

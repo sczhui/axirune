@@ -1,8 +1,8 @@
 {
   "schema": "axirune.lock/1",
   "package": "axirune.reference",
-  "version": "0.3.0",
-  "compiler": "axirune@0.3.0",
+  "version": "0.3.1",
+  "compiler": "axirune@0.3.1",
   "protocols": {
     "mcp": "2025-06-18"
   },

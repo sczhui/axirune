@@ -1,5 +1,5 @@
 export const LANGUAGE_NAME = "Axirune";
-export const LANGUAGE_VERSION = "0.3.0";
+export const LANGUAGE_VERSION = "0.3.1";
 export const LANGUAGE_SLUG = "axirune";
 export const LANGUAGE_EXTENSION = ".axi";
 export const LEGACY_LANGUAGE_EXTENSIONS = [".nxl"] as const;

@@ -504,7 +504,7 @@ axirune run examples/word-frequency.axi --allow-read .`,
   },
 ]
 
-export const quickStart = `npm install -g https://axirune.velhu.com/downloads/axirune-language-0.3.0.tgz
+export const quickStart = `npm install -g https://axirune.velhu.com/downloads/axirune-language-0.3.1.tgz
 axirune check examples/invoice-total.axi
 axirune run examples/invoice-total.axi`
 

@@ -231,14 +231,11 @@ const demoTools = {
   'File.readText': async () => 'Axirune makes intent axiomatic axirune keeps effects explicit',
 }
 
-export async function runProgram(source: string): Promise<RunView> {
+async function runProgramWithOptions(
+  source: string,
+  options: UnknownRecord,
+): Promise<RunView> {
   try {
-    const options = {
-      capabilities: ['host.fs.read'],
-      tools: demoTools,
-      sandbox: { maxSteps: 100 },
-      mockTools: true,
-    }
     const raw = await Promise.resolve((coreRunSource as unknown as CoreCall)(source, options))
     const record = isRecord(raw) ? raw : {}
     const output = normalizeOutput(record.output ?? record.emissions)
@@ -260,6 +257,41 @@ export async function runProgram(source: string): Promise<RunView> {
       raw: null,
     }
   }
+}
+
+export async function runProgram(source: string): Promise<RunView> {
+  return runProgramWithOptions(source, {
+    capabilities: ['host.fs.read'],
+    tools: demoTools,
+    sandbox: { maxSteps: 10_000 },
+    mockTools: true,
+  })
+}
+
+/**
+ * Execute a pure Axirune application with explicit browser-provided input.
+ * The web host supplies data, but receives no filesystem, network, tool, MCP,
+ * or model authority.
+ */
+export async function runProgramWithInput(
+  source: string,
+  input: Readonly<Record<string, unknown>>,
+): Promise<RunView> {
+  return runProgramWithOptions(source, {
+    input,
+    capabilities: [],
+    tools: {},
+    sandbox: {
+      maxSteps: 100_000,
+      maxToolCalls: 0,
+      maxLaunches: 32,
+      maxFrameDepth: 32,
+      maxTraceEvents: 10_000,
+      maxCollectionItems: 20_000,
+      timeoutMs: 5_000,
+    },
+    mockTools: false,
+  })
 }
 
 export function serializeInspector(value: unknown): string {

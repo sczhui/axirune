@@ -1,6 +1,6 @@
 {
   "name": "axirune-language",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "private": true,
   "type": "module",
   "description": "A deterministic general-purpose language with optional typed AI capabilities.",
@@ -33,6 +33,7 @@
     "dist-toolchain/src/cli",
     "dist-toolchain/src/lsp",
     "dist-toolchain/benchmarks",
+    "apps",
     "docs",
     "examples",
     "axirune.pack",

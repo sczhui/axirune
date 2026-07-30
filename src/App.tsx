@@ -6,6 +6,7 @@ import { DownloadPage } from './ui/DownloadPage'
 import { ExamplesPage } from './ui/ExamplesPage'
 import { HomePage } from './ui/HomePage'
 import { IdePage } from './ui/IdePage'
+import { LedgerShowcasePage } from './ui/LedgerShowcasePage'
 import { PlaygroundPage } from './ui/PlaygroundPage'
 import { useRoute } from './ui/Router'
 import { PageFrame } from './ui/Shell'
@@ -16,8 +17,9 @@ const titles = {
   '/ide': 'Online IDE — Axirune',
   '/docs': 'Language Documentation — Axirune',
   '/examples': 'Example Programs — Axirune',
+  '/showcase/ledger': 'AxiLedger — Built with Axirune',
   '/benchmarks': 'Benchmarks — Axirune',
-  '/download': 'Download Axirune 0.3.0',
+  '/download': 'Download Axirune 0.3.1',
 } as const
 
 function initialLocale(): Locale {
@@ -48,6 +50,7 @@ export default function App() {
       {route === '/ide' ? <IdePage locale={locale} /> : null}
       {route === '/docs' ? <DocsPage locale={locale} /> : null}
       {route === '/examples' ? <ExamplesPage locale={locale} /> : null}
+      {route === '/showcase/ledger' ? <LedgerShowcasePage locale={locale} /> : null}
       {route === '/benchmarks' ? <BenchmarksPage locale={locale} /> : null}
       {route === '/download' ? <DownloadPage locale={locale} /> : null}
     </PageFrame>

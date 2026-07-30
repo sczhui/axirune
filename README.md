@@ -23,6 +23,9 @@ This repository includes:
   `Outcome`;
 - a browser Playground and multi-panel IDE using the same compiler and
   interpreter as the CLI;
+- [AxiLedger](https://axirune.velhu.com/showcase/ledger), a complete browser
+  application whose validation and financial aggregation run from checked
+  Axirune source with no model or network access;
 - a Node.js CLI, JSON-RPC Language Server, and self-contained VS Code extension;
 - deterministic examples for recursion, collection processing, invoices,
   errors, and command-line I/O, plus separately labelled optional AI/MCP
@@ -79,10 +82,13 @@ block syntax. Calls use named arguments. A task may call another task in an
 expression, including itself recursively. Pure builtins never require
 capabilities.
 
-Read the [language tour](docs/LANGUAGE_TOUR.md), [0.3
+Run the [AxiLedger web showcase](https://axirune.velhu.com/showcase/ledger), or
+read the [language tour](docs/LANGUAGE_TOUR.md), [0.3
 specification](docs/SPEC.md), [design rationale](docs/DESIGN.md), [security
 model](docs/SECURITY.md), [toolchain guide](docs/TOOLCHAIN.md), and
-[implementation architecture](docs/ARCHITECTURE.md).
+[implementation architecture](docs/ARCHITECTURE.md). The
+[AxiLedger application guide](docs/LEDGER_SHOWCASE.md) documents its input,
+output, authority, determinism, and scale acceptance tests.
 
 ## Programming model
 
@@ -152,6 +158,7 @@ src/cli/                   command-line compiler and runner
 src/lsp/                   stdio Language Server
 src/ui/                    website, Playground, and online IDE
 packages/vscode-extension/ editor integration and grammar
+apps/                      complete applications written in Axirune
 examples/                  deterministic and optional-effect programs
 benchmarks/                measured parser/compiler/runtime suite
 docs/                      specification and guides

@@ -1,0 +1,18 @@
+{
+  "schema": "axirune-ledger-report/1",
+  "currency": "USD",
+  "transaction_count": 10,
+  "valid_count": 5,
+  "invalid_count": 5,
+  "income_cents": 350000,
+  "expense_cents": 128200,
+  "net_cents": 221800,
+  "budget_cents": 125000,
+  "remaining_cents": -3200,
+  "over_budget": true,
+  "categories": {
+    "housing": 120000,
+    "food": 6000,
+    "transport": 2200
+  }
+}

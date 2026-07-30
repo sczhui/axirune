@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.3.1 — AxiLedger
+
+- Ships AxiLedger, a browser application whose validation, aggregation,
+  budgeting, and category totals execute from checked Axirune source.
+- Adds pure `Text.equal` and `Number.isInteger` builtins for deterministic
+  application validation.
+- Adds explicit browser input execution with no model, network, tool, MCP, or
+  external capability authority.
+- Includes an interactive showcase, semantic audit trace, source and report
+  inspectors, CLI acceptance tests, and 1,000/10,000-record runtime checks.
+
 ## 0.3.0 — Axirune
 
 - Renames the language from **Nexilume** to **Axirune**, from *axiom* + *rune*:

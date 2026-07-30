@@ -6,6 +6,7 @@ export type AppRoute =
   | '/ide'
   | '/docs'
   | '/examples'
+  | '/showcase/ledger'
   | '/benchmarks'
   | '/download'
 
@@ -15,6 +16,7 @@ const routes = new Set<AppRoute>([
   '/ide',
   '/docs',
   '/examples',
+  '/showcase/ledger',
   '/benchmarks',
   '/download',
 ])
@@ -87,4 +89,3 @@ export function Link({ to, children, className, ariaLabel, onNavigate }: LinkPro
     </a>
   )
 }
-

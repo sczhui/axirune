@@ -48,6 +48,14 @@ export function Header({ route, locale, onLocaleChange }: HeaderProps) {
               <span>{item.label[locale]}</span>
             </Link>
           ))}
+          <Link
+            to="/showcase/ledger"
+            onNavigate={() => setOpen(false)}
+            className={route === '/showcase/ledger' ? 'is-active' : ''}
+          >
+            <span className="primary-nav__index">07</span>
+            <span>{locale === 'zh' ? '案例' : 'Showcase'}</span>
+          </Link>
           <div className="primary-nav__mobile-foot">
             <p>Make intent axiomatic.</p>
             <p>Bound every effect.</p>
@@ -88,7 +96,7 @@ export function Footer({ locale }: { locale: Locale }) {
   return (
     <footer className="site-footer">
       <div className="site-footer__statement">
-        <span className="eyebrow">AXIRUNE / 0.3.0</span>
+        <span className="eyebrow">AXIRUNE / 0.3.1</span>
         <p>Make intent axiomatic.</p>
         <p>Bound every effect.</p>
       </div>
@@ -97,20 +105,21 @@ export function Footer({ locale }: { locale: Locale }) {
           <span className="site-footer__label">{locale === 'zh' ? '探索' : 'EXPLORE'}</span>
           <Link to="/playground">Playground</Link>
           <Link to="/ide">Online IDE</Link>
+          <Link to="/showcase/ledger">AxiLedger Showcase</Link>
           <Link to="/examples">Examples</Link>
         </div>
         <div>
           <span className="site-footer__label">{locale === 'zh' ? '理解' : 'LEARN'}</span>
           <Link to="/docs">Language docs</Link>
           <Link to="/benchmarks">Benchmarks</Link>
-          <a href="/downloads/axirune-source-0.3.0.tar.gz">
+          <a href="/downloads/axirune-source-0.3.1.tar.gz">
             Source archive <ArrowUpRight size={13} />
           </a>
         </div>
         <div>
           <span className="site-footer__label">{locale === 'zh' ? '构建' : 'BUILD'}</span>
-          <a href="/downloads/axirune-language-0.3.0.tgz">Compiler + LSP</a>
-          <a href="/downloads/axirune-0.3.0.vsix">VS Code extension</a>
+          <a href="/downloads/axirune-language-0.3.1.tgz">Compiler + LSP</a>
+          <a href="/downloads/axirune-0.3.1.vsix">VS Code extension</a>
           <a href="https://github.com/sczhui/axirune" target="_blank" rel="noreferrer">
             GitHub source <ArrowUpRight size={13} />
           </a>

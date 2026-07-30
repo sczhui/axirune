@@ -148,6 +148,15 @@ const definitions: readonly BuiltinDefinition[] = [
   numberComparison("Number.lessOrEqual", (left, right) => left <= right),
   numberComparison("Number.greater", (left, right) => left > right),
   numberComparison("Number.greaterOrEqual", (left, right) => left >= right),
+  define(
+    "Number.isInteger",
+    [required("value", "Number")],
+    "Bool",
+    async (call) =>
+      Number.isSafeInteger(
+        expectNumber(await argument(call, "value"), "Number.isInteger", "value"),
+      ),
+  ),
 
   define(
     "Bool.not",
@@ -209,6 +218,14 @@ const definitions: readonly BuiltinDefinition[] = [
   textPredicate("Text.contains", (text, search) => text.includes(search)),
   textPredicate("Text.startsWith", (text, search) => text.startsWith(search)),
   textPredicate("Text.endsWith", (text, search) => text.endsWith(search)),
+  define(
+    "Text.equal",
+    [required("left", "Text"), required("right", "Text")],
+    "Bool",
+    async (call) =>
+      expectText(await argument(call, "left"), "Text.equal", "left") ===
+      expectText(await argument(call, "right"), "Text.equal", "right"),
+  ),
   define(
     "Text.replace",
     [

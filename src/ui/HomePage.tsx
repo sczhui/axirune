@@ -26,7 +26,7 @@ export function HomePage({ locale }: { locale: Locale }) {
         <div className="hero__copy">
           <div className="hero__meta">
             <span className="live-mark">
-              <i /> GENERAL-PURPOSE LANGUAGE · 0.3.0
+              <i /> GENERAL-PURPOSE LANGUAGE · 0.3.1
             </span>
             <span>DETERMINISTIC BY DEFAULT</span>
           </div>
@@ -273,14 +273,18 @@ export function HomePage({ locale }: { locale: Locale }) {
       <section className="home-cta">
         <div className="home-cta__grid" aria-hidden="true" />
         <div>
-          <span className="eyebrow">WRITE A VALUE. CALL A TASK. RUN DETERMINISTICALLY.</span>
-          <h2>{locale === 'zh' ? '从一个不需要 AI 的完整程序开始。' : 'Start with a complete program that needs no AI.'}</h2>
+          <span className="eyebrow">REAL APPLICATION · AXIRUNE SOURCE · ZERO MODEL CALLS</span>
+          <h2>
+            {locale === 'zh'
+              ? '亲手运行一个业务逻辑写在 Axirune 里的网页应用。'
+              : 'Run a web application whose business logic is written in Axirune.'}
+          </h2>
           <div className="home-cta__actions">
-            <Link to="/playground" className="button button--ink">
-              {locale === 'zh' ? '打开 Playground' : 'Open Playground'} <ArrowRight size={16} />
+            <Link to="/showcase/ledger" className="button button--ink">
+              {locale === 'zh' ? '打开 AxiLedger' : 'Open AxiLedger'} <ArrowRight size={16} />
             </Link>
-            <Link to="/download" className="button button--ghost">
-              {locale === 'zh' ? '安装工具链' : 'Install toolchain'}
+            <Link to="/playground" className="button button--ghost">
+              {locale === 'zh' ? '打开 Playground' : 'Open Playground'}
             </Link>
           </div>
         </div>

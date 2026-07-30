@@ -32,7 +32,9 @@ describe("Axirune 0.3 pure builtin registry", () => {
       expect.arrayContaining([
         "Core.if",
         "Number.power",
+        "Number.isInteger",
         "Bool.and",
+        "Text.equal",
         "Text.replace",
         "List.fold",
         "Record.merge",
@@ -105,6 +107,11 @@ describe("Axirune 0.3 pure builtin registry", () => {
     await expect(callBuiltin("Number.lessOrEqual", { left: 3, right: 3 })).resolves.toBe(true);
     await expect(callBuiltin("Number.greater", { left: 4, right: 3 })).resolves.toBe(true);
     await expect(callBuiltin("Number.greaterOrEqual", { left: 4, right: 4 })).resolves.toBe(true);
+    await expect(callBuiltin("Number.isInteger", { value: 42 })).resolves.toBe(true);
+    await expect(callBuiltin("Number.isInteger", { value: 1.5 })).resolves.toBe(false);
+    await expect(
+      callBuiltin("Number.isInteger", { value: Number.MAX_SAFE_INTEGER + 1 }),
+    ).resolves.toBe(false);
   });
 
   it("covers text transformation and inspection", async () => {
@@ -118,6 +125,12 @@ describe("Axirune 0.3 pure builtin registry", () => {
     await expect(callBuiltin("Text.upper", { text: "agent" })).resolves.toBe("AGENT");
     await expect(callBuiltin("Text.lower", { text: "AGENT" })).resolves.toBe("agent");
     await expect(callBuiltin("Text.trim", { text: "  agent  " })).resolves.toBe("agent");
+    await expect(callBuiltin("Text.equal", { left: "expense", right: "expense" })).resolves.toBe(
+      true,
+    );
+    await expect(callBuiltin("Text.equal", { left: "expense", right: "income" })).resolves.toBe(
+      false,
+    );
     await expect(
       callBuiltin("Text.contains", { text: "agent kernel", search: "kernel" }),
     ).resolves.toBe(true);

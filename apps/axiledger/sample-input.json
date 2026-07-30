@@ -1,0 +1,74 @@
+{
+  "transactions": [
+    {
+      "id": "txn-001",
+      "description": "Monthly salary",
+      "kind": "income",
+      "category": "salary",
+      "amount_cents": 350000
+    },
+    {
+      "id": "txn-002",
+      "description": "Apartment rent",
+      "kind": "expense",
+      "category": "housing",
+      "amount_cents": 120000
+    },
+    {
+      "id": "txn-003",
+      "description": "Groceries",
+      "kind": "expense",
+      "category": "food",
+      "amount_cents": 4350
+    },
+    {
+      "id": "txn-004",
+      "description": "Metro card",
+      "kind": "expense",
+      "category": "transport",
+      "amount_cents": 2200
+    },
+    {
+      "id": "txn-005",
+      "description": "Lunch",
+      "kind": "expense",
+      "category": "food",
+      "amount_cents": 1650
+    },
+    {
+      "id": "txn-006",
+      "description": "Missing category",
+      "kind": "expense",
+      "amount_cents": 500
+    },
+    {
+      "id": "txn-007",
+      "description": "Zero amount",
+      "kind": "expense",
+      "category": "other",
+      "amount_cents": 0
+    },
+    {
+      "id": "txn-008",
+      "description": "Unsupported transfer",
+      "kind": "transfer",
+      "category": "internal",
+      "amount_cents": 8000
+    },
+    {
+      "id": "txn-009",
+      "description": "Fractional cents",
+      "kind": "expense",
+      "category": "other",
+      "amount_cents": 1099.5
+    },
+    {
+      "id": "txn-010",
+      "description": "Text amount",
+      "kind": "expense",
+      "category": "other",
+      "amount_cents": "2500"
+    }
+  ],
+  "budget_cents": 125000
+}
