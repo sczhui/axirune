@@ -2,7 +2,7 @@ import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { runCli } from "../../src/cli/nexilume.js";
+import { runCli } from "../../src/cli/axirune.js";
 
 const SOURCE = `space cli_test
 
@@ -16,12 +16,12 @@ task main
 launch main
 `;
 
-describe("Nexilume CLI", () => {
+describe("Axirune CLI", () => {
   let directory = "";
 
   beforeEach(async () => {
-    directory = await mkdtemp(join(tmpdir(), "nexilume-cli-"));
-    await writeFile(join(directory, "hello.nxl"), SOURCE, "utf8");
+    directory = await mkdtemp(join(tmpdir(), "axirune-cli-"));
+    await writeFile(join(directory, "hello.axi"), SOURCE, "utf8");
   });
 
   afterEach(async () => {
@@ -31,13 +31,13 @@ describe("Nexilume CLI", () => {
   it("checks and runs source with clean JSON output", async () => {
     const checked = capture();
     expect(
-      await runCli(["check", "hello.nxl", "--json"], {
+      await runCli(["check", "hello.axi", "--json"], {
         cwd: directory,
         ...checked.environment,
       }),
     ).toBe(0);
     expect(JSON.parse(checked.stdout())).toMatchObject({
-      schema: "nexilume-cli/check@1",
+      schema: "axirune-cli/check@1",
       ok: true,
       diagnostics: [],
     });
@@ -45,13 +45,13 @@ describe("Nexilume CLI", () => {
 
     const ran = capture();
     expect(
-      await runCli(["run", "hello.nxl", "--json"], {
+      await runCli(["run", "hello.axi", "--json"], {
         cwd: directory,
         ...ran.environment,
       }),
     ).toBe(0);
     expect(JSON.parse(ran.stdout())).toMatchObject({
-      schema: "nexilume-cli/run@1",
+      schema: "axirune-cli/run@1",
       ok: true,
       status: "completed",
       emissions: ["Hello from CLI."],
@@ -59,7 +59,7 @@ describe("Nexilume CLI", () => {
   });
 
   it("formats idempotently and supports --check", async () => {
-    const sourcePath = join(directory, "hello.nxl");
+    const sourcePath = join(directory, "hello.axi");
     await writeFile(
       sourcePath,
       "space cli_test\ntask main\nemit «hello»\nyield «done»\n/task\nlaunch main",
@@ -67,7 +67,7 @@ describe("Nexilume CLI", () => {
     );
     const checkBefore = capture();
     expect(
-      await runCli(["fmt", "hello.nxl", "--check"], {
+      await runCli(["fmt", "hello.axi", "--check"], {
         cwd: directory,
         ...checkBefore.environment,
       }),
@@ -75,7 +75,7 @@ describe("Nexilume CLI", () => {
 
     const write = capture();
     expect(
-      await runCli(["fmt", "hello.nxl", "--write"], {
+      await runCli(["fmt", "hello.axi", "--write"], {
         cwd: directory,
         ...write.environment,
       }),
@@ -86,7 +86,7 @@ describe("Nexilume CLI", () => {
 
     const checkAfter = capture();
     expect(
-      await runCli(["fmt", "hello.nxl", "--check"], {
+      await runCli(["fmt", "hello.axi", "--check"], {
         cwd: directory,
         ...checkAfter.environment,
       }),
@@ -97,17 +97,17 @@ describe("Nexilume CLI", () => {
     for (const command of ["ast", "ir", "manifest"] as const) {
       const output = capture();
       expect(
-        await runCli([command, "hello.nxl", "--json"], {
+        await runCli([command, "hello.axi", "--json"], {
           cwd: directory,
           ...output.environment,
         }),
       ).toBe(0);
-      expect(JSON.parse(output.stdout()).schema).toMatch(/^nexilume-/u);
+      expect(JSON.parse(output.stdout()).schema).toMatch(/^axirune-/u);
     }
 
     const build = capture();
     expect(
-      await runCli(["build", "hello.nxl", "--out", "artifacts", "--json"], {
+      await runCli(["build", "hello.axi", "--out", "artifacts", "--json"], {
         cwd: directory,
         ...build.environment,
       }),
@@ -122,12 +122,13 @@ describe("Nexilume CLI", () => {
       "manifest",
       "build",
     ]);
+    expect(result.artifacts.source).toMatch(/\.axi$/u);
     for (const path of Object.values(result.artifacts)) {
       expect((await readFile(path, "utf8")).length).toBeGreaterThan(0);
     }
   });
 
-  it("rejects non-Nexilume source extensions", async () => {
+  it("rejects non-Axirune source extensions", async () => {
     const output = capture();
     expect(
       await runCli(["check", "hello.txt", "--json"], {
@@ -136,8 +137,24 @@ describe("Nexilume CLI", () => {
       }),
     ).toBe(2);
     expect(JSON.parse(output.stdout())).toMatchObject({
-      schema: "nexilume-cli/error@1",
+      schema: "axirune-cli/error@1",
       ok: false,
+    });
+  });
+
+  it("accepts the legacy .nxl extension during the rename transition", async () => {
+    await writeFile(join(directory, "legacy.nxl"), SOURCE, "utf8");
+    const output = capture();
+    expect(
+      await runCli(["check", "legacy.nxl", "--json"], {
+        cwd: directory,
+        ...output.environment,
+      }),
+    ).toBe(0);
+    expect(JSON.parse(output.stdout())).toMatchObject({
+      schema: "axirune-cli/check@1",
+      source: "legacy.nxl",
+      ok: true,
     });
   });
 
@@ -145,7 +162,7 @@ describe("Nexilume CLI", () => {
     const output = capture();
     expect(
       await runCli(
-        ["bench", "hello.nxl", "--samples", "1", "--warmup", "0", "--json"],
+        ["bench", "hello.axi", "--samples", "1", "--warmup", "0", "--json"],
         {
           cwd: directory,
           ...output.environment,
@@ -156,7 +173,7 @@ describe("Nexilume CLI", () => {
       schema: string;
       cases: { name: string; timing: { samples: number } }[];
     };
-    expect(report.schema).toBe("nexilume-benchmark/1");
+    expect(report.schema).toBe("axirune-benchmark/1");
     expect(report.cases.map((entry) => entry.name)).toEqual([
       "parse",
       "compile",
@@ -167,7 +184,7 @@ describe("Nexilume CLI", () => {
 
   it("runs a pure task without any mock or LLM dependency", async () => {
     await writeFile(
-      join(directory, "pure.nxl"),
+      join(directory, "pure.axi"),
       `space pure
 task main
   give Text
@@ -179,7 +196,7 @@ launch main
     );
     const output = capture();
     expect(
-      await runCli(["run", "pure.nxl", "--json"], {
+      await runCli(["run", "pure.axi", "--json"], {
         cwd: directory,
         ...output.environment,
       }),
@@ -193,7 +210,7 @@ launch main
 
   it("passes a validated JSON object to main", async () => {
     await writeFile(
-      join(directory, "input.nxl"),
+      join(directory, "input.axi"),
       `space input
 task main
   take name Text
@@ -207,7 +224,7 @@ launch main
     const output = capture();
     expect(
       await runCli(
-        ["run", "input.nxl", "--input-json", "{\"name\":\"Nexilume 0.2\"}", "--json"],
+        ["run", "input.axi", "--input-json", "{\"name\":\"Axirune 0.3\"}", "--json"],
         {
           cwd: directory,
           ...output.environment,
@@ -216,12 +233,12 @@ launch main
     ).toBe(0);
     expect(JSON.parse(output.stdout())).toMatchObject({
       status: "completed",
-      value: "Nexilume 0.2",
+      value: "Axirune 0.3",
     });
 
     const invalid = capture();
     expect(
-      await runCli(["run", "input.nxl", "--input-json", "[]", "--json"], {
+      await runCli(["run", "input.axi", "--input-json", "[]", "--json"], {
         cwd: directory,
         ...invalid.environment,
       }),
@@ -235,7 +252,7 @@ launch main
     const input = join(data, "input.txt");
     await writeFile(input, "host-backed value", "utf8");
     await writeFile(
-      join(directory, "read.nxl"),
+      join(directory, "read.axi"),
       `space read
 task main
   give Text
@@ -248,7 +265,7 @@ launch main
 
     const denied = capture();
     expect(
-      await runCli(["run", "read.nxl", "--json"], {
+      await runCli(["run", "read.axi", "--json"], {
         cwd: directory,
         ...denied.environment,
       }),
@@ -260,7 +277,7 @@ launch main
 
     const allowed = capture();
     expect(
-      await runCli(["run", "read.nxl", "--allow-read", data, "--json"], {
+      await runCli(["run", "read.axi", "--allow-read", data, "--json"], {
         cwd: directory,
         ...allowed.environment,
       }),
@@ -277,7 +294,7 @@ launch main
     await Promise.all([mkdir(outputDirectory), mkdir(outsideDirectory)]);
     const deniedTarget = join(outsideDirectory, "denied.txt");
     await writeFile(
-      join(directory, "write.nxl"),
+      join(directory, "write.axi"),
       `space write
 task main
   give Text
@@ -290,7 +307,7 @@ launch main
     );
     const denied = capture();
     expect(
-      await runCli(["run", "write.nxl", "--allow-write", outputDirectory, "--json"], {
+      await runCli(["run", "write.axi", "--allow-write", outputDirectory, "--json"], {
         cwd: directory,
         ...denied.environment,
       }),
@@ -308,11 +325,11 @@ launch main
 
     const allowedTarget = join(outputDirectory, "result.txt");
     await writeFile(
-      join(directory, "write.nxl"),
+      join(directory, "write.axi"),
       `space write
 task main
   give Text
-  let receipt [call File.writeText :path «${allowedTarget}» :text «written by Nexilume»]
+  let receipt [call File.writeText :path «${allowedTarget}» :text «written by Axirune»]
   yield «done»
 /task
 launch main
@@ -321,15 +338,15 @@ launch main
     );
     const allowed = capture();
     expect(
-      await runCli(["run", "write.nxl", "--allow-write", outputDirectory, "--json"], {
+      await runCli(["run", "write.axi", "--allow-write", outputDirectory, "--json"], {
         cwd: directory,
         ...allowed.environment,
       }),
     ).toBe(0);
-    expect(await readFile(allowedTarget, "utf8")).toBe("written by Nexilume");
+    expect(await readFile(allowedTarget, "utf8")).toBe("written by Axirune");
 
     await writeFile(
-      join(directory, "unknown.nxl"),
+      join(directory, "unknown.axi"),
       `space unknown
 task main
   give Text
@@ -341,7 +358,7 @@ launch main
     );
     const unknown = capture();
     expect(
-      await runCli(["run", "unknown.nxl", "--json"], {
+      await runCli(["run", "unknown.axi", "--json"], {
         cwd: directory,
         ...unknown.environment,
       }),
@@ -354,7 +371,7 @@ launch main
 
   it("denies Http.get before any network request when no host is allowed", async () => {
     await writeFile(
-      join(directory, "network.nxl"),
+      join(directory, "network.axi"),
       `space network
 task main
   give Record
@@ -366,7 +383,7 @@ launch main
     );
     const output = capture();
     expect(
-      await runCli(["run", "network.nxl", "--json"], {
+      await runCli(["run", "network.axi", "--json"], {
         cwd: directory,
         ...output.environment,
       }),

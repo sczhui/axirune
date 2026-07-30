@@ -3,9 +3,9 @@ import { readdirSync } from 'node:fs'
 import path from 'node:path'
 
 const root = process.cwd()
-const cli = path.join(root, 'dist-toolchain', 'src', 'cli', 'nexilume.js')
+const cli = path.join(root, 'dist-toolchain', 'src', 'cli', 'axirune.js')
 const examples = readdirSync(path.join(root, 'examples'))
-  .filter((name) => name.endsWith('.nxl'))
+  .filter((name) => name.endsWith('.axi'))
   .sort()
 
 let failures = 0
@@ -22,4 +22,4 @@ if (failures > 0) {
   console.error(`${failures} example(s) failed validation.`)
   process.exit(1)
 }
-console.log(`${examples.length} Nexilume examples validated.`)
+console.log(`${examples.length} Axirune examples validated.`)

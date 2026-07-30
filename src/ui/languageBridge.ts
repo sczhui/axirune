@@ -228,7 +228,7 @@ export async function compileProgram(source: string): Promise<CompileView> {
 }
 
 const demoTools = {
-  'File.readText': async () => 'Nexilume makes intent explicit nexilume makes effects explicit',
+  'File.readText': async () => 'Axirune makes intent axiomatic axirune keeps effects explicit',
 }
 
 export async function runProgram(source: string): Promise<RunView> {

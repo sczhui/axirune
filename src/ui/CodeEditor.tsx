@@ -13,7 +13,7 @@ type CodeEditorProps = {
 export function CodeEditor({
   value,
   onChange,
-  label = 'Nexilume source editor',
+  label = 'Axirune source editor',
   readOnly = false,
   compact = false,
   minHeight,
@@ -57,11 +57,10 @@ export function CodeEditor({
   )
 }
 
-export function StaticCode({ code, label = 'Nexilume source code' }: { code: string; label?: string }) {
+export function StaticCode({ code, label = 'Axirune source code' }: { code: string; label?: string }) {
   return (
     <pre className="static-code" aria-label={label}>
       <code>{code}</code>
     </pre>
   )
 }
-

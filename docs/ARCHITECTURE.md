@@ -1,15 +1,15 @@
-# Nexilume 0.2 reference architecture
+# Axirune 0.3 reference architecture
 
-Nexilume has a deterministic general-purpose core and an optional effect
+Axirune has a deterministic general-purpose core and an optional effect
 boundary. The same strict TypeScript implementation runs in Node.js and in the
 browser.
 
 ```text
-Nexilume source (.nxl)
+Axirune source (.axi)
   → recoverable parser
   → semantic frames + diagnostics
   → task signatures + call graph + effect requirements
-  → checked Nexilume IR
+  → checked Axirune IR
   → fuel-bounded deterministic interpreter
   → values + emissions + semantic trace
                          │
@@ -74,7 +74,7 @@ src/ui/           website, Playground, and browser IDE
 
 The CLI and web surfaces import the same language package. Example source that
 runs in the Playground therefore passes through the same parser, compiler, IR,
-and interpreter used by `nexilume run`.
+and interpreter used by `axirune run`.
 
 ## Evaluation
 

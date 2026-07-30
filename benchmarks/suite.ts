@@ -42,7 +42,7 @@ export interface BenchmarkCaseResult {
 }
 
 export interface BenchmarkReport {
-  schema: "nexilume-benchmark/1";
+  schema: "axirune-benchmark/1";
   checksum: string;
   generatedAt: string;
   languageVersion: string;
@@ -120,7 +120,7 @@ export async function runBenchmarkSuite(
 
   const cpuList = cpus();
   return {
-    schema: "nexilume-benchmark/1",
+    schema: "axirune-benchmark/1",
     checksum: suiteChecksum(fixtures),
     generatedAt: new Date().toISOString(),
     languageVersion: LANGUAGE_VERSION,
@@ -189,7 +189,7 @@ export function formatBenchmarkMarkdown(report: BenchmarkReport): string {
     return `| ${entry.fixture.name} | ${entry.fixture.bytes} | ${entry.name} | ${formatNumber(timing.meanMs)} | ${formatNumber(timing.medianMs)} | ${formatNumber(timing.p95Ms)} | ${formatNumber(timing.operationsPerSecond)} |`;
   });
   return [
-    "# Nexilume benchmark",
+    "# Axirune benchmark",
     "",
     `Generated: ${report.generatedAt}`,
     "",

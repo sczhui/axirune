@@ -188,7 +188,7 @@ export function BenchmarksPage({ locale }: { locale: Locale }) {
           <div>
             <span className="eyebrow">
               {resultMode === 'release'
-                ? `RELEASE JSON / NEXILUME ${releaseReport?.languageVersion ?? '0.2.0'}`
+                ? `RELEASE JSON / AXIRUNE ${releaseReport?.languageVersion ?? '0.3.0'}`
                 : 'BROWSER LAB / REAL COMPILER CORE'}
             </span>
             <h2>{locale === 'zh' ? '编译器微基准' : 'Compiler microbenchmarks'}</h2>
@@ -281,7 +281,7 @@ export function BenchmarksPage({ locale }: { locale: Locale }) {
         <div className="cli-benchmark__actions">
           <code>
             <TerminalSquare size={17} />
-            nexilume bench
+            axirune bench
           </code>
           <a href="/benchmark-results.json" download>
             <Download size={15} />

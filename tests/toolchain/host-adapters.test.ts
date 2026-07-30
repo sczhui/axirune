@@ -28,7 +28,7 @@ describe("CLI host adapters", () => {
   let server: Server | undefined;
 
   beforeEach(async () => {
-    directory = await mkdtemp(join(tmpdir(), "nexilume-host-"));
+    directory = await mkdtemp(join(tmpdir(), "axirune-host-"));
     readable = join(directory, "readable");
     writable = join(directory, "writable");
     outside = join(directory, "outside");

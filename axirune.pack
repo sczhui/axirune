@@ -1,12 +1,12 @@
-package nexilume.reference
-  version «0.2.0»
+package axirune.reference
+  version «0.3.0»
   edition «deterministic-core»
-  source «examples/**/*.nxl»
+  source «examples/**/*.axi»
 
   expose task hello.main
   expose workflow workflow_recovery.investigate
 
-  require runtime «nexilume@0.2»
+  require runtime «axirune@0.3»
   authority manifest
   diagnostics canonical_json
 /package

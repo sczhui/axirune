@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { compileSource, runSource } from "../../src/language/index.js";
 
-describe("Nexilume 0.2 stable call diagnostics", () => {
+describe("Axirune 0.3 stable call diagnostics", () => {
   it("checks required and unknown builtin named arguments", () => {
     const result = compileSource(`edition 2
 task main
@@ -71,7 +71,7 @@ launch main
   it("does not mock unknown tools unless explicitly requested", async () => {
     const source = `edition 2
 task main
-  yield [call external.lookup :query «nexilume»]
+  yield [call external.lookup :query «axirune»]
 /task
 launch main
 `;

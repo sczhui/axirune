@@ -25,43 +25,43 @@ type ProjectFile = {
 
 const projectFiles: ProjectFile[] = [
   {
-    path: 'src/main.nxl',
+    path: 'src/main.axi',
     kind: 'source',
     code: samples.find((sample) => sample.slug === 'invoice-total')?.code ?? '',
   },
   {
-    path: 'src/hello.nxl',
+    path: 'src/hello.axi',
     kind: 'source',
     code: samples.find((sample) => sample.slug === 'hello')?.code ?? '',
   },
   {
-    path: 'src/factorial.nxl',
+    path: 'src/factorial.axi',
     kind: 'source',
     code: samples.find((sample) => sample.slug === 'factorial')?.code ?? '',
   },
   {
-    path: 'src/outcome.nxl',
+    path: 'src/outcome.axi',
     kind: 'source',
     code: samples.find((sample) => sample.slug === 'outcome-division')?.code ?? '',
   },
   {
-    path: 'src/word-frequency.nxl',
+    path: 'src/word-frequency.axi',
     kind: 'policy',
     code: samples.find((sample) => sample.slug === 'word-frequency')?.code ?? '',
   },
   {
-    path: 'src/optional-ai.nxl',
+    path: 'src/optional-ai.axi',
     kind: 'prompt',
     code: samples.find((sample) => sample.slug === 'optional-ai')?.code ?? '',
   },
   {
-    path: 'nexilume.pack',
+    path: 'axirune.pack',
     kind: 'manifest',
     code: `package general-programs
-  version «0.2.0»
+  version «0.3.0»
   edition «2»
-  source «src/**/*.nxl»
-  entry «src/main.nxl»
+  source «src/**/*.axi»
+  entry «src/main.axi»
   runtime «web»
   authority «manifest»
   diagnostics «canonical_json»
@@ -90,7 +90,7 @@ export function IdePage({ locale }: { locale: Locale }) {
     const url = URL.createObjectURL(blob)
     const anchor = document.createElement('a')
     anchor.href = url
-    anchor.download = activeFile.path.split('/').at(-1) ?? 'main.nxl'
+    anchor.download = activeFile.path.split('/').at(-1) ?? 'main.axi'
     anchor.click()
     URL.revokeObjectURL(url)
   }
@@ -100,7 +100,7 @@ export function IdePage({ locale }: { locale: Locale }) {
       <section className="ide-intro">
         <div>
           <span className="eyebrow">
-            <CircleDot size={12} /> NEXILUME WORKSPACE / WEB
+            <CircleDot size={12} /> AXIRUNE WORKSPACE / WEB
           </span>
           <h1>{locale === 'zh' ? '确定性应用，也值得一间 AI 原生工作室。' : 'Deterministic applications deserve an AI-native studio.'}</h1>
         </div>
@@ -111,14 +111,14 @@ export function IdePage({ locale }: { locale: Locale }) {
         </p>
       </section>
 
-      <section className="ide-window" aria-label="Nexilume online IDE">
+      <section className="ide-window" aria-label="Axirune online IDE">
         <div className="ide-titlebar">
           <div className="ide-titlebar__brand">
             <span className="ide-mark">
               <i />
               <i />
             </span>
-            <strong>NEXILUME / STUDIO</strong>
+            <strong>AXIRUNE / STUDIO</strong>
           </div>
           <div className="ide-titlebar__project">
             <PackageCheck size={14} />
@@ -186,15 +186,15 @@ export function IdePage({ locale }: { locale: Locale }) {
                   ))}
                 <button
                   type="button"
-                  className={activeFile.path === 'nexilume.pack' ? 'is-active file-tree__root-file' : 'file-tree__root-file'}
-                  onClick={() => setActivePath('nexilume.pack')}
+                  className={activeFile.path === 'axirune.pack' ? 'is-active file-tree__root-file' : 'file-tree__root-file'}
+                  onClick={() => setActivePath('axirune.pack')}
                 >
                   <Box size={14} />
-                  <span>nexilume.pack</span>
+                  <span>axirune.pack</span>
                 </button>
                 <div className="file-tree__collapsed">
                   <Folder size={14} />
-                  <span>.nexilume</span>
+                  <span>.axirune</span>
                   <small>generated</small>
                 </div>
               </div>
@@ -227,12 +227,12 @@ export function IdePage({ locale }: { locale: Locale }) {
             <span>
               <TerminalSquare size={13} /> WEB RUNTIME
             </span>
-            <span>nexilume 0.2.0</span>
+            <span>axirune 0.3.0</span>
           </div>
           <div>
             <span>UTF-8</span>
             <span>LF</span>
-            <span>Nexilume</span>
+            <span>Axirune</span>
             <span className="ide-statusbar__safe">
               <Shield size={13} />{' '}
               {activeFile.kind === 'prompt'

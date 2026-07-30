@@ -6,9 +6,9 @@ import {
 
 describe("CLI arguments", () => {
   it("accepts global options before and after the command", () => {
-    expect(parseArguments(["--json", "build", "hello.nxl", "--out", "artifacts"])).toMatchObject({
+    expect(parseArguments(["--json", "build", "hello.axi", "--out", "artifacts"])).toMatchObject({
       command: "build",
-      input: "hello.nxl",
+      input: "hello.axi",
       json: true,
       out: "artifacts",
     });
@@ -23,7 +23,7 @@ describe("CLI arguments", () => {
   });
 
   it("rejects conflicting formatter modes", () => {
-    expect(() => parseArguments(["fmt", "hello.nxl", "--write", "--check"])).toThrow(
+    expect(() => parseArguments(["fmt", "hello.axi", "--write", "--check"])).toThrow(
       UsageError,
     );
   });
@@ -32,7 +32,7 @@ describe("CLI arguments", () => {
     expect(
       parseArguments([
         "run",
-        "app.nxl",
+        "app.axi",
         "--allow-read",
         "data",
         "--allow-read=fixtures",

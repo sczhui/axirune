@@ -5,17 +5,17 @@ import { BUILTIN_NAMES } from "../../src/language/index.js";
 
 const extensionRoot = resolve("packages/vscode-extension");
 
-describe("VS Code extension 0.2 surface", () => {
+describe("VS Code extension 0.3 surface", () => {
   it("ships deterministic program and task-call snippets", async () => {
     const snippets = JSON.parse(
-      await readFile(resolve(extensionRoot, "snippets/nexilume.json"), "utf8"),
+      await readFile(resolve(extensionRoot, "snippets/axirune.json"), "utf8"),
     ) as Record<string, { prefix: string; body: string[] }>;
-    expect(snippets["Nexilume deterministic program"]).toMatchObject({
+    expect(snippets["Axirune deterministic program"]).toMatchObject({
       prefix: "program",
     });
-    expect(snippets["Nexilume deterministic program"]?.body).toContain("launch main");
-    expect(snippets["Nexilume task call"]?.body.join("\n")).toContain("[call ${2:task_name}");
-    expect(snippets["Nexilume agent"]).toBeDefined();
+    expect(snippets["Axirune deterministic program"]?.body).toContain("launch main");
+    expect(snippets["Axirune task call"]?.body.join("\n")).toContain("[call ${2:task_name}");
+    expect(snippets["Axirune agent"]).toBeDefined();
   });
 
   it("documents pure execution and fail-closed host authority", async () => {
@@ -30,7 +30,7 @@ describe("VS Code extension 0.2 surface", () => {
   it("highlights pure and host builtin calls", async () => {
     const grammar = JSON.parse(
       await readFile(
-        resolve(extensionRoot, "syntaxes/nexilume.tmLanguage.json"),
+        resolve(extensionRoot, "syntaxes/axirune.tmLanguage.json"),
         "utf8",
       ),
     ) as {

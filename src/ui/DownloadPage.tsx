@@ -16,11 +16,11 @@ import type { Locale } from '../content/site'
 import { Link } from './Router'
 
 const installCommand =
-  'npm install -g https://nexilume.velhu.com/downloads/nexilume-language-0.2.0.tgz'
-const vscodeCommand = 'code --install-extension nexilume-0.2.0.vsix'
-const dockerCommand = `mkdir nexilume-0.2.0
-tar -xzf nexilume-source-0.2.0.tar.gz -C nexilume-0.2.0
-cd nexilume-0.2.0
+  'npm install -g https://axirune.velhu.com/downloads/axirune-language-0.3.0.tgz'
+const vscodeCommand = 'code --install-extension axirune-0.3.0.vsix'
+const dockerCommand = `mkdir axirune-0.3.0
+tar -xzf axirune-source-0.3.0.tar.gz -C axirune-0.3.0
+cd axirune-0.3.0
 docker compose up -d --build`
 
 function CopyCommand({ value, locale }: { value: string; locale: Locale }) {
@@ -44,7 +44,7 @@ export function DownloadPage({ locale }: { locale: Locale }) {
       <section className="download-hero">
         <div className="download-hero__copy">
           <span className="eyebrow">
-            <PackageOpen size={14} /> NEXILUME 0.2.0 / LANGUAGE PREVIEW
+            <PackageOpen size={14} /> AXIRUNE 0.3.0 / LANGUAGE PREVIEW
           </span>
           <h1>{locale === 'zh' ? '安装一门无需模型即可运行的语言。' : 'Install a language that runs without a model.'}</h1>
           <p>
@@ -53,7 +53,7 @@ export function DownloadPage({ locale }: { locale: Locale }) {
               : 'Get the deterministic interpreter, compiler, CLI, Language Server, VS Code extension, and reproducible Docker source archive. Enable AI only when needed.'}
           </p>
           <div className="download-hero__actions">
-            <a className="button button--signal" href="/downloads/nexilume-language-0.2.0.tgz" download>
+            <a className="button button--signal" href="/downloads/axirune-language-0.3.0.tgz" download>
               <ArrowDownToLine size={16} />
               {locale === 'zh' ? '下载工具链' : 'Download toolchain'}
             </a>
@@ -65,7 +65,7 @@ export function DownloadPage({ locale }: { locale: Locale }) {
         <div className="download-hero__seal">
           <div>
             <span>VERSION</span>
-            <strong>0.2.0</strong>
+            <strong>0.3.0</strong>
           </div>
           <div>
             <span>CHANNEL</span>
@@ -90,16 +90,16 @@ export function DownloadPage({ locale }: { locale: Locale }) {
           <h2>{locale === 'zh' ? '语言工具链' : 'Language toolchain'}</h2>
           <p>
             {locale === 'zh'
-              ? '包含 nexilume 与 nexilume-lsp。支持确定性运行、检查、格式化、AST、IR、权限清单与基准。'
-              : 'Includes nexilume and nexilume-lsp for deterministic execution, checks, formatting, AST, IR, authority manifests, and benchmarks.'}
+              ? '包含 axirune 与 axirune-lsp。支持确定性运行、检查、格式化、AST、IR、权限清单与基准。'
+              : 'Includes axirune and axirune-lsp for deterministic execution, checks, formatting, AST, IR, authority manifests, and benchmarks.'}
           </p>
           <div className="release-card__command">
             <code>{installCommand}</code>
             <CopyCommand value={installCommand} locale={locale} />
           </div>
-          <a href="/downloads/nexilume-language-0.2.0.tgz" download>
+          <a href="/downloads/axirune-language-0.3.0.tgz" download>
             <FileArchive size={15} />
-            nexilume-language-0.2.0.tgz
+            axirune-language-0.3.0.tgz
             <ArrowDownToLine size={15} />
           </a>
         </article>
@@ -118,9 +118,9 @@ export function DownloadPage({ locale }: { locale: Locale }) {
             <code>{vscodeCommand}</code>
             <CopyCommand value={vscodeCommand} locale={locale} />
           </div>
-          <a href="/downloads/nexilume-0.2.0.vsix" download>
+          <a href="/downloads/axirune-0.3.0.vsix" download>
             <PlugZap size={15} />
-            nexilume-0.2.0.vsix
+            axirune-0.3.0.vsix
             <ArrowDownToLine size={15} />
           </a>
         </article>
@@ -139,9 +139,9 @@ export function DownloadPage({ locale }: { locale: Locale }) {
             <code>{dockerCommand}</code>
             <CopyCommand value={dockerCommand} locale={locale} />
           </div>
-          <a href="/downloads/nexilume-source-0.2.0.tar.gz" download>
+          <a href="/downloads/axirune-source-0.3.0.tar.gz" download>
             <Container size={15} />
-            nexilume-source-0.2.0.tar.gz
+            axirune-source-0.3.0.tar.gz
             <ArrowDownToLine size={15} />
           </a>
         </article>
@@ -162,7 +162,7 @@ export function DownloadPage({ locale }: { locale: Locale }) {
         <div className="toolchain-flow">
           <div>
             <FileArchive size={20} />
-            <span>.nxl source</span>
+            <span>.axi source</span>
             <small>SHAPES · TASKS</small>
           </div>
           <i>→</i>
@@ -200,10 +200,10 @@ export function DownloadPage({ locale }: { locale: Locale }) {
           <div className="lsp-section__terminal">
             <div>
               <span>TERMINAL</span>
-              <CopyCommand value="nexilume-lsp --stdio" locale={locale} />
+              <CopyCommand value="axirune-lsp --stdio" locale={locale} />
             </div>
             <code>
-              <span>$</span> nexilume-lsp --stdio
+              <span>$</span> axirune-lsp --stdio
             </code>
             <p>
               <i /> listening · Content-Length framing
@@ -216,8 +216,8 @@ export function DownloadPage({ locale }: { locale: Locale }) {
         <span>RELEASE NOTE</span>
         <p>
           {locale === 'zh'
-            ? '0.2.0 是确定性通用解释器的预览版本，包含用户 task 调用、递归、纯数据 builtin 与显式 Outcome。生产采用前请锁定版本、运行测试，并对 I/O 或 AI 程序审查权限清单。'
-            : '0.2.0 previews the deterministic general-purpose interpreter with user task calls, recursion, pure data builtins, and explicit Outcome. Before production, pin versions, run tests, and review authority manifests for programs that choose I/O or AI.'}
+            ? '0.3.0 是 Axirune 确定性通用解释器的预览版本，包含用户 task 调用、递归、纯数据 builtin 与显式 Outcome。生产采用前请锁定版本、运行测试，并对 I/O 或 AI 程序审查权限清单。'
+            : 'Axirune 0.3.0 previews the deterministic general-purpose interpreter with user task calls, recursion, pure data builtins, and explicit Outcome. Before production, pin versions, run tests, and review authority manifests for programs that choose I/O or AI.'}
         </p>
       </section>
     </>

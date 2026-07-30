@@ -8,7 +8,7 @@ const packageManifest = JSON.parse(
 const version = packageManifest.version
 const extensionRoot = path.join(root, 'packages', 'vscode-extension')
 const outputDir = path.join(root, 'public', 'downloads')
-const outputFile = path.join(outputDir, `nexilume-${version}.vsix`)
+const outputFile = path.join(outputDir, `axirune-${version}.vsix`)
 
 const crcTable = Array.from({ length: 256 }, (_, value) => {
   let current = value
@@ -118,10 +118,10 @@ const contentTypes = `<?xml version="1.0" encoding="utf-8"?>
 const manifest = `<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011">
   <Metadata>
-    <Identity Language="en-US" Id="nexilume-language" Version="${version}" Publisher="nexilume" />
-    <DisplayName>Nexilume Language</DisplayName>
-    <Description xml:space="preserve">Language support and bundled server for the deterministic Nexilume programming language.</Description>
-    <Tags>nexilume,programming-language,interpreter,agent,ai,mcp,capability</Tags>
+    <Identity Language="en-US" Id="axirune-language" Version="${version}" Publisher="axirune" />
+    <DisplayName>Axirune Language</DisplayName>
+    <Description xml:space="preserve">Language support and bundled server for the deterministic Axirune programming language.</Description>
+    <Tags>axirune,programming-language,interpreter,agent,ai,mcp,capability</Tags>
     <Categories>Programming Languages,Linters,Formatters</Categories>
     <Properties>
       <Property Id="Microsoft.VisualStudio.Code.Engine" Value="^1.96.0" />

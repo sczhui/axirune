@@ -184,17 +184,17 @@ function nonNegativeInteger(value: string, option: string): number {
   return parsed;
 }
 
-export const HELP_TEXT = `Nexilume toolchain
+export const HELP_TEXT = `Axirune toolchain
 
 Usage:
-  nexilume <command> [file.nxl] [options]
+  axirune <command> [file.axi] [options]
 
 Commands:
   check       Parse and type-check a source file
   run         Compile and execute a source file
   fmt         Print canonical source (--write or --check)
   ast         Emit the recoverable syntax tree as JSON
-  ir          Emit checked Nexilume IR as JSON
+  ir          Emit checked Axirune IR as JSON
   manifest    Emit the capability manifest as JSON
   build       Write canonical source, AST, IR and manifest artifacts
   bench       Benchmark parse, compile and run
@@ -215,4 +215,5 @@ Options:
   --version, -V       Show the language version
 
 Use "-" as the source path to read UTF-8 source from stdin.
+Legacy .nxl source files remain accepted during the rename transition.
 `;

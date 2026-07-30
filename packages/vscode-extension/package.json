@@ -1,59 +1,59 @@
 {
-  "name": "nexilume-language",
-  "displayName": "Nexilume Language",
-  "description": "Language support for deterministic Nexilume programs and authority-bounded agent workflows.",
-  "version": "0.2.0",
-  "publisher": "nexilume",
+  "name": "axirune-language",
+  "displayName": "Axirune Language",
+  "description": "Language support for deterministic Axirune programs and authority-bounded agent workflows.",
+  "version": "0.3.0",
+  "publisher": "axirune",
   "type": "module",
   "license": "Apache-2.0",
   "engines": {
     "vscode": "^1.96.0"
   },
   "categories": ["Programming Languages", "Linters", "Formatters"],
-  "keywords": ["nexilume", "deterministic", "task", "agent", "ai", "workflow", "mcp", "capability"],
-  "activationEvents": ["onLanguage:nexilume"],
+  "keywords": ["axirune", "deterministic", "task", "agent", "ai", "workflow", "mcp", "capability"],
+  "activationEvents": ["onLanguage:axirune"],
   "main": "./extension.cjs",
   "contributes": {
     "languages": [
       {
-        "id": "nexilume",
-        "aliases": ["Nexilume", "nexilume"],
-        "extensions": [".nxl"],
-        "filenames": ["nexilume.pack", "nexilume.lock"],
+        "id": "axirune",
+        "aliases": ["Axirune", "axirune"],
+        "extensions": [".axi", ".nxl"],
+        "filenames": ["axirune.pack", "axirune.lock", "nexilume.pack", "nexilume.lock"],
         "configuration": "./language-configuration.json"
       }
     ],
     "grammars": [
       {
-        "language": "nexilume",
-        "scopeName": "source.nexilume",
-        "path": "./syntaxes/nexilume.tmLanguage.json"
+        "language": "axirune",
+        "scopeName": "source.axirune",
+        "path": "./syntaxes/axirune.tmLanguage.json"
       }
     ],
     "snippets": [
       {
-        "language": "nexilume",
-        "path": "./snippets/nexilume.json"
+        "language": "axirune",
+        "path": "./snippets/axirune.json"
       }
     ],
     "commands": [
       {
-        "command": "nexilume.restartServer",
-        "title": "Nexilume: Restart Language Server"
+        "command": "axirune.restartServer",
+        "title": "Axirune: Restart Language Server"
       },
       {
-        "command": "nexilume.showManifest",
-        "title": "Nexilume: Show Capability Manifest"
+        "command": "axirune.showManifest",
+        "title": "Axirune: Show Capability Manifest"
       }
     ],
     "configuration": {
-      "title": "Nexilume",
+      "title": "Axirune",
       "properties": {
-        "nexilume.trace.server": {
+        "axirune.trace.server": {
           "type": "string",
           "enum": ["off", "messages", "verbose"],
           "default": "off",
-          "description": "Trace communication with the bundled Nexilume language server."
+          "description": "Trace communication with the bundled Axirune language server."
         }
       }
     }

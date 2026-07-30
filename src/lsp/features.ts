@@ -166,14 +166,14 @@ export function completionsFor(document: TextDocument, _position: Position): unk
     label: frame.name,
     kind: frameCompletionKind(frame.frameKind),
     detail: `${frame.frameKind} ${frame.name}`,
-    documentation: `Declared in this Nexilume space as a ${frame.frameKind} frame.`,
+    documentation: `Declared in this Axirune space as a ${frame.frameKind} frame.`,
     sortText: `1-${frame.name}`,
   }));
   const keywordItems = KEYWORDS.map((keyword) => ({
     label: keyword,
     kind: COMPLETION_ITEM_KIND.keyword,
-    detail: "Nexilume keyword",
-    documentation: KEYWORD_HELP[keyword] ?? "Nexilume language keyword.",
+    detail: "Axirune keyword",
+    documentation: KEYWORD_HELP[keyword] ?? "Axirune language keyword.",
     sortText: `2-${keyword}`,
   }));
   const snippetItems = FRAME_SNIPPETS.map((snippet) => ({
@@ -228,7 +228,7 @@ export function hoverFor(
     return {
       contents: {
         kind: "markdown",
-        value: `\`${token.lexeme}\` — Nexilume keyword\n\n${help}`,
+        value: `\`${token.lexeme}\` — Axirune keyword\n\n${help}`,
       },
       range: spanToRange(token.span),
     };
@@ -261,7 +261,7 @@ export function symbolsFor(document: TextDocument): DocumentSymbol[] {
   return [
     {
       name: program.space.name,
-      detail: "Nexilume space",
+      detail: "Axirune space",
       kind: SYMBOL_KIND.namespace,
       range: spanToRange(program.span),
       selectionRange: spanToRange(program.space.span),
@@ -296,7 +296,7 @@ export function toLspDiagnostic(item: Diagnostic): LspDiagnostic {
     range: spanToRange(item.span),
     severity,
     code: item.code,
-    source: "Nexilume",
+    source: "Axirune",
     message: item.message,
     data: item.hint
       ? { phase: item.phase, hint: item.hint }

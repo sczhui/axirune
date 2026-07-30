@@ -8,15 +8,15 @@ const packageManifest = JSON.parse(
 )
 const version = packageManifest.version
 const outputDir = path.join(root, 'public', 'downloads')
-const packageFile = path.join(outputDir, `nexilume-language-${version}.tgz`)
-const sourceFile = path.join(outputDir, `nexilume-source-${version}.tar.gz`)
+const packageFile = path.join(outputDir, `axirune-language-${version}.tgz`)
+const sourceFile = path.join(outputDir, `axirune-source-${version}.tar.gz`)
 const currentArtifacts = new Set([
   path.basename(packageFile),
   path.basename(sourceFile),
-  `nexilume-${version}.vsix`,
+  `axirune-${version}.vsix`,
 ])
 const releaseArtifact =
-  /^nexilume-(?:language-\d+\.\d+\.\d+\.tgz|source-\d+\.\d+\.\d+\.tar\.gz|\d+\.\d+\.\d+\.vsix)$/u
+  /^(?:nexilume-(?:language-\d+\.\d+\.\d+\.tgz|source-\d+\.\d+\.\d+\.tar\.gz|\d+\.\d+\.\d+\.vsix)|axirune-(?:language-\d+\.\d+\.\d+\.tgz|source-\d+\.\d+\.\d+\.tar\.gz|\d+\.\d+\.\d+\.(?:tgz|vsix)|\d+\.\d+\.\d+-source\.tar\.gz))$/u
 
 await fs.mkdir(outputDir, { recursive: true })
 for (const fileName of await fs.readdir(outputDir)) {
@@ -50,8 +50,8 @@ const sourceEntries = [
   'tsconfig.toolchain.json',
   'vite.config.ts',
   'index.html',
-  'nexilume.pack',
-  'nexilume.lock',
+  'axirune.pack',
+  'axirune.lock',
   'src',
   'tests',
   'benchmarks',

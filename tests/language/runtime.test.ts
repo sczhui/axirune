@@ -10,7 +10,7 @@ task greet
   give Text
   need text.compose
   let message [call Text.join
-    :parts [list «Hello, » «Nexilume» «!»]
+    :parts [list «Hello, » «Axirune» «!»]
   ]
   emit message
   yield message
@@ -19,15 +19,15 @@ task greet
 launch greet
 `;
 
-describe("browser-safe Nexilume interpreter", () => {
+describe("browser-safe Axirune interpreter", () => {
   it("runs the canonical hero deterministically", async () => {
     const result = await runSource(hero);
 
     expect(result.status).toBe("completed");
     expect(result.diagnostics).toEqual([]);
-    expect(result.value).toBe("Hello, Nexilume!");
-    expect(result.output).toEqual(["Hello, Nexilume!"]);
-    expect(result.emissions).toEqual(["Hello, Nexilume!"]);
+    expect(result.value).toBe("Hello, Axirune!");
+    expect(result.output).toEqual(["Hello, Axirune!"]);
+    expect(result.emissions).toEqual(["Hello, Axirune!"]);
     expect(result.trace.map((event) => event.kind)).toContain("permission.check");
     expect(result.trace.map((event) => event.kind)).toContain("call");
     expect(result.trace.map((event) => event.sequence)).toEqual(
@@ -62,7 +62,7 @@ tool lookup
 /tool
 
 task main
-  invoke lookup with «nexilume» as found
+  invoke lookup with «axirune» as found
   yield found
 /task
 

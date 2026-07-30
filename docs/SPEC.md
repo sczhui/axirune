@@ -1,19 +1,19 @@
-# Nexilume 0.2 language specification
+# Axirune 0.3 language specification
 
 Status: executable preview
 
-Language version: `0.2.0`
+Language version: `0.3.0`
 
-IR version: `nexilume-ir/0.2`
+IR version: `axirune-ir/0.3`
 
 This document describes the behavior of the reference parser, compiler, and
-interpreter. “Must” identifies a language rule implemented by the 0.2
+interpreter. “Must” identifies a language rule implemented by the 0.3
 toolchain. Sections marked **declarative preview** define syntax carried into
 AST and IR, but do not claim a complete production adapter.
 
 ## 1. Language boundary
 
-Nexilume is a deterministic, general-purpose language with an optional effect
+Axirune is a deterministic, general-purpose language with an optional effect
 layer. A valid program may contain only values, tasks, calls, collection
 transforms, and an entry point. It does not require an LLM, an agent, MCP, a
 tool server, a network, or an API key.
@@ -23,7 +23,7 @@ The architecture is:
 ```text
 source
   -> loss-light AST
-  -> checked Nexilume IR
+  -> checked Axirune IR
   -> fuel-limited interpreter
        |-- pure builtin registry
        `-- optional host adapters
@@ -39,7 +39,7 @@ network state, model state, or any other ambient host resource.
 
 Source is UTF-8. A file normally begins with a space and an edition:
 
-```nexilume
+```axirune
 space invoices
 edition 2
 ```
@@ -52,16 +52,16 @@ such as `Number.add` and `File.readText` are ordinary qualified names.
 
 The canonical text literal uses guillemets:
 
-```nexilume
+```axirune
 «Hello, world»
 ```
 
-The parser also accepts single- and double-quoted strings; `nexilume fmt`
+The parser also accepts single- and double-quoted strings; `axirune fmt`
 normalizes source to the canonical form where possible.
 
 Semantic frames close explicitly:
 
-```nexilume
+```axirune
 task greet
   take name Text
   give Text
@@ -74,7 +74,7 @@ other matching closers establish frame boundaries.
 
 ## 3. Values and expressions
 
-The executable value universe in 0.2 is:
+The executable value universe in 0.3 is:
 
 - `Nothing`, written `nothing`;
 - `Bool`, written `true` or `false`;
@@ -86,7 +86,7 @@ The executable value universe in 0.2 is:
 
 Literal constructors are expressions:
 
-```nexilume
+```axirune
 [list 2 3 5 7]
 
 [record
@@ -98,7 +98,7 @@ Literal constructors are expressions:
 
 Calls are prefix expressions with named arguments:
 
-```nexilume
+```axirune
 [call Number.multiply :left quantity :right unit_price]
 [call line_total :line item]
 ```
@@ -109,7 +109,7 @@ arguments are diagnostics for known builtins and user tasks.
 References read immutable bindings. `let` creates a new binding; rebinding a
 name in the same frame is a compile error:
 
-```nexilume
+```axirune
 let subtotal = [call List.fold
   :list lines
   :using «add_line»
@@ -124,7 +124,7 @@ canonical `let name = value` spelling.
 
 A `task` is a named callable:
 
-```nexilume
+```axirune
 task line_total
   take line Line
   give Number
@@ -145,7 +145,7 @@ task line_total
 Tasks are callable anywhere an expression is accepted. Recursion uses the same
 form as any other task call:
 
-```nexilume
+```axirune
 [call factorial :n 6]
 ```
 
@@ -155,7 +155,7 @@ the interpreter’s frame-depth, step, and time limits.
 
 ## 5. Types
 
-The 0.2 compiler has a deliberately small, inspectable type kernel:
+The 0.3 compiler has a deliberately small, inspectable type kernel:
 
 ```text
 Any | Nothing | Bool | Number | Text | List | Record | Outcome
@@ -168,7 +168,7 @@ known builtins and tasks.
 Source type nodes may also express domain names, applications, unions, and
 optionality:
 
-```nexilume
+```axirune
 take line Line
 take values List<Number>
 give Outcome<Invoice Fault>
@@ -176,7 +176,7 @@ give Outcome<Invoice Fault>
 
 `shape` gives domain records a stable declared schema:
 
-```nexilume
+```axirune
 shape Line
   field sku Text
   field quantity Number
@@ -184,7 +184,7 @@ shape Line
 /shape
 ```
 
-In 0.2, domain type nodes and shape fields are preserved in AST/IR and exposed
+In 0.3, domain type nodes and shape fields are preserved in AST/IR and exposed
 to diagnostics and editor tooling. Full structural conformance, generic
 instantiation, exhaustiveness, refinements, and trust-flow proof are future
 type-checker work; the preview does not pretend those checks already exist.
@@ -194,10 +194,10 @@ new values instead of mutating their inputs.
 
 ## 6. Control flow and evaluation
 
-Nexilume does not require statement-level `if`. Conditional values use
+Axirune does not require statement-level `if`. Conditional values use
 `Core.if`:
 
-```nexilume
+```axirune
 [call Core.if
   :when [call Number.lessOrEqual :left n :right 1]
   :then 1
@@ -351,7 +351,7 @@ status, not a user-level exception value.
 
 `launch main` is the normal deployment entry:
 
-```nexilume
+```axirune
 task main
   give Text
   yield «ready»
@@ -380,7 +380,7 @@ items, and 10 seconds. A host may lower or explicitly replace these limits.
 
 Tools are the only executable bridge from a task to host behavior:
 
-```nexilume
+```axirune
 capability host.fs.read
   effect filesystem.read
   resource «./input.txt»
@@ -418,9 +418,9 @@ Http.get        host.net.fetch
 CLI authority is granted with explicit allowlists:
 
 ```sh
-nexilume run program.nxl --allow-read ./data
-nexilume run program.nxl --allow-write ./out
-nexilume run program.nxl --allow-net api.example.com
+axirune run program.axi --allow-read ./data
+axirune run program.axi --allow-write ./out
+axirune run program.axi --allow-net api.example.com
 ```
 
 Filesystem adapters resolve canonical paths and reject escapes from allowed
@@ -441,10 +441,10 @@ These are separate layers:
 Source declarations cannot manufacture a host adapter. A file capability is
 useless unless the deployment also binds `File.readText` with an allowed root.
 
-The 0.2 interpreter enforces capability checks, permission decisions, time and
+The 0.3 interpreter enforces capability checks, permission decisions, time and
 value limits. The CLI enforces filesystem and network allowlists. Rich sandbox
 directives inside a `sandbox` frame are retained in IR for manifests and future
-hosts; 0.2 does not claim OS-level isolation from source declarations alone.
+hosts; 0.3 does not claim OS-level isolation from source declarations alone.
 Docker or another process boundary is recommended for hostile code.
 
 ## 12. Concurrency
@@ -475,7 +475,7 @@ the bounded view supplied to an inference or external component. Their
 directives—lifetime, merge, retention, compaction, source, trust, and
 budget—are parsed and emitted to IR.
 
-The 0.2 interpreter does not ship a durable memory database or automatic token
+The 0.3 interpreter does not ship a durable memory database or automatic token
 context compiler. Hosts may consume these declarations to implement one. Pure
 tasks use explicit inputs and immutable values and therefore need neither
 facility.
@@ -497,7 +497,7 @@ compensation. The parser and compiler retain workflow frames and directives;
 the current interpreter can enter a workflow frame and execute ordinary
 instructions, but it does not yet schedule a complete `stage` graph.
 
-Use tasks, calls, `launch`, and `weave` for executable 0.2 orchestration.
+Use tasks, calls, `launch`, and `weave` for executable 0.3 orchestration.
 
 ## 16. MCP — declarative preview
 
@@ -505,7 +505,7 @@ An `mcp` frame records protocol, transport, endpoint, pinning, imported names,
 and capability requirements. It makes an MCP dependency inspectable in AST,
 IR, manifests, documentation, and editor tooling.
 
-The 0.2 runtime does not include an automatic MCP client. A deployment binds
+The 0.3 runtime does not include an automatic MCP client. A deployment binds
 imported MCP methods as ordinary tools, applies capability and permission
 checks, and owns transport authentication outside source code.
 
@@ -514,19 +514,19 @@ checks, and owns transport authentication outside source code.
 The shipped CLI commands are:
 
 ```text
-nexilume check <file>
-nexilume run <file>
-nexilume fmt <file> [--check]
-nexilume ast <file>
-nexilume ir <file>
-nexilume manifest <file>
-nexilume build <file>
-nexilume bench
+axirune check <file>
+axirune run <file>
+axirune fmt <file> [--check]
+axirune ast <file>
+axirune ir <file>
+axirune manifest <file>
+axirune build <file>
+axirune bench
 ```
 
 The JavaScript API exposes `parseSource`, `formatSource`, `compileSource`, and
 `runSource`. The browser Playground and online IDE use the same parser,
 compiler, builtin registry, and interpreter as the CLI.
 
-`build` produces checked IR artifacts. Nexilume 0.2 does not claim native-code,
+`build` produces checked IR artifacts. Axirune 0.3 does not claim native-code,
 JVM, or WebAssembly compilation.

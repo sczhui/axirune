@@ -434,7 +434,7 @@ function parseStatementLine(
         "N2010",
         "error",
         "parse",
-        `Every sentence starts with a Nexilume speech act; found ${JSON.stringify(verb ?? "")}.`,
+        `Every sentence starts with an Axirune speech act; found ${JSON.stringify(verb ?? "")}.`,
         line.span,
         "Use take, give, use, need, grant, within, budget, let, emit, yield, call, invoke, launch, or weave.",
       ),

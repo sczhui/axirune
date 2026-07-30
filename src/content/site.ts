@@ -1,10 +1,10 @@
-import factorialSource from '../../examples/factorial.nxl?raw'
-import helloSource from '../../examples/hello.nxl?raw'
-import invoiceSource from '../../examples/invoice-total.nxl?raw'
-import mcpSource from '../../examples/mcp-native.nxl?raw'
-import optionalAiSource from '../../examples/optional-ai.nxl?raw'
-import outcomeSource from '../../examples/outcome-division.nxl?raw'
-import wordFrequencySource from '../../examples/word-frequency.nxl?raw'
+import factorialSource from '../../examples/factorial.axi?raw'
+import helloSource from '../../examples/hello.axi?raw'
+import invoiceSource from '../../examples/invoice-total.axi?raw'
+import mcpSource from '../../examples/mcp-native.axi?raw'
+import optionalAiSource from '../../examples/optional-ai.axi?raw'
+import outcomeSource from '../../examples/outcome-division.axi?raw'
+import wordFrequencySource from '../../examples/word-frequency.axi?raw'
 
 export type Locale = 'zh' | 'en'
 export type RuntimeClass = 'core' | 'io' | 'ai'
@@ -212,12 +212,12 @@ export const concepts: Concept[] = [
 
 export const docSections: DocSection[] = [
   {
-    id: 'why-nexilume',
+    id: 'why-axirune',
     kicker: '00 / ORIENTATION',
     title: { zh: '确定性优先，AI 可选', en: 'Deterministic first, AI optional' },
     summary: {
-      zh: 'Nexilume 0.2 是具备可选 Agent 扩展的确定性通用语言与解释器。',
-      en: 'Nexilume 0.2 is a deterministic general-purpose language and interpreter with optional agent extensions.',
+      zh: 'Axirune 0.3 是具备可选 Agent 扩展的确定性通用语言与解释器。名称取自 axiom 与 rune：让意图成为可检查的公理，让每个 effect 都有边界。',
+      en: 'Axirune 0.3 is a deterministic general-purpose language and interpreter with optional agent extensions. Its name joins axiom and rune: make intent axiomatic and bound every effect.',
     },
     body: {
       zh: [
@@ -256,7 +256,7 @@ export const docSections: DocSection[] = [
   ]
 /task
 
-let message = [call greet :name «Nexilume»]`,
+let message = [call greet :name «Axirune»]`,
   },
   {
     id: 'values',
@@ -429,11 +429,11 @@ let json = [call Json.encode :value invoice]`,
     body: {
       zh: [
         'tool 声明命名输入、结果与所需 capability。调用者 use 工具并在 sandbox 内执行；部署根 grant 不可伪造的运行时权柄。',
-        'nexilume manifest 在运行前导出最小权限。只使用 pure builtins 的程序得到空清单。',
+        'axirune manifest 在运行前导出最小权限。只使用 pure builtins 的程序得到空清单。',
       ],
       en: [
         'A tool declares named input, result, and required capability. The caller uses the tool inside a sandbox; the deployment root grants an unforgeable runtime handle.',
-        'nexilume manifest exports minimum authority before execution. Programs using only pure builtins receive an empty manifest.',
+        'axirune manifest exports minimum authority before execution. Programs using only pure builtins receive an empty manifest.',
       ],
     },
     code: `capability host.fs.read
@@ -489,32 +489,32 @@ agent classifier
     body: {
       zh: [
         'parseSource、formatSource、compileSource 与 runSource 是公开 API。编译器生成 checked IR；解释器执行 IR 并返回 output、emissions、value、diagnostics 与 trace。',
-        'CLI 提供 check、run、fmt、ast、ir、manifest、build 与 bench。工具链不把 Nexilume 源码转换成宿主脚本再 eval。',
+        'CLI 提供 check、run、fmt、ast、ir、manifest、build 与 bench。工具链不把 Axirune 源码转换成宿主脚本再 eval。',
       ],
       en: [
         'parseSource, formatSource, compileSource, and runSource are public APIs. The compiler emits checked IR; the interpreter returns output, emissions, value, diagnostics, and trace.',
-        'The CLI provides check, run, fmt, ast, ir, manifest, build, and bench. The toolchain does not translate Nexilume source into a host script and eval it.',
+        'The CLI provides check, run, fmt, ast, ir, manifest, build, and bench. The toolchain does not translate Axirune source into a host script and eval it.',
       ],
     },
-    code: `nexilume check examples/invoice-total.nxl
-nexilume run examples/factorial.nxl
-nexilume ir examples/outcome-division.nxl
-nexilume manifest examples/word-frequency.nxl
-nexilume run examples/word-frequency.nxl --allow-read .`,
+    code: `axirune check examples/invoice-total.axi
+axirune run examples/factorial.axi
+axirune ir examples/outcome-division.axi
+axirune manifest examples/word-frequency.axi
+axirune run examples/word-frequency.axi --allow-read .`,
   },
 ]
 
-export const quickStart = `npm install -g https://nexilume.velhu.com/downloads/nexilume-language-0.2.0.tgz
-nexilume check examples/invoice-total.nxl
-nexilume run examples/invoice-total.nxl`
+export const quickStart = `npm install -g https://axirune.velhu.com/downloads/axirune-language-0.3.0.tgz
+axirune check examples/invoice-total.axi
+axirune run examples/invoice-total.axi`
 
 export const cliCommands = [
-  ['nexilume check', '静态检查 / static checks'],
-  ['nexilume run', '确定性解释运行 / deterministic run'],
-  ['nexilume build', '编译 IR / compile IR'],
-  ['nexilume fmt', '结构化格式化 / format'],
-  ['nexilume ast', '查看语法树 / inspect AST'],
-  ['nexilume ir', '查看执行计划 / inspect IR'],
-  ['nexilume manifest', '导出 effect 权限 / effect manifest'],
-  ['nexilume bench', '运行实测基准 / measured benchmark'],
+  ['axirune check', '静态检查 / static checks'],
+  ['axirune run', '确定性解释运行 / deterministic run'],
+  ['axirune build', '编译 IR / compile IR'],
+  ['axirune fmt', '结构化格式化 / format'],
+  ['axirune ast', '查看语法树 / inspect AST'],
+  ['axirune ir', '查看执行计划 / inspect IR'],
+  ['axirune manifest', '导出 effect 权限 / effect manifest'],
+  ['axirune bench', '运行实测基准 / measured benchmark'],
 ] as const

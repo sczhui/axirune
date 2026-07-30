@@ -1,15 +1,19 @@
-# Nexilume
+# Axirune
 
-**Official website:** [https://nexilume.velhu.com/](https://nexilume.velhu.com/)
+**Official website:** [https://axirune.velhu.com/](https://axirune.velhu.com/)
 
-**Illuminate intent. Bound every effect.**
+**Make intent axiomatic. Bound every effect.**
 
-Nexilume 0.2 is a deterministic general-purpose language and interpreter
+Axirune 0.3 is a deterministic general-purpose language and interpreter
 designed to be easy for both people and LLMs to write, inspect, and refactor.
 Programs do not require a model: shapes, user-defined tasks, named calls,
 recursion, control flow, collection transforms, JSON, and explicit outcomes
 execute in the deterministic core. Files, network tools, MCP, prompts, and
 models are optional effects behind capabilities and sandboxes.
+
+The name combines **axiom**—a rule made explicit enough to inspect—with
+**rune**—a compact symbol meant to be read and carried forward. Axirune makes
+intent axiomatic while keeping every effect bounded.
 
 This repository includes:
 
@@ -34,13 +38,13 @@ npm ci
 npm run build
 npm test
 npm run check:examples
-node dist-toolchain/src/cli/nexilume.js run examples/hello.nxl
+node dist-toolchain/src/cli/axirune.js run examples/hello.axi
 ```
 
 The following complete program calls a user-defined task and runs without a
 model, tool, network connection, or API key:
 
-```nexilume
+```axirune
 space hello
 edition 2
 
@@ -55,7 +59,7 @@ task greet
 task main
   give Text
   let message = [call greet
-    :name «Nexilume»
+    :name «Axirune»
   ]
   emit message
   yield message
@@ -67,7 +71,7 @@ launch main
 Expected output:
 
 ```text
-Hello, Nexilume!
+Hello, Axirune!
 ```
 
 Frames have explicit kind closers. Indentation is presentation, not hidden
@@ -75,7 +79,7 @@ block syntax. Calls use named arguments. A task may call another task in an
 expression, including itself recursively. Pure builtins never require
 capabilities.
 
-Read the [language tour](docs/LANGUAGE_TOUR.md), [0.2
+Read the [language tour](docs/LANGUAGE_TOUR.md), [0.3
 specification](docs/SPEC.md), [design rationale](docs/DESIGN.md), [security
 model](docs/SECURITY.md), [toolchain guide](docs/TOOLCHAIN.md), and
 [implementation architecture](docs/ARCHITECTURE.md).
@@ -105,14 +109,14 @@ The effect layer is opt-in:
 ## Commands
 
 ```text
-nexilume check <file>          parse and validate
-nexilume run <file>            execute checked IR
-nexilume fmt <file> [--write]  produce canonical source
-nexilume ast <file>            print semantic AST JSON
-nexilume ir <file>             print checked IR JSON
-nexilume manifest <file>       print required authority JSON
-nexilume build <file> --out X  write IR, manifest, and diagnostics
-nexilume bench                 run the measured reference benchmark
+axirune check <file>          parse and validate
+axirune run <file>            execute checked IR
+axirune fmt <file> [--write]  produce canonical source
+axirune ast <file>            print semantic AST JSON
+axirune ir <file>             print checked IR JSON
+axirune manifest <file>       print required authority JSON
+axirune build <file> --out X  write IR, manifest, and diagnostics
+axirune bench                 run the measured reference benchmark
 ```
 
 Diagnostics, AST, IR, manifests, and traces are serializable surfaces for
@@ -121,23 +125,23 @@ editor tooling and automated refactoring.
 ## Examples
 
 ```text
-examples/hello.nxl             user task call; no LLM
-examples/factorial.nxl         deterministic recursion; no LLM
-examples/invoice-total.nxl     shapes, arithmetic, List.fold, JSON; no LLM
-examples/outcome-division.nxl  explicit success/failure values; no LLM
-examples/word-frequency.nxl    capability-gated file CLI
-examples/mcp-native.nxl        optional MCP integration
-examples/optional-ai.nxl       optional prompt/model integration
+examples/hello.axi             user task call; no LLM
+examples/factorial.axi         deterministic recursion; no LLM
+examples/invoice-total.axi     shapes, arithmetic, List.fold, JSON; no LLM
+examples/outcome-division.axi  explicit success/failure values; no LLM
+examples/word-frequency.axi    capability-gated file CLI
+examples/mcp-native.axi        optional MCP integration
+examples/optional-ai.axi       optional prompt/model integration
 ```
 
 Run any deterministic example directly:
 
 ```bash
-nexilume check examples/invoice-total.nxl
-nexilume run examples/invoice-total.nxl
-nexilume ir examples/factorial.nxl
-nexilume manifest examples/word-frequency.nxl
-nexilume run examples/word-frequency.nxl --allow-read .
+axirune check examples/invoice-total.axi
+axirune run examples/invoice-total.axi
+axirune ir examples/factorial.axi
+axirune manifest examples/word-frequency.axi
+axirune run examples/word-frequency.axi --allow-read .
 ```
 
 ## Project map
@@ -157,8 +161,8 @@ scripts/                   release and conformance helpers
 ## Docker
 
 ```bash
-docker build -t nexilume:local .
-docker run --rm -p 8080:8080 nexilume:local
+docker build -t axirune:local .
+docker run --rm -p 8080:8080 axirune:local
 curl -fsS http://127.0.0.1:8080/healthz
 ```
 
@@ -169,18 +173,20 @@ without publishing a host port.
 
 ## 148 production deployment
 
-Production path: `/opt/docker-apps/nexilume`
+Production path: `/opt/docker-apps/axirune`
 
-Public route: [https://nexilume.velhu.com/](https://nexilume.velhu.com/)
+Public route: [https://axirune.velhu.com/](https://axirune.velhu.com/)
 
 The static website, Playground, documentation, release artifacts, and browser
 interpreter are served from the same deployment.
 
 ## Preview status
 
-Nexilume 0.2 is a coherent, runnable language preview. Its deterministic core,
+Axirune 0.3 is a coherent, runnable language preview. Its deterministic core,
 CLI, browser interpreter, editor tooling, examples, and benchmark harness are
 implemented in this repository. Host I/O, MCP, and model adapters remain
 explicit integration surfaces and never become ambient powers of a program.
+
+Source and releases: [github.com/sczhui/axirune](https://github.com/sczhui/axirune)
 
 Licensed under Apache-2.0.

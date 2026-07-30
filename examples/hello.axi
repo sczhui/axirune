@@ -10,7 +10,7 @@ task greet
 
 task main
   give Text
-  let message = [call greet :name «Nexilume»]
+  let message = [call greet :name «Axirune»]
   emit message
   yield message
 /task

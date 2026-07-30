@@ -1,7 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
-  "name": "Nexilume",
-  "scopeName": "source.nexilume",
+  "name": "Axirune",
+  "scopeName": "source.axirune",
   "patterns": [
     { "include": "#comments" },
     { "include": "#strings" },
@@ -16,22 +16,22 @@
   "repository": {
     "comments": {
       "patterns": [
-        { "name": "comment.line.double-dash.nexilume", "match": "--.*$" }
+        { "name": "comment.line.double-dash.axirune", "match": "--.*$" }
       ]
     },
     "strings": {
       "patterns": [
         {
-          "name": "string.quoted.other.guillemet.nexilume",
+          "name": "string.quoted.other.guillemet.axirune",
           "begin": "«",
           "end": "»"
         },
         {
-          "name": "string.quoted.double.nexilume",
+          "name": "string.quoted.double.axirune",
           "begin": "\"",
           "end": "\"",
           "patterns": [
-            { "name": "constant.character.escape.nexilume", "match": "\\\\." }
+            { "name": "constant.character.escape.axirune", "match": "\\\\." }
           ]
         }
       ]
@@ -39,7 +39,7 @@
     "closers": {
       "patterns": [
         {
-          "name": "keyword.control.frame.end.nexilume",
+          "name": "keyword.control.frame.end.axirune",
           "match": "^\\s*/(?:shape|form|choice|fault|capability|permission|tool|mcp|memory|context|prompt|sandbox|task|agent|workflow|package)\\b"
         }
       ]
@@ -47,7 +47,7 @@
     "frames": {
       "patterns": [
         {
-          "name": "keyword.declaration.frame.nexilume",
+          "name": "keyword.declaration.frame.axirune",
           "match": "^\\s*(?:space|edition|shape|form|choice|fault|capability|permission|tool|mcp|memory|context|prompt|sandbox|task|agent|workflow|package)\\b"
         }
       ]
@@ -55,7 +55,7 @@
     "clauses": {
       "patterns": [
         {
-          "name": "keyword.control.clause.nexilume",
+          "name": "keyword.control.clause.axirune",
           "match": "\\b(?:take|give|field|slot|instruction|attach|expect|effect|resource|need|permission|lifetime|merge|retention|compact|budget|limit|model|remember|grant|within|context|handle|stage|after|recover|retry|backoff|compensate|use|let|emit|yield|call|invoke|launch|as|with|from|trust|allow|deny|version|source|entry|runtime|expose|require|authority|diagnostics)\\b"
         }
       ]
@@ -63,7 +63,7 @@
     "types": {
       "patterns": [
         {
-          "name": "support.type.nexilume",
+          "name": "support.type.axirune",
           "match": "\\b(?:Any|Nothing|Unit|Bool|Int|Number|Decimal|Text|Bytes|Json|Duration|List|Map|Record|Maybe|Optional|Outcome|Result|Stream|Secret|Observed|Verified|Lease)\\b"
         }
       ]
@@ -71,7 +71,7 @@
     "builtins": {
       "patterns": [
         {
-          "name": "support.function.builtin.nexilume",
+          "name": "support.function.builtin.axirune",
           "match": "\\b(?:Core\\.(?:if|coalesce|type)|Number\\.(?:add|subtract|multiply|divide|remainder|power|abs|min|max|floor|ceil|round|equal|notEqual|less|lessOrEqual|greater|greaterOrEqual)|Bool\\.(?:not|and|or)|Text\\.(?:join|concat|length|upper|lower|trim|contains|startsWith|endsWith|replace|slice|split)|List\\.(?:length|at|append|prepend|concat|slice|contains|reverse|range|map|filter|fold)|Record\\.(?:get|put|has|keys|values|merge)|Json\\.(?:encode|decode)|Outcome\\.(?:ok|fail|isOk|value|fault)|File\\.(?:readText|writeText|exists|list)|Http\\.get)\\b"
         }
       ]
@@ -79,7 +79,7 @@
     "numbers": {
       "patterns": [
         {
-          "name": "constant.numeric.nexilume",
+          "name": "constant.numeric.axirune",
           "match": "\\b\\d+(?:\\.\\d+)?\\b"
         }
       ]
@@ -87,7 +87,7 @@
     "namedArguments": {
       "patterns": [
         {
-          "name": "variable.parameter.nexilume",
+          "name": "variable.parameter.axirune",
           "match": ":[A-Za-z_][A-Za-z0-9_.-]*"
         }
       ]

@@ -21,30 +21,30 @@ export function HomePage({ locale }: { locale: Locale }) {
         <div className="hero__grid-mark" aria-hidden="true">
           <span>001</span>
           <span>101</span>
-          <span>NX</span>
+          <span>AX</span>
         </div>
         <div className="hero__copy">
           <div className="hero__meta">
             <span className="live-mark">
-              <i /> GENERAL-PURPOSE LANGUAGE · 0.2.0
+              <i /> GENERAL-PURPOSE LANGUAGE · 0.3.0
             </span>
             <span>DETERMINISTIC BY DEFAULT</span>
           </div>
           <h1>
-            <span>Illuminate</span>
-            <strong>intent.</strong>
+            <span>Make intent</span>
+            <strong>axiomatic.</strong>
             <span>Bound every</span>
             <strong>effect.</strong>
           </h1>
           <p className="hero__lead">
             {locale === 'zh'
-              ? '一门面向人类与 LLM 共同维护的确定性通用语言。无需模型即可编译、解释运行完整程序；AI、MCP 与工具调用只是受权限约束的可选能力。'
-              : 'A deterministic general-purpose language designed for humans and LLMs to maintain together. Compile and run complete programs without a model; AI, MCP, and tools are optional, capability-gated effects.'}
+              ? 'Axirune 源自 axiom 与 rune：让意图成为可检查的公理。无需模型即可编译、解释运行完整程序；AI、MCP 与工具调用只是受权限约束的可选能力。'
+              : 'Axirune joins axiom and rune: make intent explicit enough to inspect. Compile and run complete programs without a model; AI, MCP, and tools are optional, capability-gated effects.'}
           </p>
           <div className="hero__actions">
             <Link to="/playground" className="button button--signal">
               <Play size={16} fill="currentColor" />
-              {locale === 'zh' ? '立即运行' : 'Run Nexilume'}
+              {locale === 'zh' ? '立即运行' : 'Run Axirune'}
             </Link>
             <Link to="/docs" className="text-link">
               {locale === 'zh' ? '阅读语言设计' : 'Read the language design'}
@@ -61,7 +61,7 @@ export function HomePage({ locale }: { locale: Locale }) {
               <span>{locale === 'zh' ? '确定性核心' : 'DETERMINISTIC CORE'}</span>
             </div>
             <div>
-              <strong>.nxl</strong>
+              <strong>.axi</strong>
               <span>{locale === 'zh' ? '源文件' : 'SOURCE FILE'}</span>
             </div>
           </div>
@@ -124,8 +124,8 @@ export function HomePage({ locale }: { locale: Locale }) {
           <div className="manifesto__columns">
             <p>
               {locale === 'zh'
-                ? 'Nexilume 可以只用 shape、task、递归、集合变换、Outcome 与纯 builtin 写业务程序。相同源码与输入产生相同的值和语义 trace。'
-                : 'Nexilume can express complete applications with shapes, tasks, recursion, collection transforms, Outcome, and pure builtins. The same source and input produce the same value and semantic trace.'}
+                ? 'Axirune 可以只用 shape、task、递归、集合变换、Outcome 与纯 builtin 写业务程序。相同源码与输入产生相同的值和语义 trace。'
+                : 'Axirune can express complete applications with shapes, tasks, recursion, collection transforms, Outcome, and pure builtins. The same source and input produce the same value and semantic trace.'}
             </p>
             <p>
               {locale === 'zh'

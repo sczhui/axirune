@@ -1,4 +1,4 @@
-# Nexilume 0.2 security and authority model
+# Axirune 0.3 security and authority model
 
 Security starts with a distinction: deterministic computation is not an
 external effect.
@@ -11,7 +11,7 @@ manifest.
 
 ## Three gates for effects
 
-When a program intentionally reaches outside the interpreter, Nexilume
+When a program intentionally reaches outside the interpreter, Axirune
 separates three questions:
 
 1. **Capability:** can this execution name the operation and resource?
@@ -58,7 +58,7 @@ authority. Deterministic examples run entirely in checked IR. Optional-effect
 examples use labelled deterministic adapters unless a host explicitly supplies
 another binding.
 
-Source text is not evaluated as JavaScript. It passes through the Nexilume
+Source text is not evaluated as JavaScript. It passes through the Axirune
 parser, semantic compiler, versioned IR, and interpreter.
 
 ## Data and trace safety

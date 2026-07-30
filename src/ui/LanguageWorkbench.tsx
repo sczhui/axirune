@@ -177,8 +177,8 @@ export function LanguageWorkbench({
       <div className="workbench__topbar">
         <div className="workbench__file">
           <span className="workbench__file-dot" />
-          <span>{compact ? 'invoice.nxl' : 'main.nxl'}</span>
-          <small>NEXILUME</small>
+          <span>{compact ? 'invoice.axi' : 'main.axi'}</span>
+          <small>AXIRUNE</small>
         </div>
         <div className="workbench__top-actions">
           {!compact ? (
@@ -305,7 +305,7 @@ export function LanguageWorkbench({
                           {diagnostic.severity}
                         </span>
                         <div>
-                          <strong>{diagnostic.code ?? 'NEXILUME'}</strong>
+                          <strong>{diagnostic.code ?? 'AXIRUNE'}</strong>
                           <p>{diagnostic.message}</p>
                         </div>
                       </li>
@@ -328,7 +328,7 @@ export function LanguageWorkbench({
                   <span>DETERMINISTIC EXECUTION PLAN</span>
                   <small>{compiled ? (compiled.ok ? 'VALID' : 'INVALID') : 'NOT COMPILED'}</small>
                 </div>
-                <pre>{compiled ? serializeInspector(compiled.ir) : '// Compile to inspect Nexilume IR.'}</pre>
+                <pre>{compiled ? serializeInspector(compiled.ir) : '// Compile to inspect Axirune IR.'}</pre>
               </div>
             ) : null}
 

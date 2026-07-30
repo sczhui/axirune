@@ -1,15 +1,19 @@
-# Why Nexilume exists
+# Why Axirune exists
 
-Nexilume is a **deterministic general-purpose language** with a deliberately
+Axirune is a **deterministic general-purpose language** with a deliberately
 separate layer for external effects and optional AI.
 
 Its first question is not “which model should run this?” It is “what value does
 this program compute?” A model key is never required to parse, compile, or
-execute ordinary Nexilume programs.
+execute ordinary Axirune programs.
+
+The name joins **axiom** and **rune**. An axiom makes a rule explicit; a rune is
+a compact symbol made to be read, preserved, and transformed. The name captures
+the language’s goal: make intent axiomatic and bound every effect.
 
 ## Language philosophy
 
-Nexilume is optimized for programs that people and LLMs will repeatedly read,
+Axirune is optimized for programs that people and LLMs will repeatedly read,
 change, verify, and repair:
 
 - semantic frames close with their own kind, giving parsers strong recovery
@@ -81,7 +85,7 @@ language.
 
 ## Built for LLM-authored maintenance
 
-Nexilume welcomes LLM-generated code without making an LLM part of runtime:
+Axirune welcomes LLM-generated code without making an LLM part of runtime:
 
 - explicit frame closers reduce structural ambiguity;
 - named call arguments survive signature evolution;
@@ -92,5 +96,5 @@ Nexilume welcomes LLM-generated code without making an LLM part of runtime:
 - effect and authority diffs can be reviewed separately from value logic;
 - canonical formatting removes stylistic search space.
 
-The result is intentionally explicit. Nexilume optimizes for the lifetime cost
+The result is intentionally explicit. Axirune optimizes for the lifetime cost
 of understanding and safely changing software, not for minimizing keystrokes.

@@ -5,7 +5,7 @@ import {
   parseSource,
 } from "../../src/language/index.js";
 
-describe("Nexilume compiler and formatter", () => {
+describe("Axirune compiler and formatter", () => {
   it("lowers contracts, authority, budgets, and launch into stable IR", () => {
     const source = `space demo
 edition 1
@@ -35,7 +35,7 @@ launch main
 
     expect(result.ok).toBe(true);
     expect(result.diagnostics).toEqual([]);
-    expect(result.ir.version).toBe("nexilume-ir/0.2");
+    expect(result.ir.version).toBe("axirune-ir/0.3");
     expect(result.ir.permissions).toEqual(["net.read"]);
     expect(result.ir.entry.map((instruction) => instruction.op)).toEqual([
       "grant",

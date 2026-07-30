@@ -1,8 +1,8 @@
-# Nexilume benchmark
+# Axirune benchmark
 
-Generated: 2026-07-29T04:43:51.971Z
+Generated: 2026-07-30T07:51:36.837Z
 
-Input checksum: `sha256:78bfa3fa5d49175b35cdd717bdaf606b4f5879058aeccc11d3d711462a068aed`
+Input checksum: `sha256:deeb2552825c799f5913ea346de33d14abebc0f4bb3ae7c131b8f768ffffa37c`
 
 Runtime: v22.23.1 · darwin/arm64 · Apple M4
 
@@ -10,20 +10,20 @@ Configuration: 30 measured samples after 5 warmups.
 
 | Fixture | Bytes | Operation | Mean (ms) | Median (ms) | p95 (ms) | ops/s |
 | --- | ---: | --- | ---: | ---: | ---: | ---: |
-| hello | 163 | parse | 0.031 | 0.017 | 0.106 | 32398.878 |
-| hello | 163 | compile | 0.021 | 0.019 | 0.052 | 47328.018 |
-| hello | 163 | run | 0.083 | 0.041 | 0.256 | 12013.623 |
-| agent-graph | 2465 | parse | 0.183 | 0.169 | 0.394 | 5450.131 |
-| agent-graph | 2465 | compile | 0.167 | 0.143 | 0.336 | 5990.912 |
-| agent-graph | 2465 | run | 0.152 | 0.123 | 0.294 | 6589.245 |
-| invoice-calculation | 887 | parse | 0.072 | 0.064 | 0.080 | 13903.655 |
-| invoice-calculation | 887 | compile | 0.091 | 0.086 | 0.106 | 11027.737 |
-| invoice-calculation | 887 | run | 0.208 | 0.155 | 0.457 | 4811.744 |
-| data-transform | 639 | parse | 0.024 | 0.023 | 0.028 | 41462.751 |
-| data-transform | 639 | compile | 0.042 | 0.042 | 0.048 | 23649.179 |
-| data-transform | 639 | run | 0.142 | 0.109 | 0.341 | 7042.389 |
-| recursive-factorial | 394 | parse | 0.028 | 0.017 | 0.033 | 36045.129 |
-| recursive-factorial | 394 | compile | 0.026 | 0.026 | 0.029 | 38720.019 |
-| recursive-factorial | 394 | run | 0.231 | 0.162 | 0.638 | 4330.879 |
+| hello | 162 | parse | 0.029 | 0.016 | 0.105 | 33992.601 |
+| hello | 162 | compile | 0.023 | 0.019 | 0.058 | 43878.509 |
+| hello | 162 | run | 0.040 | 0.027 | 0.093 | 25122.977 |
+| agent-graph | 2465 | parse | 0.175 | 0.172 | 0.319 | 5705.954 |
+| agent-graph | 2465 | compile | 0.165 | 0.142 | 0.288 | 6060.807 |
+| agent-graph | 2465 | run | 0.150 | 0.128 | 0.275 | 6664.139 |
+| invoice-calculation | 887 | parse | 0.069 | 0.063 | 0.077 | 14388.779 |
+| invoice-calculation | 887 | compile | 0.090 | 0.084 | 0.105 | 11069.257 |
+| invoice-calculation | 887 | run | 0.159 | 0.138 | 0.434 | 6294.530 |
+| data-transform | 639 | parse | 0.025 | 0.024 | 0.027 | 40554.132 |
+| data-transform | 639 | compile | 0.041 | 0.040 | 0.044 | 24194.387 |
+| data-transform | 639 | run | 0.138 | 0.108 | 0.385 | 7261.718 |
+| recursive-factorial | 394 | parse | 0.027 | 0.017 | 0.034 | 37078.831 |
+| recursive-factorial | 394 | compile | 0.027 | 0.026 | 0.030 | 36578.050 |
+| recursive-factorial | 394 | run | 0.190 | 0.148 | 0.593 | 5255.318 |
 
 _Every value above is measured in this run; the report contains no precomputed timings._

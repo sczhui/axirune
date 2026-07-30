@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.3.0 — Axirune
+
+- Renames the language from **Nexilume** to **Axirune**, from *axiom* + *rune*:
+  explicit rules expressed in symbols designed to be read, checked, and
+  transformed.
+- Moves the command to `axirune`, source files to `.axi`, packages and editor
+  tooling to the `axirune` namespace, and the public site to
+  `https://axirune.velhu.com/`.
+- Preserves the deterministic general-purpose core and keeps AI, Agent, MCP,
+  Prompt, Context, and Memory as optional capability-gated effects.
+
 ## 0.2.0 — Deterministic Core
 
 - Makes `task` a deterministic, named-argument function callable from expressions.

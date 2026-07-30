@@ -22,7 +22,7 @@ export function ExamplesPage({ locale }: { locale: Locale }) {
     const url = URL.createObjectURL(blob)
     const anchor = document.createElement('a')
     anchor.href = url
-    anchor.download = `${active.slug}.nxl`
+    anchor.download = `${active.slug}.axi`
     anchor.click()
     URL.revokeObjectURL(url)
   }
@@ -87,7 +87,7 @@ export function ExamplesPage({ locale }: { locale: Locale }) {
               </button>
               <button type="button" onClick={downloadSource}>
                 <Download size={14} />
-                .nxl
+                .axi
               </button>
               <Link to="/playground">
                 <Play size={14} fill="currentColor" />
@@ -97,8 +97,8 @@ export function ExamplesPage({ locale }: { locale: Locale }) {
           </header>
           <div className="example-viewer__code">
             <div className="example-viewer__code-head">
-              <span>{active.slug}.nxl</span>
-              <span>NEXILUME · UTF-8</span>
+              <span>{active.slug}.axi</span>
+              <span>AXIRUNE · UTF-8</span>
             </div>
             <CodeEditor value={active.code} readOnly minHeight={620} />
           </div>

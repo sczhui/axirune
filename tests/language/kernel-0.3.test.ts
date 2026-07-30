@@ -2,7 +2,10 @@ import { describe, expect, it } from "vitest";
 import {
   compileSource,
   formatSource,
+  LANGUAGE_EXTENSION,
+  LANGUAGE_NAME,
   LANGUAGE_VERSION,
+  LEGACY_LANGUAGE_EXTENSIONS,
   parseSource,
   runSource,
 } from "../../src/language/index.js";
@@ -33,7 +36,7 @@ task main
 launch main
 `;
 
-describe("Nexilume 0.2 deterministic task kernel", () => {
+describe("Axirune 0.3 deterministic task kernel", () => {
   it("runs recursive tasks as named pure function calls", async () => {
     const compiled = compileSource(factorial);
     const result = await runSource(factorial);
@@ -41,8 +44,11 @@ describe("Nexilume 0.2 deterministic task kernel", () => {
     expect(compiled.ok).toBe(true);
     expect(compiled.diagnostics).toEqual([]);
     expect(compiled.ir.edition).toBe(2);
-    expect(compiled.ir.version).toBe("nexilume-ir/0.2");
-    expect(LANGUAGE_VERSION).toBe("0.2.0");
+    expect(compiled.ir.version).toBe("axirune-ir/0.3");
+    expect(LANGUAGE_NAME).toBe("Axirune");
+    expect(LANGUAGE_EXTENSION).toBe(".axi");
+    expect(LEGACY_LANGUAGE_EXTENSIONS).toContain(".nxl");
+    expect(LANGUAGE_VERSION).toBe("0.3.0");
     expect(result.status).toBe("completed");
     expect(result.value).toBe(720);
     expect(result.output).toEqual([720]);

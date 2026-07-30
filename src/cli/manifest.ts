@@ -7,7 +7,7 @@ import type {
 import { HOST_CAPABILITIES } from "./host-adapters.js";
 
 export interface CapabilityManifest {
-  schema: "nexilume-capability-manifest/1";
+  schema: "axirune-capability-manifest/1";
   space: string;
   edition: number;
   capabilities: {
@@ -59,7 +59,7 @@ export function capabilityManifestFromIR(ir: IRProgram): CapabilityManifest {
     }));
 
   return {
-    schema: "nexilume-capability-manifest/1",
+    schema: "axirune-capability-manifest/1",
     space: ir.space,
     edition: ir.edition,
     capabilities: [

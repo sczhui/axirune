@@ -26,7 +26,7 @@ async function callBuiltin(
   });
 }
 
-describe("Nexilume 0.2 pure builtin registry", () => {
+describe("Axirune 0.3 pure builtin registry", () => {
   it("exports one immutable signature for every required builtin", () => {
     expect(BUILTIN_NAMES).toEqual(
       expect.arrayContaining([
@@ -111,8 +111,8 @@ describe("Nexilume 0.2 pure builtin registry", () => {
     await expect(
       callBuiltin("Text.join", { parts: ["a", "b", "c"], separator: "-" }),
     ).resolves.toBe("a-b-c");
-    await expect(callBuiltin("Text.concat", { left: "Nexi", right: "lume" })).resolves.toBe(
-      "Nexilume",
+    await expect(callBuiltin("Text.concat", { left: "Axi", right: "rune" })).resolves.toBe(
+      "Axirune",
     );
     await expect(callBuiltin("Text.length", { text: "agent" })).resolves.toBe(5);
     await expect(callBuiltin("Text.upper", { text: "agent" })).resolves.toBe("AGENT");
@@ -135,8 +135,8 @@ describe("Nexilume 0.2 pure builtin registry", () => {
       }),
     ).resolves.toBe("b-b-b");
     await expect(
-      callBuiltin("Text.slice", { text: "Nexilume", start: 4, end: 8 }),
-    ).resolves.toBe("lume");
+      callBuiltin("Text.slice", { text: "Axirune", start: 3, end: 7 }),
+    ).resolves.toBe("rune");
     await expect(
       callBuiltin("Text.split", { text: "a,b,c", separator: "," }),
     ).resolves.toEqual(["a", "b", "c"]);

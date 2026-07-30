@@ -1,5 +1,5 @@
 /**
- * Nexilume 0.2 pure standard library.
+ * Axirune 0.3 pure standard library.
  *
  * Signatures and evaluators intentionally live in one registry so the
  * compiler and every runtime surface agree on names, parameters, laziness,

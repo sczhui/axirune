@@ -6,7 +6,7 @@ import {
   type Frame,
 } from "../../src/language/index.js";
 
-describe("Nexilume lexer and parser", () => {
+describe("Axirune lexer and parser", () => {
   it("lexes angle and ordinary strings without losing their decoded value", () => {
     const result = lexSource("emit «hello\\»»\nemit \"world\"\n");
     const strings = result.tokens.filter((token) => token.kind === "string");
@@ -67,8 +67,8 @@ task greet
     const result = parseSource(`package refund-review
   version «0.1.0»
   edition «first-intent»
-  source «src/**/*.nxl»
-  entry «src/main.nxl»
+  source «src/**/*.axi»
+  entry «src/main.axi»
   runtime «web»
   require «mcp:ledger@1.4.2»
   authority «manifest»

@@ -46,7 +46,7 @@ export interface LanguageServerOptions {
   log?: (message: string) => void;
 }
 
-export class NexilumeLanguageServer {
+export class AxiruneLanguageServer {
   readonly documents = new TextDocumentStore();
   readonly #send: (message: JsonRpcMessage) => void;
   readonly #onExit: (code: number) => void;
@@ -76,7 +76,7 @@ export class NexilumeLanguageServer {
   private async dispatch(method: string, params: unknown): Promise<unknown> {
     if (method === "initialize") {
       if (this.#initialized) {
-        throw rpcFailure(ERROR.invalidRequest, "Nexilume LSP is already initialized.");
+        throw rpcFailure(ERROR.invalidRequest, "Axirune LSP is already initialized.");
       }
       this.#initialized = true;
       return initializeResult();
@@ -86,14 +86,14 @@ export class NexilumeLanguageServer {
       return undefined;
     }
     if (!this.#initialized) {
-      throw rpcFailure(ERROR.serverNotInitialized, "Initialize the Nexilume LSP first.");
+      throw rpcFailure(ERROR.serverNotInitialized, "Initialize the Axirune LSP first.");
     }
     if (method === "shutdown") {
       this.#shutdownRequested = true;
       return null;
     }
     if (this.#shutdownRequested) {
-      throw rpcFailure(ERROR.invalidRequest, "The Nexilume LSP is shutting down.");
+      throw rpcFailure(ERROR.invalidRequest, "The Axirune LSP is shutting down.");
     }
 
     switch (method) {
@@ -214,8 +214,11 @@ export class NexilumeLanguageServer {
   }
 }
 
-export function startStdioServer(): NexilumeLanguageServer {
-  const server = new NexilumeLanguageServer({
+/** @deprecated Use AxiruneLanguageServer. */
+export { AxiruneLanguageServer as NexilumeLanguageServer };
+
+export function startStdioServer(): AxiruneLanguageServer {
+  const server = new AxiruneLanguageServer({
     send: (message) => process.stdout.write(encodeMessage(message)),
     onExit: (code) => {
       process.exitCode = code;

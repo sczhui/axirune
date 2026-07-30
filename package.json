@@ -1,11 +1,12 @@
 {
-  "name": "nexilume-language",
-  "version": "0.2.0",
+  "name": "axirune-language",
+  "version": "0.3.0",
   "private": true,
   "type": "module",
   "description": "A deterministic general-purpose language with optional typed AI capabilities.",
   "license": "Apache-2.0",
   "keywords": [
+    "axirune",
     "programming-language",
     "interpreter",
     "compiler",
@@ -13,16 +14,18 @@
     "mcp",
     "capabilities"
   ],
-  "homepage": "https://nexilume.velhu.com/",
+  "homepage": "https://axirune.velhu.com/",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sczhui/nexilume.git"
+    "url": "git+https://github.com/sczhui/axirune.git"
   },
   "bugs": {
-    "url": "https://github.com/sczhui/nexilume/issues"
+    "url": "https://github.com/sczhui/axirune/issues"
   },
   "bin": {
-    "nexilume": "./dist-toolchain/src/cli/nexilume.js",
+    "axirune": "./dist-toolchain/src/cli/axirune.js",
+    "axirune-lsp": "./dist-toolchain/src/lsp/server.js",
+    "nexilume": "./dist-toolchain/src/cli/axirune.js",
     "nexilume-lsp": "./dist-toolchain/src/lsp/server.js"
   },
   "files": [
@@ -32,8 +35,8 @@
     "dist-toolchain/benchmarks",
     "docs",
     "examples",
-    "nexilume.pack",
-    "nexilume.lock",
+    "axirune.pack",
+    "axirune.lock",
     "README.md",
     "CHANGELOG.md",
     "LICENSE"
@@ -52,7 +55,8 @@
     "preview": "vite preview --host 0.0.0.0",
     "check:examples": "npm run build:toolchain && node scripts/check-examples.mjs",
     "bench": "npm run build:toolchain && node dist-toolchain/benchmarks/run.js",
-    "nexilume": "node dist-toolchain/src/cli/nexilume.js"
+    "axirune": "node dist-toolchain/src/cli/axirune.js",
+    "nexilume": "node dist-toolchain/src/cli/axirune.js"
   },
   "dependencies": {
     "lucide-react": "^1.27.0",

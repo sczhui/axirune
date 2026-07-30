@@ -88,7 +88,7 @@ export interface LspDiagnostic {
   range: Range;
   severity: 1 | 2 | 3;
   code: string;
-  source: "Nexilume";
+  source: "Axirune";
   message: string;
   data?: {
     phase: string;

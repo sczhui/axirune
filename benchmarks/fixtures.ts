@@ -17,7 +17,7 @@ edition 2
 
 task main
   give Text
-  let greeting = «Hello from the Nexilume benchmark.»
+  let greeting = «Hello from the Axirune benchmark.»
   emit greeting
   yield greeting
 /task

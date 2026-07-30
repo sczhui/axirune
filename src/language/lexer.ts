@@ -55,7 +55,7 @@ export function lexSource(source: string): LexResult {
       continue;
     }
 
-    // Nexilume comments are spoken pauses rather than C-style punctuation.
+    // Axirune comments are spoken pauses rather than C-style punctuation.
     if (character === "-" && source[offset + 1] === "-") {
       while (offset < source.length && source[offset] !== "\n") {
         advance();
@@ -166,7 +166,7 @@ export function lexSource(source: string): LexResult {
         "N1002",
         "error",
         "lex",
-        `Nexilume does not recognize ${JSON.stringify(lexeme)} here.`,
+        `Axirune does not recognize ${JSON.stringify(lexeme)} here.`,
         { start, end: position() },
       ),
     );
@@ -176,4 +176,3 @@ export function lexSource(source: string): LexResult {
   tokens.push({ kind: "eof", lexeme: "", span: { start: eof, end: eof } });
   return { tokens, diagnostics };
 }
-

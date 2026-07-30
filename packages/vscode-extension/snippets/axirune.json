@@ -1,7 +1,7 @@
 {
-  "Nexilume deterministic program": {
+  "Axirune deterministic program": {
     "prefix": "program",
-    "description": "Create a complete deterministic Nexilume program",
+    "description": "Create a complete deterministic Axirune program",
     "body": [
       "space ${1:application}",
       "edition 2",
@@ -9,7 +9,7 @@
       "task main",
       "  give Text",
       "  let message [call Text.join",
-      "    :parts [list «${2:Hello, }» «${3:Nexilume}»]",
+      "    :parts [list «${2:Hello, }» «${3:Axirune}»]",
       "  ]",
       "  emit message",
       "  yield message",
@@ -18,9 +18,9 @@
       "launch main"
     ]
   },
-  "Nexilume task": {
+  "Axirune task": {
     "prefix": "task",
-    "description": "Create a typed Nexilume task frame",
+    "description": "Create a typed Axirune task frame",
     "body": [
       "task ${1:name}",
       "  take ${2:input} ${3:Text}",
@@ -29,7 +29,7 @@
       "/task"
     ]
   },
-  "Nexilume task call": {
+  "Axirune task call": {
     "prefix": "calltask",
     "description": "Call a deterministic task as an expression",
     "body": [
@@ -38,7 +38,7 @@
       "]"
     ]
   },
-  "Nexilume file application": {
+  "Axirune file application": {
     "prefix": "fileapp",
     "description": "Read a real file through explicit CLI host authority",
     "body": [
@@ -54,7 +54,7 @@
       "launch main"
     ]
   },
-  "Nexilume tool": {
+  "Axirune tool": {
     "prefix": "tool",
     "description": "Declare an authority-checked tool",
     "body": [
@@ -66,7 +66,7 @@
       "/tool"
     ]
   },
-  "Nexilume agent": {
+  "Axirune agent": {
     "prefix": "agent",
     "description": "Declare a budgeted agent",
     "body": [

@@ -24,10 +24,10 @@ describe("benchmark reporting", () => {
   it("renders measured fields and checksum in Markdown", () => {
     const timing = statistics([1, 2, 3]);
     const markdown = formatBenchmarkMarkdown({
-      schema: "nexilume-benchmark/1",
+      schema: "axirune-benchmark/1",
       checksum: "sha256:test",
       generatedAt: "2026-07-28T00:00:00.000Z",
-      languageVersion: "0.2.0",
+      languageVersion: "0.3.0",
       runtime: {
         node: "v24",
         platform: "linux",

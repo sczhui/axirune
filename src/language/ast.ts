@@ -1,5 +1,5 @@
 /**
- * Nexilume's loss-light, JSON-serializable syntax tree.
+ * Axirune's loss-light, JSON-serializable syntax tree.
  *
  * Every meaningful node owns a source span.  The compiler never relies on
  * indentation or trivia: frames are closed explicitly and statements are

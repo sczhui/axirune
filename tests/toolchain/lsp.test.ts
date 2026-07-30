@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { BUILTIN_NAMES } from "../../src/language/index.js";
-import { NexilumeLanguageServer } from "../../src/lsp/server.js";
+import { AxiruneLanguageServer } from "../../src/lsp/server.js";
 import type {
   JsonRpcMessage,
   JsonRpcResponse,
@@ -17,10 +17,10 @@ task main
 launch main
 `;
 
-describe("Nexilume language server", () => {
+describe("Axirune language server", () => {
   it("advertises the implemented language features", async () => {
     const sent: JsonRpcMessage[] = [];
-    const server = new NexilumeLanguageServer({ send: (message) => sent.push(message) });
+    const server = new AxiruneLanguageServer({ send: (message) => sent.push(message) });
     await server.handle({
       jsonrpc: "2.0",
       id: 1,
@@ -37,12 +37,16 @@ describe("Nexilume language server", () => {
         documentSymbolProvider: true,
         documentFormattingProvider: true,
       },
+      serverInfo: {
+        name: "axirune-lsp",
+        version: "0.3.0",
+      },
     });
   });
 
   it("publishes diagnostics and serves completion, hover, symbols and formatting", async () => {
     const sent: JsonRpcMessage[] = [];
-    const server = new NexilumeLanguageServer({ send: (message) => sent.push(message) });
+    const server = new AxiruneLanguageServer({ send: (message) => sent.push(message) });
     await server.handle({
       jsonrpc: "2.0",
       id: 1,
@@ -54,8 +58,8 @@ describe("Nexilume language server", () => {
       method: "textDocument/didOpen",
       params: {
         textDocument: {
-          uri: "file:///glow.nxl",
-          languageId: "nexilume",
+          uri: "file:///glow.axi",
+          languageId: "axirune",
           version: 1,
           text: SOURCE,
         },
@@ -73,7 +77,7 @@ describe("Nexilume language server", () => {
       id: 2,
       method: "textDocument/completion",
       params: {
-        textDocument: { uri: "file:///glow.nxl" },
+        textDocument: { uri: "file:///glow.axi" },
         position: { line: 4, character: 2 },
       },
     });
@@ -102,7 +106,7 @@ describe("Nexilume language server", () => {
       id: 3,
       method: "textDocument/hover",
       params: {
-        textDocument: { uri: "file:///glow.nxl" },
+        textDocument: { uri: "file:///glow.axi" },
         position: { line: 2, character: 1 },
       },
     });
@@ -114,7 +118,7 @@ describe("Nexilume language server", () => {
       jsonrpc: "2.0",
       id: 4,
       method: "textDocument/documentSymbol",
-      params: { textDocument: { uri: "file:///glow.nxl" } },
+      params: { textDocument: { uri: "file:///glow.axi" } },
     });
     expect(responseResult(sent, 4)).toMatchObject([
       {
@@ -127,7 +131,7 @@ describe("Nexilume language server", () => {
       jsonrpc: "2.0",
       method: "textDocument/didChange",
       params: {
-        textDocument: { uri: "file:///glow.nxl", version: 2 },
+        textDocument: { uri: "file:///glow.axi", version: 2 },
         contentChanges: [
           {
             text: "space glow\ntask main\nemit «hello»\nyield «done»\n/task\nlaunch main",
@@ -140,7 +144,7 @@ describe("Nexilume language server", () => {
       id: 5,
       method: "textDocument/formatting",
       params: {
-        textDocument: { uri: "file:///glow.nxl" },
+        textDocument: { uri: "file:///glow.axi" },
         options: { tabSize: 2, insertSpaces: true },
       },
     });
@@ -151,7 +155,7 @@ describe("Nexilume language server", () => {
 
   it("honors shutdown and exit", async () => {
     let exitCode: number | undefined;
-    const server = new NexilumeLanguageServer({
+    const server = new AxiruneLanguageServer({
       send: () => undefined,
       onExit: (code) => {
         exitCode = code;
@@ -165,15 +169,15 @@ describe("Nexilume language server", () => {
 
   it("recomputes diagnostics after an incremental edit", async () => {
     const sent: JsonRpcMessage[] = [];
-    const server = new NexilumeLanguageServer({ send: (message) => sent.push(message) });
+    const server = new AxiruneLanguageServer({ send: (message) => sent.push(message) });
     await server.handle({ jsonrpc: "2.0", id: 1, method: "initialize", params: {} });
     await server.handle({
       jsonrpc: "2.0",
       method: "textDocument/didOpen",
       params: {
         textDocument: {
-          uri: "file:///broken.nxl",
-          languageId: "nexilume",
+          uri: "file:///broken.axi",
+          languageId: "axirune",
           version: 1,
           text: SOURCE,
         },
@@ -183,7 +187,7 @@ describe("Nexilume language server", () => {
       jsonrpc: "2.0",
       method: "textDocument/didChange",
       params: {
-        textDocument: { uri: "file:///broken.nxl", version: 2 },
+        textDocument: { uri: "file:///broken.axi", version: 2 },
         contentChanges: [
           {
             range: {
@@ -215,15 +219,15 @@ task main
 launch main
 `;
     const sent: JsonRpcMessage[] = [];
-    const server = new NexilumeLanguageServer({ send: (message) => sent.push(message) });
+    const server = new AxiruneLanguageServer({ send: (message) => sent.push(message) });
     await server.handle({ jsonrpc: "2.0", id: 1, method: "initialize", params: {} });
     await server.handle({
       jsonrpc: "2.0",
       method: "textDocument/didOpen",
       params: {
         textDocument: {
-          uri: "file:///builtins.nxl",
-          languageId: "nexilume",
+          uri: "file:///builtins.axi",
+          languageId: "axirune",
           version: 1,
           text: source,
         },
@@ -235,7 +239,7 @@ launch main
       id: 2,
       method: "textDocument/hover",
       params: {
-        textDocument: { uri: "file:///builtins.nxl" },
+        textDocument: { uri: "file:///builtins.axi" },
         position: { line: 2, character: lines[2]!.indexOf("add") + 1 },
       },
     });
@@ -250,7 +254,7 @@ launch main
       id: 3,
       method: "textDocument/hover",
       params: {
-        textDocument: { uri: "file:///builtins.nxl" },
+        textDocument: { uri: "file:///builtins.axi" },
         position: { line: 3, character: lines[3]!.indexOf("readText") + 1 },
       },
     });

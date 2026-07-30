@@ -1,17 +1,17 @@
-# Nexilume 0.2 toolchain
+# Axirune 0.3 toolchain
 
 The reference toolchain exposes every stage from source to deterministic
 execution:
 
 ```text
-nexilume check examples/hello.nxl
-nexilume run examples/factorial.nxl
-nexilume fmt examples/invoice-total.nxl --write
-nexilume ast examples/outcome-division.nxl
-nexilume ir examples/invoice-total.nxl
-nexilume manifest examples/word-frequency.nxl
-nexilume build examples/hello.nxl --out build/
-nexilume bench
+axirune check examples/hello.axi
+axirune run examples/factorial.axi
+axirune fmt examples/invoice-total.axi --write
+axirune ast examples/outcome-division.axi
+axirune ir examples/invoice-total.axi
+axirune manifest examples/word-frequency.axi
+axirune build examples/hello.axi --out build/
+axirune bench
 ```
 
 ## `check`
@@ -28,7 +28,7 @@ User-defined task calls, recursion, lazy `Core.if`, pure collection operations,
 JSON, and Outcome values run without adapters:
 
 ```bash
-nexilume run examples/invoice-total.nxl
+axirune run examples/invoice-total.axi
 ```
 
 Programs that declare files, network, tools, MCP, or model access additionally
@@ -66,7 +66,7 @@ values, median, P95, and operations per second. The website reads the generated
 
 ## Language Server
 
-`nexilume-lsp --stdio` starts the JSON-RPC Language Server. It supports
+`axirune-lsp --stdio` starts the JSON-RPC Language Server. It supports
 initialization, incremental text synchronization, diagnostics, completion,
 hover, definition, document symbols, formatting, and shutdown.
 

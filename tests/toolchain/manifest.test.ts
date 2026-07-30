@@ -18,6 +18,7 @@ sandbox preview
 `);
     expect(compiled.ok).toBe(true);
     const manifest = capabilityManifestFromIR(compiled.ir);
+    expect(manifest.schema).toBe("axirune-capability-manifest/1");
     expect(manifest.capabilities).toMatchObject([
       {
         name: "weather.read",

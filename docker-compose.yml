@@ -1,12 +1,12 @@
-name: nexilume
+name: axirune
 
 services:
-  nexilume:
-    image: nexilume:local
+  axirune:
+    image: axirune:local
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: nexilume
+    container_name: axirune
     restart: unless-stopped
     user: "101:101"
     read_only: true
@@ -24,14 +24,19 @@ services:
     labels:
       traefik.enable: "true"
       traefik.docker.network: proxy-net
-      traefik.http.routers.nexilume.rule: "Host(`nexilume.velhu.com`)"
-      traefik.http.routers.nexilume.entrypoints: websecure
-      traefik.http.routers.nexilume.tls: "true"
-      traefik.http.services.nexilume.loadbalancer.server.port: "8080"
+      traefik.http.routers.axirune.rule: "Host(`axirune.velhu.com`)"
+      traefik.http.routers.axirune.entrypoints: websecure
+      traefik.http.routers.axirune.tls: "true"
+      traefik.http.routers.axirune.service: axirune
+      traefik.http.routers.axirune-legacy.rule: "Host(`nexilume.velhu.com`)"
+      traefik.http.routers.axirune-legacy.entrypoints: websecure
+      traefik.http.routers.axirune-legacy.tls: "true"
+      traefik.http.routers.axirune-legacy.service: axirune
+      traefik.http.services.axirune.loadbalancer.server.port: "8080"
       homepage.group: "AI"
-      homepage.name: "Nexilume Language"
+      homepage.name: "Axirune Language"
       homepage.icon: "mdi-code-block-braces"
-      homepage.href: "https://nexilume.velhu.com"
+      homepage.href: "https://axirune.velhu.com"
       homepage.description: "无需大模型的 AI 原生通用编程语言"
     healthcheck:
       test:

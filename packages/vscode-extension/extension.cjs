@@ -67,7 +67,7 @@ function consume(chunk) {
   }
 }
 
-const diagnosticCollection = vscode.languages.createDiagnosticCollection('nexilume')
+const diagnosticCollection = vscode.languages.createDiagnosticCollection('axirune')
 
 function publishDiagnostics(params) {
   const uri = vscode.Uri.parse(params.uri)
@@ -80,7 +80,7 @@ function publishDiagnostics(params) {
     )
     const diagnostic = new vscode.Diagnostic(range, item.message, item.severity || 1)
     diagnostic.code = item.code
-    diagnostic.source = 'Nexilume'
+    diagnostic.source = 'Axirune'
     return diagnostic
   })
   diagnosticCollection.set(uri, diagnostics)
@@ -130,7 +130,7 @@ async function safeRequest(method, params, fallback) {
   try {
     return await request(method, params)
   } catch (error) {
-    console.error(`[Nexilume LSP] ${error instanceof Error ? error.message : String(error)}`)
+    console.error(`[Axirune LSP] ${error instanceof Error ? error.message : String(error)}`)
     return fallback
   }
 }
@@ -143,7 +143,7 @@ function openDocument(document) {
     params: {
       textDocument: {
         uri: document.uri.toString(),
-        languageId: 'nexilume',
+        languageId: 'axirune',
         version: document.version,
         text: document.getText(),
       },
@@ -182,20 +182,20 @@ function start(context) {
     stdio: ['pipe', 'pipe', 'pipe'],
   })
   server.stdout.on('data', consume)
-  server.stderr.on('data', (chunk) => console.error(`[Nexilume LSP] ${chunk}`))
+  server.stderr.on('data', (chunk) => console.error(`[Axirune LSP] ${chunk}`))
   server.on('exit', (code) => {
     if (code && code !== 0) {
-      vscode.window.showWarningMessage(`Nexilume language server stopped with code ${code}.`)
+      vscode.window.showWarningMessage(`Axirune language server stopped with code ${code}.`)
     }
   })
   void request('initialize', {
       processId: process.pid,
       rootUri: vscode.workspace.workspaceFolders?.[0]?.uri.toString() || null,
       capabilities: {},
-      clientInfo: { name: 'Nexilume VS Code', version: '0.2.0' },
-    }).catch((error) => console.error(`[Nexilume LSP] ${error.message}`))
+      clientInfo: { name: 'Axirune VS Code', version: '0.3.0' },
+    }).catch((error) => console.error(`[Axirune LSP] ${error.message}`))
   send({ jsonrpc: '2.0', method: 'initialized', params: {} })
-  vscode.workspace.textDocuments.filter((doc) => doc.languageId === 'nexilume').forEach(openDocument)
+  vscode.workspace.textDocuments.filter((doc) => doc.languageId === 'axirune').forEach(openDocument)
 }
 
 function stop() {
@@ -204,29 +204,29 @@ function stop() {
   send({ jsonrpc: '2.0', method: 'exit', params: null })
   server.kill()
   server = undefined
-  for (const waiter of pending.values()) waiter.reject(new Error('Nexilume LSP stopped.'))
+  for (const waiter of pending.values()) waiter.reject(new Error('Axirune LSP stopped.'))
   pending.clear()
 }
 
 function activate(context) {
   start(context)
-  const selector = { language: 'nexilume' }
+  const selector = { language: 'axirune' }
   context.subscriptions.push(
     diagnosticCollection,
-    vscode.workspace.onDidOpenTextDocument((doc) => doc.languageId === 'nexilume' && openDocument(doc)),
+    vscode.workspace.onDidOpenTextDocument((doc) => doc.languageId === 'axirune' && openDocument(doc)),
     vscode.workspace.onDidChangeTextDocument((event) =>
-      event.document.languageId === 'nexilume' && changeDocument(event),
+      event.document.languageId === 'axirune' && changeDocument(event),
     ),
-    vscode.workspace.onDidCloseTextDocument((doc) => doc.languageId === 'nexilume' && closeDocument(doc)),
-    vscode.commands.registerCommand('nexilume.restartServer', () => {
+    vscode.workspace.onDidCloseTextDocument((doc) => doc.languageId === 'axirune' && closeDocument(doc)),
+    vscode.commands.registerCommand('axirune.restartServer', () => {
       stop()
       start(context)
-      vscode.window.showInformationMessage('Nexilume language server restarted.')
+      vscode.window.showInformationMessage('Axirune language server restarted.')
     }),
-    vscode.commands.registerCommand('nexilume.showManifest', () => {
-      const terminal = vscode.window.createTerminal('Nexilume Manifest')
+    vscode.commands.registerCommand('axirune.showManifest', () => {
+      const terminal = vscode.window.createTerminal('Axirune Manifest')
       terminal.show()
-      terminal.sendText(`nexilume manifest "${vscode.window.activeTextEditor?.document.fileName || ''}"`)
+      terminal.sendText(`axirune manifest "${vscode.window.activeTextEditor?.document.fileName || ''}"`)
     }),
     vscode.languages.registerCompletionItemProvider(
       selector,

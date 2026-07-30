@@ -9,7 +9,7 @@ import './styles/responsive.css'
 const root = document.getElementById('root')
 
 if (!root) {
-  throw new Error('Nexilume web root is missing.')
+  throw new Error('Axirune web root is missing.')
 }
 
 createRoot(root).render(
@@ -17,4 +17,3 @@ createRoot(root).render(
     <App />
   </StrictMode>,
 )
-

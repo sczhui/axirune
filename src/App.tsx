@@ -11,18 +11,18 @@ import { useRoute } from './ui/Router'
 import { PageFrame } from './ui/Shell'
 
 const titles = {
-  '/': 'Nexilume — Illuminate intent. Bound every effect.',
-  '/playground': 'Playground — Nexilume',
-  '/ide': 'Online IDE — Nexilume',
-  '/docs': 'Language Documentation — Nexilume',
-  '/examples': 'Example Programs — Nexilume',
-  '/benchmarks': 'Benchmarks — Nexilume',
-  '/download': 'Download Nexilume 0.2.0',
+  '/': 'Axirune — Make intent axiomatic. Bound every effect.',
+  '/playground': 'Playground — Axirune',
+  '/ide': 'Online IDE — Axirune',
+  '/docs': 'Language Documentation — Axirune',
+  '/examples': 'Example Programs — Axirune',
+  '/benchmarks': 'Benchmarks — Axirune',
+  '/download': 'Download Axirune 0.3.0',
 } as const
 
 function initialLocale(): Locale {
   if (typeof window === 'undefined') return 'zh'
-  const stored = window.localStorage.getItem('nexilume-locale')
+  const stored = window.localStorage.getItem('axirune-locale')
   if (stored === 'zh' || stored === 'en') return stored
   return navigator.language.toLowerCase().startsWith('zh') ? 'zh' : 'en'
 }
@@ -38,7 +38,7 @@ export default function App() {
 
   const changeLocale = (next: Locale) => {
     setLocale(next)
-    window.localStorage.setItem('nexilume-locale', next)
+    window.localStorage.setItem('axirune-locale', next)
   }
 
   return (
