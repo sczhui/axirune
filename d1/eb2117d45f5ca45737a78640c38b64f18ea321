@@ -1,0 +1,21 @@
+src/styles/base.css
+  s_25ab203f1b07d0::t_033cc0461879f9 34-35,41,45
+src/ui/ledger-showcase.css
+  s_25ab203f1b07d0::t_a91e90fdccc941 639
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "d1eb2117d45f5ca45737a78640c38b64f18ea321",
+  "prompts": {},
+  "sessions": {
+    "s_25ab203f1b07d0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019fa44a-76f2-7673-90ad-3fd964bf68ef",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "sczhui <3062629+sczhui@users.noreply.github.com>"
+    }
+  }
+}
