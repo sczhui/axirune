@@ -31,14 +31,18 @@
 }
 
 html {
+  max-width: 100%;
+  overflow-x: clip;
   scroll-behavior: smooth;
   scroll-padding-top: calc(var(--header-height) + 24px);
 }
 
 body {
+  max-width: 100%;
   min-width: 320px;
   min-height: 100vh;
   margin: 0;
+  overflow-x: clip;
   background: var(--paper);
   color: var(--ink);
 }
@@ -258,4 +262,3 @@ p {
     transition-duration: 0.01ms !important;
   }
 }
-

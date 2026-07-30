@@ -636,6 +636,7 @@
 .ledger-table-wrap {
   width: 100%;
   max-width: 100%;
+  contain: paint;
   overflow-x: auto;
 }
 
