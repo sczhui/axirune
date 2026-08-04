@@ -6,16 +6,23 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { basename, dirname, extname, join, parse, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
+  CAPSULE_EXTENSION,
   compileSource,
+  createCapsule,
+  createCapsuleFromIR,
+  decompileCapsule,
   formatSource,
   hasErrors,
+  inspectCapsule,
   IR_VERSION,
   LANGUAGE_EXTENSION,
   LANGUAGE_NAME,
   LANGUAGE_VERSION,
   SUPPORTED_LANGUAGE_EXTENSIONS,
   parseSource,
+  runProgram,
   runSource,
+  verifyCapsule,
   type Diagnostic,
   type RuntimeValue,
 } from "../language/index.js";
@@ -45,6 +52,13 @@ interface LoadedSource {
   source: string;
   sourceName: string;
   absolutePath: string | null;
+  workingDirectory: string;
+}
+
+interface LoadedCapsule {
+  bytes: Uint8Array;
+  sourceName: string;
+  absolutePath: string;
   workingDirectory: string;
 }
 
@@ -78,8 +92,20 @@ export async function runCli(
     }
     if (!args.input) {
       throw new UsageError(
-        `${args.command ?? "command"} requires an ${LANGUAGE_EXTENSION} source file.`,
+        `${args.command ?? "command"} requires an input file.`,
       );
+    }
+    if (args.command === "assemble") {
+      return await assembleCommand(args, args.input, environment, stdout);
+    }
+    if (
+      args.command === "verify" ||
+      args.command === "inspect" ||
+      args.command === "decompile" ||
+      (args.command === "run" && extname(args.input).toLowerCase() === CAPSULE_EXTENSION)
+    ) {
+      const loaded = await loadCapsule(args.input, environment);
+      return await executeCapsuleCommand(args, loaded, stdout, stderr);
     }
     const loaded = await loadSource(args.input, environment);
     return await executeSourceCommand(args, loaded, stdout, stderr);
@@ -120,11 +146,46 @@ async function executeSourceCommand(
       rejectOptions(args, ["json"]);
       return manifestCommand(loaded, stdout);
     }
+    case "compile":
+      return compileCommand(args, loaded, stdout, stderr);
     case "build":
       return buildCommand(args, loaded, stdout, stderr);
     case "bench":
+    case "verify":
+    case "inspect":
+    case "decompile":
+    case "assemble":
     case null:
       throw new UsageError("A command is required.");
+  }
+}
+
+async function executeCapsuleCommand(
+  args: CliArguments,
+  loaded: LoadedCapsule,
+  stdout: (chunk: string) => void,
+  stderr: (chunk: string) => void,
+): Promise<number> {
+  switch (args.command) {
+    case "verify":
+      return verifyCommand(args, loaded, stdout, stderr);
+    case "inspect":
+      return inspectCommand(args, loaded, stdout);
+    case "decompile":
+      return decompileCommand(args, loaded, stdout);
+    case "run":
+      return runCapsuleCommand(args, loaded, stdout, stderr);
+    case "check":
+    case "fmt":
+    case "ast":
+    case "ir":
+    case "manifest":
+    case "compile":
+    case "assemble":
+    case "build":
+    case "bench":
+    case null:
+      throw new UsageError(`${args.command ?? "command"} requires Axirune source.`);
   }
 }
 
@@ -329,6 +390,261 @@ function manifestCommand(loaded: LoadedSource, stdout: (chunk: string) => void):
   return compiled.ok ? 0 : 1;
 }
 
+async function compileCommand(
+  args: CliArguments,
+  loaded: LoadedSource,
+  stdout: (chunk: string) => void,
+  stderr: (chunk: string) => void,
+): Promise<number> {
+  rejectOptions(args, ["json", "out"]);
+  const compiled = compileSource(loaded.source);
+  if (!compiled.ok || hasErrors(compiled.diagnostics)) {
+    if (args.json) {
+      stdout(
+        stableJson({
+          schema: "axirune-cli/compile@1",
+          command: "compile",
+          source: loaded.sourceName,
+          ok: false,
+          diagnostics: compiled.diagnostics,
+        }),
+      );
+    } else {
+      printDiagnostics(compiled.diagnostics, loaded, stderr);
+    }
+    return 1;
+  }
+  const capsule = await createCapsule({
+    source: loaded.source,
+    sourceName: loaded.sourceName,
+  });
+  const output = args.out
+    ? resolve(loaded.workingDirectory, args.out)
+    : loaded.absolutePath
+      ? join(dirname(loaded.absolutePath), `${parse(loaded.absolutePath).name}${CAPSULE_EXTENSION}`)
+      : resolve(loaded.workingDirectory, `stdin${CAPSULE_EXTENSION}`);
+  await mkdir(dirname(output), { recursive: true });
+  await writeFile(output, capsule.bytes);
+  if (args.json) {
+    stdout(
+      stableJson({
+        schema: "axirune-cli/compile@1",
+        command: "compile",
+        source: loaded.sourceName,
+        ok: true,
+        artifact: output,
+        contentId: capsule.contentId,
+        semanticDigest: capsule.semanticDigest,
+      }),
+    );
+  } else {
+    stdout(`Compiled ${loaded.sourceName} → ${output}\n`);
+    stdout(`  content ${capsule.contentId}\n`);
+    stdout(`  semantic ${capsule.semanticDigest}\n`);
+  }
+  return 0;
+}
+
+async function assembleCommand(
+  args: CliArguments,
+  input: string,
+  environment: CliEnvironment,
+  stdout: (chunk: string) => void,
+): Promise<number> {
+  rejectOptions(args, ["json", "out"]);
+  if (input === "-") {
+    throw new UsageError("Checked IR assembly from stdin is not supported.");
+  }
+  if (!input.toLowerCase().endsWith(".air.json")) {
+    throw new UsageError("assemble expects a checked .air.json artifact.");
+  }
+  const cwd = resolve(environment.cwd ?? process.cwd());
+  const absoluteInput = resolve(cwd, input);
+  let document: unknown;
+  try {
+    document = JSON.parse(await readFile(absoluteInput, "utf8"));
+  } catch (error) {
+    throw new UsageError(
+      `Cannot parse checked IR JSON: ${error instanceof Error ? error.message : String(error)}`,
+    );
+  }
+  const ir =
+    document !== null &&
+    typeof document === "object" &&
+    !Array.isArray(document) &&
+    Object.hasOwn(document, "ir")
+      ? (document as Record<string, unknown>).ir
+      : document;
+  const capsule = await createCapsuleFromIR({ ir });
+  const output = args.out
+    ? resolve(cwd, args.out)
+    : resolve(cwd, `${input.slice(0, -".air.json".length)}${CAPSULE_EXTENSION}`);
+  await mkdir(dirname(output), { recursive: true });
+  await writeFile(output, capsule.bytes);
+  if (args.json) {
+    stdout(
+      stableJson({
+        schema: "axirune-cli/assemble@1",
+        command: "assemble",
+        source: input,
+        ok: true,
+        artifact: output,
+        contentId: capsule.contentId,
+        semanticDigest: capsule.semanticDigest,
+        sourceEmbedded: false,
+      }),
+    );
+  } else {
+    stdout(`Assembled ${input} → ${output}\n`);
+    stdout(`  content ${capsule.contentId}\n`);
+    stdout("  source projection omitted\n");
+  }
+  return 0;
+}
+
+async function verifyCommand(
+  args: CliArguments,
+  loaded: LoadedCapsule,
+  stdout: (chunk: string) => void,
+  stderr: (chunk: string) => void,
+): Promise<number> {
+  rejectOptions(args, ["json"]);
+  const result = await verifyCapsule(loaded.bytes);
+  if (args.json) {
+    stdout(
+      stableJson({
+        schema: "axirune-cli/verify@1",
+        command: "verify",
+        source: loaded.sourceName,
+        ...result,
+      }),
+    );
+  } else if (result.ok) {
+    stdout(`Verified ${loaded.sourceName}.\n`);
+    stdout(`  content ${result.contentId}\n`);
+    stdout(`  semantic ${result.semanticDigest}\n`);
+    stdout("  integrity verified; publisher identity not authenticated\n");
+  } else {
+    for (const issue of result.issues) stderr(`${issue.code}: ${issue.message}\n`);
+  }
+  return result.ok ? 0 : 1;
+}
+
+async function inspectCommand(
+  args: CliArguments,
+  loaded: LoadedCapsule,
+  stdout: (chunk: string) => void,
+): Promise<number> {
+  rejectOptions(args, ["json"]);
+  const result = await inspectCapsule(loaded.bytes);
+  const envelope = {
+    schema: "axirune-cli/inspect@1",
+    command: "inspect",
+    artifact: loaded.sourceName,
+    ok: true,
+    ...result,
+  };
+  stdout(stableJson(envelope));
+  return 0;
+}
+
+async function decompileCommand(
+  args: CliArguments,
+  loaded: LoadedCapsule,
+  stdout: (chunk: string) => void,
+): Promise<number> {
+  rejectOptions(args, ["json", "out"]);
+  const source = await decompileCapsule(loaded.bytes);
+  if (!args.out) {
+    if (args.json) {
+      stdout(
+        stableJson({
+          schema: "axirune-cli/decompile@1",
+          command: "decompile",
+          source: loaded.sourceName,
+          ok: true,
+          code: source,
+        }),
+      );
+    } else {
+      stdout(source);
+    }
+    return 0;
+  }
+  const output = resolve(loaded.workingDirectory, args.out);
+  await mkdir(dirname(output), { recursive: true });
+  await writeFile(output, source, "utf8");
+  if (args.json) {
+    stdout(
+      stableJson({
+        schema: "axirune-cli/decompile@1",
+        command: "decompile",
+        source: loaded.sourceName,
+        ok: true,
+        output,
+      }),
+    );
+  } else {
+    stdout(`Decompiled ${loaded.sourceName} → ${output}\n`);
+  }
+  return 0;
+}
+
+async function runCapsuleCommand(
+  args: CliArguments,
+  loaded: LoadedCapsule,
+  stdout: (chunk: string) => void,
+  stderr: (chunk: string) => void,
+): Promise<number> {
+  rejectOptions(args, [
+    "json",
+    "allow-read",
+    "allow-write",
+    "allow-net",
+    "input-json",
+  ]);
+  const inspected = await inspectCapsule(loaded.bytes);
+  const host = await createHostAdapters({
+    cwd: loaded.workingDirectory,
+    readRoots: args.allowRead,
+    writeRoots: args.allowWrite,
+    networkHosts: args.allowNet,
+  });
+  const input = args.inputJson === null ? undefined : parseInputJson(args.inputJson);
+  const result = await runProgram(inspected.ir, {
+    mockTools: false,
+    tools: host.tools,
+    capabilities: host.capabilities,
+    ...(inspected.metadata.program.entry.kind === "frame"
+      ? { entry: inspected.metadata.program.entry.frame }
+      : {}),
+    ...(input ? { input } : {}),
+  });
+  const ok = result.status === "completed" && !hasErrors(result.diagnostics);
+  if (args.json) {
+    stdout(
+      stableJson({
+        schema: "axirune-cli/run@1",
+        command: "run",
+        source: loaded.sourceName,
+        capsule: inspected.contentId,
+        ok,
+        ...result,
+      }),
+    );
+  } else {
+    for (const diagnostic of result.diagnostics) {
+      stderr(`${diagnostic.code}: ${diagnostic.message}\n`);
+    }
+    for (const emission of result.emissions) stdout(`${renderValue(emission)}\n`);
+    if (result.emissions.length === 0 && result.value !== undefined) {
+      stdout(`${renderValue(result.value)}\n`);
+    }
+    if (!ok) stderr(`Run ${result.status}.\n`);
+  }
+  return ok ? 0 : 1;
+}
+
 async function buildCommand(
   args: CliArguments,
   loaded: LoadedSource,
@@ -362,27 +678,39 @@ async function buildCommand(
     : resolve(dirname(loaded.absolutePath ?? loaded.workingDirectory), "build");
   const stem = loaded.absolutePath ? parse(loaded.absolutePath).name : "stdin";
   await mkdir(outputDirectory, { recursive: true });
+  const canonicalCompiled = compileSource(formatted.code);
+  if (!canonicalCompiled.ok || hasErrors(canonicalCompiled.diagnostics)) {
+    throw new Error("Canonical source failed the build invariant.");
+  }
+  const capsule = await createCapsule({
+    source: loaded.source,
+    sourceName: loaded.sourceName,
+  });
   const artifacts = {
     source: join(outputDirectory, `${stem}${LANGUAGE_EXTENSION}`),
     ast: join(outputDirectory, `${stem}.ast.json`),
     ir: join(outputDirectory, `${stem}.air.json`),
     manifest: join(outputDirectory, `${stem}.capabilities.json`),
+    capsule: join(outputDirectory, `${stem}${CAPSULE_EXTENSION}`),
     build: join(outputDirectory, `${stem}.build.json`),
   };
   const contents = {
     source: formatted.code,
-    ast: stableJson({ schema: "axirune-ast/1", program: compiled.program }),
-    ir: stableJson({ schema: IR_VERSION, ir: compiled.ir }),
+    ast: stableJson({ schema: "axirune-ast/1", program: canonicalCompiled.program }),
+    ir: stableJson({ schema: IR_VERSION, ir: canonicalCompiled.ir }),
     manifest: stableJson({
       schema: "axirune-capability-manifest/1",
-      manifest: capabilityManifestFromIR(compiled.ir),
+      manifest: capabilityManifestFromIR(canonicalCompiled.ir),
     }),
+    capsule: capsule.bytes,
   };
   const buildRecord = {
     schema: "axirune-build/1",
     languageVersion: LANGUAGE_VERSION,
     source: loaded.sourceName,
     sourceChecksum: sha256(contents.source),
+    capsuleContentId: capsule.contentId,
+    semanticDigest: capsule.semanticDigest,
     artifacts: Object.fromEntries(
       Object.entries(artifacts)
         .filter(([key]) => key !== "build")
@@ -398,6 +726,7 @@ async function buildCommand(
     writeFile(artifacts.ast, contents.ast, "utf8"),
     writeFile(artifacts.ir, contents.ir, "utf8"),
     writeFile(artifacts.manifest, contents.manifest, "utf8"),
+    writeFile(artifacts.capsule, contents.capsule),
     writeFile(artifacts.build, stableJson(buildRecord), "utf8"),
   ]);
 
@@ -489,6 +818,25 @@ async function loadSource(
   };
 }
 
+async function loadCapsule(
+  input: string,
+  environment: CliEnvironment,
+): Promise<LoadedCapsule> {
+  if (input === "-") {
+    throw new UsageError("Binary capsule input from stdin is not supported.");
+  }
+  if (extname(input).toLowerCase() !== CAPSULE_EXTENSION) {
+    throw new UsageError(`Axirune execution capsules use ${CAPSULE_EXTENSION}.`);
+  }
+  const absolutePath = resolve(environment.cwd ?? process.cwd(), input);
+  return {
+    bytes: new Uint8Array(await readFile(absolutePath)),
+    sourceName: input,
+    absolutePath,
+    workingDirectory: resolve(environment.cwd ?? process.cwd()),
+  };
+}
+
 async function readStdin(): Promise<string> {
   const chunks: Buffer[] = [];
   for await (const chunk of process.stdin) {
@@ -548,8 +896,11 @@ function renderValue(value: unknown): string {
   return JSON.stringify(value);
 }
 
-function sha256(value: string): string {
-  return `sha256:${createHash("sha256").update(value, "utf8").digest("hex")}`;
+function sha256(value: string | Uint8Array): string {
+  const hash = createHash("sha256");
+  if (typeof value === "string") hash.update(value, "utf8");
+  else hash.update(value);
+  return `sha256:${hash.digest("hex")}`;
 }
 
 function parseInputJson(value: string): Readonly<Record<string, RuntimeValue>> {

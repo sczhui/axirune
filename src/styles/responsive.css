@@ -60,6 +60,7 @@
     display: none;
     height: 100dvh;
     padding: 0 var(--page-pad) 28px;
+    overflow-y: auto;
     flex-direction: column;
     align-items: stretch;
     justify-content: flex-start;
@@ -102,6 +103,11 @@
     color: rgba(241, 238, 228, 0.72);
     font: 650 clamp(20px, 3vw, 30px) / 1 var(--display);
     letter-spacing: -0.03em;
+  }
+
+  .primary-nav > a:hover,
+  .primary-nav > a.is-active {
+    color: var(--paper);
   }
 
   .primary-nav > a::after {
@@ -176,6 +182,7 @@
 
   .manifesto,
   .ai-readability,
+  .artifact-callout,
   .ide-features {
     grid-template-columns: 1fr;
     gap: 56px;
@@ -218,6 +225,24 @@
 
   .page-hero__aside {
     min-height: 120px;
+  }
+
+  .capsule-lab__workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .capsule-source-panel {
+    border-right: 0;
+    border-bottom: 1px solid rgba(241, 238, 228, 0.24);
+  }
+
+  .capsule-proof-panel {
+    min-height: 640px;
+  }
+
+  .capsule-lab__actions {
+    align-items: flex-start;
+    flex-direction: column;
   }
 
   .sample-picker {
@@ -332,6 +357,41 @@
 
   .manifesto__columns {
     grid-template-columns: 1fr;
+  }
+
+  .artifact-callout__body {
+    grid-template-columns: 1fr;
+  }
+
+  .artifact-callout__proofs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .artifact-callout__proofs span:nth-child(even) {
+    padding-left: 18px;
+    border-left: 1px solid var(--line);
+  }
+
+  .capsule-lab__flow {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .capsule-lab__flow > div:nth-child(3) {
+    border-left: 0;
+  }
+
+  .capsule-lab__flow > div:nth-child(n + 3) {
+    border-top: 1px solid var(--line-light);
+  }
+
+  .capsule-lab__results {
+    grid-template-columns: 1fr;
+  }
+
+  .capsule-tamper-proof {
+    border-top: 0;
+    border-left: 1px solid var(--line-light);
   }
 
   .ai-readability__content {
@@ -703,6 +763,126 @@
   .home-cta__actions {
     align-items: stretch;
     flex-direction: column;
+  }
+
+  .artifact-callout {
+    padding-top: 82px;
+    padding-bottom: 82px;
+  }
+
+  .artifact-callout__body h2 {
+    font-size: 48px;
+  }
+
+  .artifact-callout__body > .button {
+    width: 100%;
+  }
+
+  .capsule-hero-seal {
+    box-shadow: 5px 5px 0 var(--ink);
+  }
+
+  .capsule-lab {
+    padding-right: 12px;
+    padding-left: 12px;
+  }
+
+  .capsule-lab__flow > div {
+    min-height: 62px;
+    padding: 0 12px;
+    grid-template-columns: 23px 1fr;
+  }
+
+  .capsule-lab__flow i {
+    display: none;
+  }
+
+  .capsule-lab__workspace {
+    margin-top: 22px;
+    box-shadow: 6px 6px 0 rgba(185, 244, 94, 0.12);
+  }
+
+  .capsule-panel-head small {
+    display: none;
+  }
+
+  .capsule-source-panel__action {
+    padding: 12px;
+    align-items: stretch;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .capsule-primary-action {
+    height: 48px;
+    border: 1px solid var(--signal);
+    justify-content: center;
+  }
+
+  .capsule-proof-panel__head,
+  .capsule-evidence {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+
+  .capsule-proof-panel__head {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .capsule-identity-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .capsule-identity-grid article {
+    min-height: 92px;
+  }
+
+  .capsule-identity-grid article + article {
+    border-top: 1px solid var(--ink);
+    border-left: 0;
+  }
+
+  .capsule-facts {
+    grid-template-columns: 1fr;
+  }
+
+  .capsule-facts__block {
+    padding-right: 0;
+  }
+
+  .capsule-facts__block + .capsule-facts__block {
+    padding-left: 0;
+    border-top: 1px solid var(--line);
+    border-left: 0;
+  }
+
+  .capsule-section-list > header span:last-child,
+  .capsule-section-list > div small {
+    display: none;
+  }
+
+  .capsule-section-list > div {
+    grid-template-columns: 62px minmax(0, 1fr) 58px;
+  }
+
+  .capsule-lab__actions {
+    padding: 20px 16px;
+  }
+
+  .capsule-action-buttons {
+    width: 100%;
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .capsule-action-buttons button {
+    width: 100%;
+  }
+
+  .capsule-run-result,
+  .capsule-tamper-proof {
+    min-height: 320px;
   }
 
   .page-hero {

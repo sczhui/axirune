@@ -17,12 +17,9 @@ import type {
   ToolCallRequest,
   ToolDefinition,
 } from "../language/index.js";
+import { HOST_CAPABILITIES } from "../language/host-capabilities.js";
 
-export const HOST_CAPABILITIES = {
-  fileRead: "host.fs.read",
-  fileWrite: "host.fs.write",
-  networkFetch: "host.net.fetch",
-} as const;
+export { HOST_CAPABILITIES } from "../language/host-capabilities.js";
 
 export interface HostAdapterOptions {
   cwd: string;

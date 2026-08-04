@@ -39,6 +39,7 @@ export type Concept = {
 
 export const navItems = [
   { path: '/playground', label: { zh: '演练场', en: 'Playground' } },
+  { path: '/capsule-lab', label: { zh: '胶囊实验室', en: 'Capsule Lab' } },
   { path: '/ide', label: { zh: '在线 IDE', en: 'IDE' } },
   { path: '/docs', label: { zh: '文档', en: 'Docs' } },
   { path: '/examples', label: { zh: '示例', en: 'Examples' } },
@@ -216,8 +217,8 @@ export const docSections: DocSection[] = [
     kicker: '00 / ORIENTATION',
     title: { zh: '确定性优先，AI 可选', en: 'Deterministic first, AI optional' },
     summary: {
-      zh: 'Axirune 0.3 是具备可选 Agent 扩展的确定性通用语言与解释器。名称取自 axiom 与 rune：让意图成为可检查的公理，让每个 effect 都有边界。',
-      en: 'Axirune 0.3 is a deterministic general-purpose language and interpreter with optional agent extensions. Its name joins axiom and rune: make intent axiomatic and bound every effect.',
+      zh: 'Axirune 0.4 Alpha 是具备可验证执行胶囊与可选 Agent 扩展的确定性通用语言。名称取自 axiom 与 rune：让意图成为可检查的公理，让每个 effect 都有边界。',
+      en: 'Axirune 0.4 Alpha is a deterministic general-purpose language with verifiable execution capsules and optional agent extensions. Its name joins axiom and rune: make intent axiomatic and bound every effect.',
     },
     body: {
       zh: [
@@ -504,7 +505,7 @@ axirune run examples/word-frequency.axi --allow-read .`,
   },
 ]
 
-export const quickStart = `npm install -g https://axirune.velhu.com/downloads/axirune-language-0.3.1.tgz
+export const quickStart = `npm install -g https://axirune.velhu.com/downloads/axirune-language-0.4.0-alpha.1.tgz
 axirune check examples/invoice-total.axi
 axirune run examples/invoice-total.axi`
 

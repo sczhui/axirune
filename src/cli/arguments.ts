@@ -5,6 +5,11 @@ export const COMMANDS = [
   "ast",
   "ir",
   "manifest",
+  "compile",
+  "assemble",
+  "verify",
+  "inspect",
+  "decompile",
   "build",
   "bench",
 ] as const;
@@ -196,14 +201,19 @@ Commands:
   ast         Emit the recoverable syntax tree as JSON
   ir          Emit checked Axirune IR as JSON
   manifest    Emit the capability manifest as JSON
-  build       Write canonical source, AST, IR and manifest artifacts
+  compile     Compile source into a verified .axc execution capsule
+  assemble    Verify checked .air.json and package it without source
+  verify      Verify a capsule without executing it
+  inspect     Show capsule identity, target, IR and requested authority
+  decompile   Recover the embedded canonical source projection
+  build       Write source, AST, IR, manifest and capsule artifacts
   bench       Benchmark parse, compile and run
 
 Options:
   --json              Emit a machine-readable JSON envelope
   --write, -w         Update the input file (fmt only)
   --check             Exit non-zero if formatting differs (fmt only)
-  --out, -o <path>    Build directory or benchmark output prefix
+  --out, -o <path>    Output file, build directory, or benchmark prefix
   --samples <count>   Timed samples per benchmark
   --warmup <count>    Warmup samples per benchmark
   --markdown          Emit benchmark Markdown
@@ -215,5 +225,6 @@ Options:
   --version, -V       Show the language version
 
 Use "-" as the source path to read UTF-8 source from stdin.
+Capsule commands accept framed binary .axc files (not binary stdin).
 Legacy .nxl source files remain accepted during the rename transition.
 `;

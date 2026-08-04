@@ -1,13 +1,19 @@
-# Axirune 0.3 language specification
+# Axirune 0.4 alpha language specification
 
 Status: executable preview
 
-Language version: `0.3.1`
+Language version: `0.4.0-alpha.1`
 
 IR version: `axirune-ir/0.3`
 
+Execution Capsule schema: `axirune-capsule/1`
+
+Runtime ABI: `axirune-runtime/1`
+
+Deterministic-kernel ABI: `axirune-kernel/0.3`
+
 This document describes the behavior of the reference parser, compiler, and
-interpreter. “Must” identifies a language rule implemented by the 0.3
+interpreter. “Must” identifies a language rule implemented by the current
 toolchain. Sections marked **declarative preview** define syntax carried into
 AST and IR, but do not claim a complete production adapter.
 
@@ -24,7 +30,10 @@ The architecture is:
 source
   -> loss-light AST
   -> checked Axirune IR
-  -> fuel-limited interpreter
+  |-> fuel-limited interpreter
+  `-> ordered Wire IR + authority manifest + optional canonical source
+        -> verified .axc Execution Capsule
+        -> fuel-limited interpreter
        |-- pure builtin registry
        `-- optional host adapters
              |-- files / HTTP
@@ -441,10 +450,10 @@ These are separate layers:
 Source declarations cannot manufacture a host adapter. A file capability is
 useless unless the deployment also binds `File.readText` with an allowed root.
 
-The 0.3 interpreter enforces capability checks, permission decisions, time and
+The reference interpreter enforces capability checks, permission decisions, time and
 value limits. The CLI enforces filesystem and network allowlists. Rich sandbox
 directives inside a `sandbox` frame are retained in IR for manifests and future
-hosts; 0.3 does not claim OS-level isolation from source declarations alone.
+hosts; Axirune does not claim OS-level isolation from source declarations alone.
 Docker or another process boundary is recommended for hostile code.
 
 ## 12. Concurrency
@@ -475,7 +484,7 @@ the bounded view supplied to an inference or external component. Their
 directives—lifetime, merge, retention, compaction, source, trust, and
 budget—are parsed and emitted to IR.
 
-The 0.3 interpreter does not ship a durable memory database or automatic token
+The reference interpreter does not ship a durable memory database or automatic token
 context compiler. Hosts may consume these declarations to implement one. Pure
 tasks use explicit inputs and immutable values and therefore need neither
 facility.
@@ -505,7 +514,7 @@ An `mcp` frame records protocol, transport, endpoint, pinning, imported names,
 and capability requirements. It makes an MCP dependency inspectable in AST,
 IR, manifests, documentation, and editor tooling.
 
-The 0.3 runtime does not include an automatic MCP client. A deployment binds
+The reference runtime does not include an automatic MCP client. A deployment binds
 imported MCP methods as ordinary tools, applies capability and permission
 checks, and owns transport authentication outside source code.
 
@@ -520,13 +529,66 @@ axirune fmt <file> [--check]
 axirune ast <file>
 axirune ir <file>
 axirune manifest <file>
+axirune compile <file.axi> [--out <file.axc>]
+axirune assemble <file.air.json> [--out <file.axc>]
+axirune verify <file.axc>
+axirune inspect <file.axc>
+axirune decompile <file.axc> [--out <file.axi>]
 axirune build <file>
 axirune bench
 ```
 
 The JavaScript API exposes `parseSource`, `formatSource`, `compileSource`, and
-`runSource`. The browser Playground and online IDE use the same parser,
+`runSource`, plus capsule construction, verification, inspection, and
+decompilation APIs. The browser Playground and online IDE use the same parser,
 compiler, builtin registry, and interpreter as the CLI.
 
-`build` produces checked IR artifacts. Axirune 0.3 does not claim native-code,
-JVM, or WebAssembly compilation.
+`build` produces canonical source, checked IR, a derived authority manifest,
+an Execution Capsule, and a checksum-bearing build record. Axirune does not
+claim native-code, JVM, or WebAssembly compilation.
+
+## 18. Execution Capsule contract
+
+`.axc` is the artifact-first deployment form. It is not a source-less or
+native-code format. A capsule has a fixed 60-byte big-endian frame followed by
+canonical metadata and a bounded payload. The frame contains magic bytes,
+capsule major/minor, flags, metadata/payload/signature lengths, and a SHA-256
+digest over the framed metadata and payload.
+
+The implemented capsule payload contains these semantic surfaces:
+
+- canonical ordered Wire IR;
+- a capability manifest derived from that IR;
+- optional canonical UTF-8 source suitable for `decompile`; source compilation
+  includes it, while direct checked-IR packaging may omit it.
+
+Metadata provenance must distinguish `source-compile` from `direct-ir` and
+must say whether a source section is embedded. `axirune assemble` validates a
+checked `.air.json` artifact and creates the latter form with
+`sourceEmbedded=false`. `verify`, `inspect`, and `run` must continue to work;
+`decompile` must fail explicitly instead of reconstructing invented source.
+
+Wire IR must encode insertion-ordered record entries, named arguments, and
+budget maps as ordered pairs before canonical object-key ordering. Their order
+must survive decoding. Source spans may be excluded from the semantic digest,
+but executable arrays and ordered pairs may not be reordered.
+
+Before execution, the verifier must reject malformed framing, non-canonical or
+oversized data, mismatched content/section digests, unsupported capsule/IR/ABI
+versions, structurally invalid IR, an inconsistent entry, a semantic digest
+mismatch, an authority section that differs from a freshly derived manifest,
+or an embedded source projection that recompiles to different semantics.
+
+The authority manifest describes requested effects. It must not create host
+authority. Filesystem roots, network hosts, tool bindings, MCP credentials, and
+model credentials remain deployment inputs outside the capsule.
+
+SHA-256 verifies integrity and content identity only. The current reference
+toolchain does not implement publisher signatures or a trust store, even
+though the fixed header reserves a signature length. A verifier must not report
+publisher authentication for an unsigned v1 capsule.
+
+Future WebAssembly or native sections may be optional backends bound to the
+same semantic digest. They must not replace or bypass checked IR, ABI,
+authority, permission, or sandbox verification. Neither backend is currently
+implemented.

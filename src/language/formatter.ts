@@ -235,9 +235,8 @@ export function formatExpression(expression: Expression): string {
     case "StringLiteral":
       return formatString(expression.value, expression.quote);
     case "NumberLiteral":
-      return `${Number.isFinite(expression.value) ? expression.value : 0}${
-        expression.unit ?? ""
-      }`;
+      if (!Number.isFinite(expression.value)) return "invalid-number";
+      return `${expression.value}${expression.unit ?? ""}`;
     case "BooleanLiteral":
       return expression.value ? "true" : "false";
     case "NothingLiteral":

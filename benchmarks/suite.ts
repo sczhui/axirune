@@ -3,9 +3,12 @@ import { cpus } from "node:os";
 import { performance } from "node:perf_hooks";
 import {
   compileSource,
+  createCapsule,
   LANGUAGE_VERSION,
   parseSource,
+  runProgram,
   runSource,
+  verifyCapsule,
 } from "../src/language/index.js";
 import {
   builtinBenchmarkFixtures,
@@ -89,6 +92,13 @@ export async function runBenchmarkSuite(
         .join("; ");
       throw new Error(`Benchmark fixture ${current.name} does not run: ${summary}`);
     }
+    const capsule = await createCapsule({ source: current.source });
+    const verified = await verifyCapsule(capsule.bytes);
+    if (!verified.ok) {
+      throw new Error(
+        `Benchmark fixture ${current.name} produced an invalid capsule: ${verified.issues.map((item) => item.code).join(", ")}`,
+      );
+    }
 
     cases.push({
       name: "parse",
@@ -112,6 +122,33 @@ export async function runBenchmarkSuite(
         if (result.status !== "completed") {
           throw new Error(
             `Benchmark fixture ${current.name} changed runtime status to ${result.status}.`,
+          );
+        }
+      }),
+    });
+    cases.push({
+      name: "capsule-build",
+      fixture: fixtureMetadata(current),
+      timing: await measure(samples, warmup, async () => {
+        await createCapsule({ source: current.source });
+      }),
+    });
+    cases.push({
+      name: "capsule-verify",
+      fixture: fixtureMetadata(current),
+      timing: await measure(samples, warmup, async () => {
+        const result = await verifyCapsule(capsule.bytes);
+        if (!result.ok) throw new Error("Preflight capsule stopped verifying.");
+      }),
+    });
+    cases.push({
+      name: "capsule-run",
+      fixture: fixtureMetadata(current),
+      timing: await measure(samples, warmup, async () => {
+        const result = await runProgram(verified.ir, { mockTools: false });
+        if (result.status !== "completed") {
+          throw new Error(
+            `Benchmark capsule ${current.name} changed runtime status to ${result.status}.`,
           );
         }
       }),

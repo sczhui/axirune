@@ -16,11 +16,11 @@ import type { Locale } from '../content/site'
 import { Link } from './Router'
 
 const installCommand =
-  'npm install -g https://axirune.velhu.com/downloads/axirune-language-0.3.1.tgz'
-const vscodeCommand = 'code --install-extension axirune-0.3.1.vsix'
-const dockerCommand = `mkdir axirune-0.3.1
-tar -xzf axirune-source-0.3.1.tar.gz -C axirune-0.3.1
-cd axirune-0.3.1
+  'npm install -g https://axirune.velhu.com/downloads/axirune-language-0.4.0-alpha.1.tgz'
+const vscodeCommand = 'code --install-extension axirune-0.4.0-alpha.1.vsix'
+const dockerCommand = `mkdir axirune-0.4.0-alpha.1
+tar -xzf axirune-source-0.4.0-alpha.1.tar.gz -C axirune-0.4.0-alpha.1
+cd axirune-0.4.0-alpha.1
 docker compose up -d --build`
 
 function CopyCommand({ value, locale }: { value: string; locale: Locale }) {
@@ -44,7 +44,7 @@ export function DownloadPage({ locale }: { locale: Locale }) {
       <section className="download-hero">
         <div className="download-hero__copy">
           <span className="eyebrow">
-            <PackageOpen size={14} /> AXIRUNE 0.3.1 / LANGUAGE PREVIEW
+            <PackageOpen size={14} /> AXIRUNE 0.4.0-ALPHA.1 / ARTIFACT PREVIEW
           </span>
           <h1>{locale === 'zh' ? '安装一门无需模型即可运行的语言。' : 'Install a language that runs without a model.'}</h1>
           <p>
@@ -53,7 +53,7 @@ export function DownloadPage({ locale }: { locale: Locale }) {
               : 'Get the deterministic interpreter, compiler, CLI, Language Server, VS Code extension, and reproducible Docker source archive. Enable AI only when needed.'}
           </p>
           <div className="download-hero__actions">
-            <a className="button button--signal" href="/downloads/axirune-language-0.3.1.tgz" download>
+            <a className="button button--signal" href="/downloads/axirune-language-0.4.0-alpha.1.tgz" download>
               <ArrowDownToLine size={16} />
               {locale === 'zh' ? '下载工具链' : 'Download toolchain'}
             </a>
@@ -65,11 +65,11 @@ export function DownloadPage({ locale }: { locale: Locale }) {
         <div className="download-hero__seal">
           <div>
             <span>VERSION</span>
-            <strong>0.3.1</strong>
+            <strong>0.4α1</strong>
           </div>
           <div>
             <span>CHANNEL</span>
-            <strong>PREVIEW</strong>
+            <strong>ALPHA</strong>
           </div>
           <div>
             <span>RUNTIME</span>
@@ -97,9 +97,9 @@ export function DownloadPage({ locale }: { locale: Locale }) {
             <code>{installCommand}</code>
             <CopyCommand value={installCommand} locale={locale} />
           </div>
-          <a href="/downloads/axirune-language-0.3.1.tgz" download>
+          <a href="/downloads/axirune-language-0.4.0-alpha.1.tgz" download>
             <FileArchive size={15} />
-            axirune-language-0.3.1.tgz
+            axirune-language-0.4.0-alpha.1.tgz
             <ArrowDownToLine size={15} />
           </a>
         </article>
@@ -118,9 +118,9 @@ export function DownloadPage({ locale }: { locale: Locale }) {
             <code>{vscodeCommand}</code>
             <CopyCommand value={vscodeCommand} locale={locale} />
           </div>
-          <a href="/downloads/axirune-0.3.1.vsix" download>
+          <a href="/downloads/axirune-0.4.0-alpha.1.vsix" download>
             <PlugZap size={15} />
-            axirune-0.3.1.vsix
+            axirune-0.4.0-alpha.1.vsix
             <ArrowDownToLine size={15} />
           </a>
         </article>
@@ -139,9 +139,9 @@ export function DownloadPage({ locale }: { locale: Locale }) {
             <code>{dockerCommand}</code>
             <CopyCommand value={dockerCommand} locale={locale} />
           </div>
-          <a href="/downloads/axirune-source-0.3.1.tar.gz" download>
+          <a href="/downloads/axirune-source-0.4.0-alpha.1.tar.gz" download>
             <Container size={15} />
-            axirune-source-0.3.1.tar.gz
+            axirune-source-0.4.0-alpha.1.tar.gz
             <ArrowDownToLine size={15} />
           </a>
         </article>
@@ -216,8 +216,8 @@ export function DownloadPage({ locale }: { locale: Locale }) {
         <span>RELEASE NOTE</span>
         <p>
           {locale === 'zh'
-            ? '0.3.1 是 Axirune 确定性通用解释器的预览版本，新增由 Axirune 源码驱动的 AxiLedger 完整网页应用。生产采用前请锁定版本、运行测试，并对 I/O 或 AI 程序审查权限清单。'
-            : 'Axirune 0.3.1 previews the deterministic general-purpose interpreter and adds AxiLedger, a complete web application driven by Axirune source. Before production, pin versions, run tests, and review authority manifests for programs that choose I/O or AI.'}
+            ? '0.4.0-alpha.1 引入可复现、可检查的 .axc 执行胶囊与独立 verifier。这是工件格式的 Alpha 版本；采用前请锁定版本、运行测试，并审查请求权限。'
+            : 'Axirune 0.4.0-alpha.1 introduces reproducible, inspectable .axc execution capsules and an independent verifier. This artifact format is alpha; pin versions, run tests, and review requested authority before adoption.'}
         </p>
       </section>
     </>

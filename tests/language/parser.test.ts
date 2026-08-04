@@ -105,4 +105,17 @@ task greet
       }),
     );
   });
+
+  it("rejects numeric literals that cannot survive portable IR serialization", () => {
+    const huge = "9".repeat(400);
+    const result = parseSource(`task main\n  yield ${huge}\n/task\nlaunch main\n`);
+
+    expect(result.diagnostics).toContainEqual(
+      expect.objectContaining({
+        code: "N2050",
+        severity: "error",
+        phase: "parse",
+      }),
+    );
+  });
 });

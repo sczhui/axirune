@@ -1,4 +1,4 @@
-# Axirune 0.3 reference architecture
+# Axirune 0.4 alpha reference architecture
 
 Axirune has a deterministic general-purpose core and an optional effect
 boundary. The same strict TypeScript implementation runs in Node.js and in the
@@ -10,7 +10,12 @@ Axirune source (.axi)
   → semantic frames + diagnostics
   → task signatures + call graph + effect requirements
   → checked Axirune IR
-  → fuel-bounded deterministic interpreter
+  ├─→ fuel-bounded deterministic interpreter
+  └─→ canonical ordered Wire IR + derived authority + optional source projection
+       → framed Execution Capsule (.axc)
+       → independent verifier + ABI checks
+       → checked Axirune IR
+       → fuel-bounded deterministic interpreter
   → values + emissions + semantic trace
                          │
                          └─ optional capability gate
@@ -54,6 +59,47 @@ A program that uses only tasks and pure builtins has an empty authority
 manifest. Adding an AI capability does not alter the semantics of the
 deterministic core.
 
+## Execution Capsule boundary
+
+An `.axc` file is a portable execution capsule, not native machine code. Its
+fixed 60-byte big-endian header carries magic bytes, capsule major/minor,
+flags, metadata/payload/signature lengths, and a SHA-256 content digest.
+Canonical metadata then describes the target IR, runtime ABI, kernel ABI,
+entry point, semantic digest, generation provenance, source-presence flag, and
+byte ranges for the payload sections.
+
+The implemented payload always contains the first two sections and may contain
+the third:
+
+- `ir`: canonical JSON for ordered Wire IR;
+- `authority`: the capability manifest derived from that IR;
+- `source`: an optional canonical UTF-8 source projection included by source
+  compilation.
+
+IR record fields, named call arguments, and budget maps are converted to
+ordered name/value pairs before object keys are canonically sorted. This keeps
+evaluation order explicit and portable instead of depending on JavaScript
+object insertion behavior. The semantic digest omits source locations while
+preserving executable ordering.
+
+Verification is a separate phase and never runs the program. It checks the
+binary framing and size bounds, canonical JSON, whole-content and per-section
+digests, Wire IR decoding, structural IR invariants, entry metadata, ABI pins,
+the semantic digest, any embedded source projection, and equality between the
+embedded authority manifest and a freshly derived one. Only then may the IR
+reach the interpreter.
+
+The header reserves a signature length, but capsule signatures and publisher
+trust stores are not implemented. A successful SHA-256 verification establishes
+content integrity, not publisher authenticity.
+
+Artifact-first is therefore not source-less. The interpreter consumes verified
+IR, while `inspect` exposes the semantic form and `decompile` recovers an
+embedded canonical source for human or agent maintenance. A deliberately
+source-free capsule assembled from checked IR remains inspectable rather than
+becoming opaque; verification and execution work normally, while `decompile`
+returns an explicit source-missing error.
+
 ## Source layout
 
 ```text
@@ -65,9 +111,14 @@ src/language/
   builtins.ts     pure signatures and evaluators
   compiler.ts     signatures, references, effects, and checked IR
   ir.ts           versioned execution representation
+  ir-wire.ts      ordered portable representation of IR maps
+  ir-validator.ts structural validation for untrusted decoded IR
+  canonical-json.ts deterministic JSON encoding and decoding
+  capability-manifest.ts browser-safe authority derivation
+  capsule.ts      framing, compilation, verification, and inspection
   runtime.ts      builtins, task calls, recursion, effects, and trace
 
-src/cli/          check, run, fmt, ast, ir, manifest, build
+src/cli/          source tools, capsule commands, host adapters, and build
 src/lsp/          JSON-RPC Language Server over stdio
 src/ui/           website, Playground, and browser IDE
 ```
@@ -75,6 +126,26 @@ src/ui/           website, Playground, and browser IDE
 The CLI and web surfaces import the same language package. Example source that
 runs in the Playground therefore passes through the same parser, compiler, IR,
 and interpreter used by `axirune run`.
+
+The CLI also accepts a verified capsule directly:
+
+```text
+axirune compile examples/hello.axi --out hello.axc
+axirune verify hello.axc
+axirune inspect hello.axc --json
+axirune decompile hello.axc --out recovered.axi
+axirune run hello.axc
+
+axirune build examples/hello.axi --out build/
+axirune assemble build/hello.air.json --out direct.axc
+axirune verify direct.axc
+axirune run direct.axc
+```
+
+`build` emits the capsule beside canonical source, AST, IR, authority, and
+build-record artifacts. Future Wasm or native code may be an optional section
+derived from the same semantic identity; neither backend exists in the current
+toolchain, and neither may bypass IR or authority verification.
 
 ## Evaluation
 

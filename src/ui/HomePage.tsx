@@ -26,7 +26,7 @@ export function HomePage({ locale }: { locale: Locale }) {
         <div className="hero__copy">
           <div className="hero__meta">
             <span className="live-mark">
-              <i /> GENERAL-PURPOSE LANGUAGE · 0.3.1
+              <i /> GENERAL-PURPOSE LANGUAGE · 0.4.0-ALPHA.1
             </span>
             <span>DETERMINISTIC BY DEFAULT</span>
           </div>
@@ -267,6 +267,39 @@ export function HomePage({ locale }: { locale: Locale }) {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section className="artifact-callout section-shell">
+        <div className="section-index">
+          <span>05</span>
+          <p>ARTIFACT-FIRST · VERIFIED EXECUTION</p>
+        </div>
+        <div className="artifact-callout__body">
+          <div>
+            <span className="eyebrow">.AXI SOURCE PROJECTION → .AXC EXECUTION CAPSULE</span>
+            <h2>
+              {locale === 'zh'
+                ? '允许 AI 直接生成。拒绝运行不可验证的黑箱。'
+                : 'Let AI generate directly. Refuse unverifiable black boxes.'}
+            </h2>
+          </div>
+          <div className="artifact-callout__proofs">
+            <span>CONTENT ID</span>
+            <span>SEMANTIC DIGEST</span>
+            <span>ABI CONTRACT</span>
+            <span>AUTHORITY MANIFEST</span>
+          </div>
+          <p>
+            {locale === 'zh'
+              ? 'Axirune 把持久边界从文本源码推进到可复现、可检查的执行胶囊。源码可以由人或模型编写，运行时只接受通过结构、摘要、ABI 与权限验证的 checked IR。'
+              : 'Axirune moves the durable boundary from source text to reproducible, inspectable execution capsules. Humans or models may author the program; the runtime accepts only checked IR whose structure, digests, ABI, and authority verify.'}
+          </p>
+          <Link to="/capsule-lab" className="button button--signal">
+            <ShieldCheck size={16} />
+            {locale === 'zh' ? '打开 Capsule Lab' : 'Open Capsule Lab'}
+            <ArrowRight size={16} />
+          </Link>
         </div>
       </section>
 

@@ -1,0 +1,3 @@
+# Prefer verifiable execution capsules over opaque native binaries
+
+Axirune accepts that AI agents may stop producing text source as an intermediate artifact, but it will not make unverifiable native machine code the language boundary. The direct-generation target is a portable `.axc` Execution Capsule containing checked IR, a derived authority manifest, semantic identity, and provenance; an independent verifier must accept the capsule before the runtime can execute it. `.axi` remains a semantics-preserving human/LLM-facing Source Projection, while future WebAssembly or native lowering happens after capsule verification so auditability, reproducibility, capability control, and target portability are not sacrificed for generation speed.

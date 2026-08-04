@@ -1292,9 +1292,22 @@ class ExpressionParser {
       this.index += 1;
       const match =
         /^([+-]?\d[\d_]*(?:\.\d[\d_]*)?)([\p{L}%]+)?$/u.exec(token.lexeme);
+      const value = Number((match?.[1] ?? "0").replaceAll("_", ""));
+      if (!Number.isFinite(value)) {
+        this.diagnostics.push(
+          diagnostic(
+            "N2050",
+            "error",
+            "parse",
+            "Numeric literal is outside Axirune's finite number range.",
+            token.span,
+            "Use a finite IEEE-754 value or represent exact large data as Text.",
+          ),
+        );
+      }
       return {
         kind: "NumberLiteral",
-        value: Number((match?.[1] ?? "0").replaceAll("_", "")),
+        value,
         unit: match?.[2] ?? null,
         span: token.span,
       } satisfies NumberLiteral;

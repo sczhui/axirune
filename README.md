@@ -4,8 +4,9 @@
 
 **Make intent axiomatic. Bound every effect.**
 
-Axirune 0.3 is a deterministic general-purpose language and interpreter
-designed to be easy for both people and LLMs to write, inspect, and refactor.
+Axirune 0.4.0-alpha.1 is a deterministic general-purpose language and
+interpreter designed to be easy for both people and LLMs to write, inspect,
+and refactor.
 Programs do not require a model: shapes, user-defined tasks, named calls,
 recursion, control flow, collection transforms, JSON, and explicit outcomes
 execute in the deterministic core. Files, network tools, MCP, prompts, and
@@ -19,6 +20,9 @@ This repository includes:
 
 - a recoverable parser, canonical formatter, semantic compiler, checked IR,
   fuel-bounded interpreter, and structured execution trace;
+- portable `.axc` Execution Capsules with canonical ordered Wire IR, pinned
+  runtime/kernel ABIs, derived authority manifests, and verification before
+  execution;
 - pure builtins for `Number`, `Bool`, `Text`, `List`, `Record`, `Json`, and
   `Outcome`;
 - a browser Playground and multi-panel IDE using the same compiler and
@@ -42,6 +46,9 @@ npm run build
 npm test
 npm run check:examples
 node dist-toolchain/src/cli/axirune.js run examples/hello.axi
+node dist-toolchain/src/cli/axirune.js compile examples/hello.axi --out hello.axc
+node dist-toolchain/src/cli/axirune.js verify hello.axc
+node dist-toolchain/src/cli/axirune.js run hello.axc
 ```
 
 The following complete program calls a user-defined task and runs without a
@@ -82,8 +89,49 @@ block syntax. Calls use named arguments. A task may call another task in an
 expression, including itself recursively. Pure builtins never require
 capabilities.
 
+## Artifact-first, not source-less
+
+Axirune can deploy a program as a portable `.axc` Execution Capsule instead of
+reparsing source on every run. This does not turn the language into a
+source-less binary black box. The source compiler places checked,
+insertion-ordered Wire IR, the authority requested by that IR, and a canonical
+source projection inside one framed artifact. `decompile` recovers that
+projection when it is embedded; it is semantically canonical rather than a
+byte-for-byte copy of the author's whitespace and comments. Wire IR remains
+inspectable even for a capsule deliberately assembled without source.
+
+An independent verifier checks framing, canonical encoding, content and
+section digests, IR invariants, the derived authority manifest, the entry
+point, and pinned IR/runtime/kernel ABIs before the interpreter receives the
+program. The current SHA-256 content ID proves integrity, not publisher
+identity: signing and a publisher trust store are not implemented.
+
+```bash
+axirune compile examples/hello.axi --out hello.axc
+axirune verify hello.axc
+axirune inspect hello.axc --json
+axirune decompile hello.axc --out recovered.axi
+axirune run hello.axc
+```
+
+Agents that already produce checked `.air.json` can use the implemented direct
+artifact path. `assemble` validates the IR and creates a source-free capsule;
+verification and execution still work, `inspect` still exposes its semantics,
+and `decompile` fails explicitly because no source section exists:
+
+```bash
+axirune build examples/hello.axi --out build/
+axirune assemble build/hello.air.json --out direct.axc
+axirune verify direct.axc
+axirune inspect direct.axc --json
+axirune run direct.axc
+```
+
+Future WebAssembly or native sections may accelerate a verified capsule, but
+they are optional backends and are not part of the current implementation.
+
 Run the [AxiLedger web showcase](https://axirune.velhu.com/showcase/ledger), or
-read the [language tour](docs/LANGUAGE_TOUR.md), [0.3
+read the [language tour](docs/LANGUAGE_TOUR.md), [0.4 alpha
 specification](docs/SPEC.md), [design rationale](docs/DESIGN.md), [security
 model](docs/SECURITY.md), [toolchain guide](docs/TOOLCHAIN.md), and
 [implementation architecture](docs/ARCHITECTURE.md). The
@@ -121,7 +169,12 @@ axirune fmt <file> [--write]  produce canonical source
 axirune ast <file>            print semantic AST JSON
 axirune ir <file>             print checked IR JSON
 axirune manifest <file>       print required authority JSON
-axirune build <file> --out X  write IR, manifest, and diagnostics
+axirune compile <file> -o X   write one verified .axc capsule
+axirune assemble <file.air.json> -o X  package verified IR without source
+axirune verify <file.axc>     verify without executing
+axirune inspect <file.axc>    print capsule identity, IR, and authority
+axirune decompile <file.axc>  recover an embedded source projection
+axirune build <file> --out X  write source, IR, manifest, and capsule
 axirune bench                 run the measured reference benchmark
 ```
 
@@ -148,12 +201,15 @@ axirune run examples/invoice-total.axi
 axirune ir examples/factorial.axi
 axirune manifest examples/word-frequency.axi
 axirune run examples/word-frequency.axi --allow-read .
+axirune compile examples/invoice-total.axi --out invoice.axc
+axirune verify invoice.axc
+axirune run invoice.axc
 ```
 
 ## Project map
 
 ```text
-src/language/              parser, semantic compiler, IR, builtins, interpreter
+src/language/              parser, compiler, IR, capsule verifier, interpreter
 src/cli/                   command-line compiler and runner
 src/lsp/                   stdio Language Server
 src/ui/                    website, Playground, and online IDE
@@ -189,10 +245,11 @@ interpreter are served from the same deployment.
 
 ## Preview status
 
-Axirune 0.3 is a coherent, runnable language preview. Its deterministic core,
-CLI, browser interpreter, editor tooling, examples, and benchmark harness are
-implemented in this repository. Host I/O, MCP, and model adapters remain
-explicit integration surfaces and never become ambient powers of a program.
+Axirune 0.4.0-alpha.1 is a coherent, runnable language preview. Its
+deterministic core, CLI, browser interpreter, editor tooling, examples, and
+benchmark harness are implemented in this repository. Host I/O, MCP, and model
+adapters remain explicit integration surfaces and never become ambient powers
+of a program.
 
 Source and releases: [github.com/sczhui/axirune](https://github.com/sczhui/axirune)
 

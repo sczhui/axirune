@@ -27,7 +27,7 @@ describe("benchmark reporting", () => {
       schema: "axirune-benchmark/1",
       checksum: "sha256:test",
       generatedAt: "2026-07-28T00:00:00.000Z",
-      languageVersion: "0.3.1",
+      languageVersion: "0.4.0-alpha.1",
       runtime: {
         node: "v24",
         platform: "linux",
@@ -54,7 +54,7 @@ describe("benchmark reporting", () => {
     expect(markdown).toContain("3 measured samples");
   });
 
-  it("measures parse, compile and run instead of returning canned values", async () => {
+  it("measures source and capsule paths instead of returning canned values", async () => {
     const report = await runBenchmarkSuite({
       samples: 2,
       warmup: 0,
@@ -75,6 +75,9 @@ launch main
       "parse",
       "compile",
       "run",
+      "capsule-build",
+      "capsule-verify",
+      "capsule-run",
     ]);
     for (const entry of report.cases) {
       expect(entry.timing.valuesMs).toHaveLength(2);
@@ -101,7 +104,7 @@ launch main
       warmup: 0,
       fixtures,
     });
-    expect(report.cases).toHaveLength(9);
+    expect(report.cases).toHaveLength(18);
     expect(
       report.cases.every(
         (entry) => entry.timing.samples === 1 && entry.timing.valuesMs[0]! >= 0,

@@ -48,15 +48,15 @@ export function DocsPage({ locale }: { locale: Locale }) {
       <section className="docs-hero">
         <div className="docs-hero__icon">
           <BookOpen size={28} />
-          <span>DOCS / 0.3</span>
+          <span>DOCS / 0.4α</span>
         </div>
         <div>
           <span className="eyebrow">LANGUAGE REFERENCE</span>
           <h1>{locale === 'zh' ? '从纯值开始。需要外部世界时，再声明 effect。' : 'Start with pure values. Declare effects only when the outside world is needed.'}</h1>
           <p>
             {locale === 'zh'
-              ? 'Axirune 0.3 通用语言核心、任务调用、递归、数据处理、错误、I/O 与可选 AI 的完整导览。'
-              : 'A complete Axirune 0.3 tour: general-purpose core, task calls, recursion, data, errors, I/O, and optional AI.'}
+              ? 'Axirune 0.4 Alpha 通用核心、可验证执行胶囊、任务调用、递归、数据处理、错误、I/O 与可选 AI 的完整导览。'
+              : 'A complete Axirune 0.4 Alpha tour: general-purpose core, verifiable execution capsules, task calls, recursion, data, errors, I/O, and optional AI.'}
         </p>
         </div>
       </section>

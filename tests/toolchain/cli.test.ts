@@ -120,6 +120,7 @@ describe("Axirune CLI", () => {
       "ast",
       "ir",
       "manifest",
+      "capsule",
       "build",
     ]);
     expect(result.artifacts.source).toMatch(/\.axi$/u);
@@ -178,6 +179,9 @@ describe("Axirune CLI", () => {
       "parse",
       "compile",
       "run",
+      "capsule-build",
+      "capsule-verify",
+      "capsule-run",
     ]);
     expect(report.cases.every((entry) => entry.timing.samples === 1)).toBe(true);
   });

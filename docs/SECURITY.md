@@ -1,4 +1,4 @@
-# Axirune 0.3 security and authority model
+# Axirune 0.4 alpha security and authority model
 
 Security starts with a distinction: deterministic computation is not an
 external effect.
@@ -19,10 +19,11 @@ separates three questions:
 3. **Sandbox:** can the host enforce the promised resource boundary?
 
 All three must agree before an adapter begins. The compiler derives a
-capability manifest from source. The host narrows that manifest to concrete
-handlers and allowlists. The runtime permission callback allows or denies a
-request. Source permission directives remain available to manifests and custom
-hosts. The adapter boundary is the final enforcement plane.
+capability manifest from checked IR. That manifest states what the program
+requests; it grants nothing by itself. The host narrows the request to concrete
+handlers and explicit allowlists. The runtime permission callback allows or
+denies a request. Source permission directives remain available to manifests
+and custom hosts. The adapter boundary is the final enforcement plane.
 
 The same rule covers local I/O and AI:
 
@@ -61,6 +62,42 @@ another binding.
 Source text is not evaluated as JavaScript. It passes through the Axirune
 parser, semantic compiler, versioned IR, and interpreter.
 
+## Capsule verification
+
+An untrusted `.axc` file never goes directly to the interpreter. The capsule
+verifier first checks:
+
+- the fixed 60-byte framing, version, flags, exact lengths, and size limits;
+- canonical metadata and ordered Wire IR encodings;
+- the whole-content SHA-256 digest and every section digest;
+- pinned IR, runtime, and deterministic-kernel ABIs;
+- IR shape, unique identities, parent graph, mirrored compiler invariants, and
+  finite values;
+- the entry descriptor and formatting-independent semantic digest;
+- that the authority section exactly matches a manifest freshly derived from
+  the checked IR;
+- that any embedded canonical source recompiles to the same semantic identity.
+
+Verification performs no program instruction or tool call. A verified
+manifest remains only an authority request. Filesystem roots and exact network
+hosts still come from `--allow-read`, `--allow-write`, `--allow-net`, or an
+equivalent deployment policy outside the capsule.
+
+The current content ID and section hashes establish integrity and reproducible
+identity. They do not authenticate a publisher, because an attacker able to
+replace a capsule can also calculate new SHA-256 values. The 60-byte header
+reserves a signature length, but signature verification and a publisher trust
+store are deliberately not claimed as implemented.
+
+Source compilation embeds canonical source as a maintenance projection, so
+artifact-first execution does not require a source-less security model.
+`inspect` always exposes checked IR and requested authority; `decompile`
+recovers canonical source after verification when the capsule contains it.
+`assemble` accepts checked `.air.json`, verifies it, and deliberately records
+`generation=direct-ir` with `sourceEmbedded=false`. Such a capsule still
+verifies, inspects, and runs; `decompile` fails explicitly rather than
+inventing source.
+
 ## Data and trace safety
 
 Tool input and output are normalized before entering runtime values. Trace
@@ -78,3 +115,8 @@ The reference implementation is a language preview, not a replacement for
 operating-system isolation. A host that binds filesystem, process, network,
 MCP, or model adapters must map declared sandboxes to enforceable platform
 controls and must reject authority broader than the compiled manifest.
+
+Future Wasm or native sections would be optional execution backends derived
+from verified IR. They must bind to the same semantic identity and may not
+bypass capsule, ABI, manifest, capability, permission, or sandbox checks. No
+such backend is implemented by the current toolchain.

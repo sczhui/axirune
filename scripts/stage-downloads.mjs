@@ -16,7 +16,7 @@ const currentArtifacts = new Set([
   `axirune-${version}.vsix`,
 ])
 const releaseArtifact =
-  /^(?:nexilume-(?:language-\d+\.\d+\.\d+\.tgz|source-\d+\.\d+\.\d+\.tar\.gz|\d+\.\d+\.\d+\.vsix)|axirune-(?:language-\d+\.\d+\.\d+\.tgz|source-\d+\.\d+\.\d+\.tar\.gz|\d+\.\d+\.\d+\.(?:tgz|vsix)|\d+\.\d+\.\d+-source\.tar\.gz))$/u
+  /^(?:nexilume|axirune)-(?:language-|source-)?\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?(?:-source)?\.(?:tgz|tar\.gz|vsix)$/u
 
 await fs.mkdir(outputDir, { recursive: true })
 for (const fileName of await fs.readdir(outputDir)) {
@@ -68,6 +68,7 @@ const sourceEntries = [
   'docker-compose.yml',
   'nginx.conf',
   'README.md',
+  'CONTEXT.md',
   'CHANGELOG.md',
   'LICENSE',
 ]

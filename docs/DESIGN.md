@@ -83,6 +83,42 @@ External adapters can observe changing systems. Their receipts and trace events
 make that nondeterminism explicit rather than silently contaminating the core
 language.
 
+## Artifact-first execution
+
+Axirune treats checked semantics—not a particular source spelling or CPU
+instruction set—as the deployable boundary. `axirune compile` packages a
+program into a portable `.axc` Execution Capsule containing canonical ordered
+Wire IR, a capability manifest derived from that IR, and a canonical source
+projection. Direct IR packaging may omit the source projection, but never the
+inspectable IR or manifest. The runtime executes only after the capsule
+verifier accepts that boundary.
+
+Artifact-first does not require source-less artifacts. Coding agents are good
+at producing and changing structured text, while people still need a durable
+explanation of intent. Source compilation embeds a projection available
+through `decompile`; `assemble` also supports a deliberately source-free
+capsule when an agent already produced checked IR. Ordered Wire IR remains
+available through `inspect` in both cases, so neither path becomes an opaque
+native blob. `decompile` fails explicitly when metadata says no source was
+embedded.
+
+Capsules have two identities. A content ID covers the framed bytes and detects
+corruption; a semantic digest excludes source locations so presentation-only
+changes do not become new program semantics. Both use SHA-256. These digests
+provide integrity and reproducible identity, not proof of who published an
+artifact. The current toolchain does not implement signing or a publisher
+trust store.
+
+IR, runtime, and deterministic-kernel ABIs are pinned independently. This lets
+the verifier reject a capsule before evaluation when the consumer cannot honor
+its semantics. A future WebAssembly or native section may be derived from the
+same semantic digest as an optional backend, but verified IR remains the
+portable authority and audit boundary; no such backend is implemented today.
+
+The authority manifest describes what a program requests. It never grants a
+filesystem root, network host, MCP credential, or model key. Only deployment
+policy and explicitly configured adapters can provide those powers.
+
 ## Built for LLM-authored maintenance
 
 Axirune welcomes LLM-generated code without making an LLM part of runtime:
@@ -95,6 +131,9 @@ Axirune welcomes LLM-generated code without making an LLM part of runtime:
 - pure builtins form a small documented registry;
 - effect and authority diffs can be reviewed separately from value logic;
 - canonical formatting removes stylistic search space.
+- capsules preserve an inspectable machine execution form, and source-compiled
+  capsules also preserve a recoverable source projection, instead of forcing
+  an LLM to maintain raw binary bytes.
 
 The result is intentionally explicit. Axirune optimizes for the lifetime cost
 of understanding and safely changing software, not for minimizing keystrokes.

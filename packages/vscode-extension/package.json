@@ -2,7 +2,7 @@
   "name": "axirune-language",
   "displayName": "Axirune Language",
   "description": "Language support for deterministic Axirune programs and authority-bounded agent workflows.",
-  "version": "0.3.1",
+  "version": "0.4.0-alpha.1",
   "publisher": "axirune",
   "type": "module",
   "license": "Apache-2.0",

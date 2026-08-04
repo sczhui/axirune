@@ -1,5 +1,25 @@
 # Changelog
 
+## 0.4.0-alpha.1 — Verifiable Execution Capsules
+
+- Adds artifact-first `.axc` Execution Capsules without making source an
+  opaque or disposable black box. Every capsule contains checked ordered Wire
+  IR and a derived authority manifest; source compilation also embeds a
+  canonical source projection.
+- Adds fixed 60-byte binary framing, canonical encoding, SHA-256 content and
+  section integrity checks, semantic identity, and pinned IR, runtime, and
+  deterministic-kernel ABIs.
+- Adds an independent fail-closed verifier plus `compile`, source-free
+  checked-IR `assemble`, `verify`, `inspect`, `decompile`, and direct capsule
+  `run` commands; `build` now includes a capsule beside its inspectable source
+  and JSON artifacts.
+- Keeps deployment authority outside the artifact. A capability manifest is a
+  request, not a grant, and filesystem/network access still requires explicit
+  host allowlists.
+- Does not claim publisher authentication, signing, WebAssembly, or native
+  compilation. SHA-256 identifies intact content; future Wasm/native code may
+  be attached only as an optional backend to verified IR.
+
 ## 0.3.1 — AxiLedger
 
 - Ships AxiLedger, a browser application whose validation, aggregation,

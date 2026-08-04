@@ -1,4 +1,4 @@
-# Axirune 0.3 language tour
+# Axirune 0.4 alpha language tour
 
 Axirune is a deterministic general-purpose language designed for an unusual
 maintainer: a team of people and coding agents. Programs are explicit,
@@ -300,7 +300,7 @@ A source file cannot create a filesystem handler by declaring one. Conversely,
 a host handler cannot be reached by a pure task that never calls its tool.
 
 The interpreter always applies budgets. Rich source `sandbox` frames are also
-available to manifests and custom hosts, but 0.3 does not confuse that metadata
+available to manifests and custom hosts, but Axirune does not confuse that metadata
 with OS isolation. Run hostile programs in a process or container boundary.
 
 ## 11. Concurrency is structured
@@ -366,7 +366,7 @@ named input.
 An `mcp` frame can pin protocol and transport details, import named methods,
 and declare authority. It does not make MCP foundational to the language.
 
-The 0.3 runtime treats an imported MCP method like any other tool binding. A
+The reference runtime treats an imported MCP method like any other tool binding. A
 host owns the client, credentials, transport, and schema negotiation. The
 program owns the visible contract and capability request.
 
@@ -381,7 +381,7 @@ are useful semantic containers for planning and review.
 
 The current interpreter executes ordinary instructions inside these frames,
 but does not yet implement a complete workflow-stage scheduler or automatic
-agent loop. Executable 0.3 composition uses tasks, calls, `launch`, and
+agent loop. Executable composition uses tasks, calls, `launch`, and
 `weave`. This separation lets the docs stay ambitious without pretending a
 host service already exists.
 
@@ -395,12 +395,61 @@ axirune fmt examples/invoice-total.axi
 axirune ast examples/invoice-total.axi
 axirune ir examples/invoice-total.axi
 axirune manifest examples/word-frequency.axi
+axirune compile examples/hello.axi --out hello.axc
+axirune verify hello.axc
 axirune bench
 ```
 
-`check` reports diagnostics. `build` writes checked IR. `run` interprets that
-IR. The toolchain does not transpile source into JavaScript and `eval` it, and
-the 0.3 release makes no native-code or WebAssembly claim.
+`check` reports diagnostics. `build` writes canonical source, checked IR,
+requested authority, and an Execution Capsule. `run` interprets checked IR
+from either source or a verified capsule. The toolchain does not transpile
+source into JavaScript and `eval` it, and it makes no native-code or
+WebAssembly claim.
+
+## 17. Artifact-first still has a source projection
+
+An AI agent or release pipeline can hand the runtime one `.axc` file, but that
+file is not an opaque binary instruction stream. A source-compiled capsule
+contains canonical ordered Wire IR, a derived authority request, and canonical
+source that another person or agent can recover:
+
+```sh
+axirune compile examples/hello.axi --out hello.axc
+axirune verify hello.axc
+axirune inspect hello.axc --json
+axirune decompile hello.axc --out recovered.axi
+axirune run hello.axc
+```
+
+When an agent already emits checked IR, `assemble` provides the implemented
+source-free path without making the artifact opaque:
+
+```sh
+axirune build examples/hello.axi --out build/
+axirune assemble build/hello.air.json --out direct.axc
+axirune verify direct.axc
+axirune inspect direct.axc --json
+axirune run direct.axc
+```
+
+Inspection reports provenance `generation=direct-ir` and
+`sourceEmbedded=false`. The capsule verifies and runs normally;
+`decompile direct.axc` fails explicitly because there is no source section to
+recover.
+
+`verify` checks the fixed frame, canonical encodings, SHA-256 digests, IR
+invariants, semantic identity, authority derivation, and pinned IR/runtime/kernel
+ABIs before execution. SHA-256 answers “are these the same intact bytes?”, not
+“who published these bytes?” Capsule signing and publisher authentication are
+not implemented.
+
+The authority shown by `inspect` is still only a request. A capsule cannot add
+a readable directory, writable directory, network host, MCP credential, or
+model credential to its own deployment. Those remain explicit host decisions.
+
+Future Wasm or native code may be attached as an optional backend derived from
+the same verified semantics. The current runtime executes the portable checked
+IR and ships neither backend.
 
 That is the central bet of Axirune: a language can be unusually easy for LLMs
 to write and refactor while remaining a normal, deterministic language that

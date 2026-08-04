@@ -14,6 +14,7 @@ import type {
   IRProgram,
   IRValue,
 } from "./ir.js";
+import { validateIRProgram } from "./ir-validator.js";
 
 export type RuntimeScalar = null | boolean | number | string;
 export type RuntimeValue = BuiltinValue;
@@ -136,19 +137,31 @@ export async function runSource(
   if (!compiled.ok && !options.executeWithErrors) {
     return emptyRun("compile-error", compiled.diagnostics);
   }
-  return executeIR(compiled.ir, options, compiled.diagnostics);
+  return executeIR(compiled.ir, options, compiled.diagnostics, true);
 }
 
 export async function runProgram(
   program: Program | IRProgram,
   options: InterpreterOptions = {},
 ): Promise<RunResult> {
-  if (isIRProgram(program)) return executeIR(program, options, []);
+  if (isIRProgram(program)) {
+    const checked = validateIRProgram(program);
+    if (!checked.ok) {
+      return emptyRun(
+        "compile-error",
+        checked.issues.map((issue) =>
+          diagnostic(issue.code, "error", "compile", issue.message, emptySpan()),
+        ),
+      );
+    }
+    // Serialized IR requests authority; only deployment options grant it.
+    return executeIR(checked.ir, options, [], false);
+  }
   const compiled = compileProgram(program);
   if (!compiled.ok && !options.executeWithErrors) {
     return emptyRun("compile-error", compiled.diagnostics);
   }
-  return executeIR(compiled.ir, options, compiled.diagnostics);
+  return executeIR(compiled.ir, options, compiled.diagnostics, true);
 }
 
 function isIRProgram(program: Program | IRProgram): program is IRProgram {
@@ -201,6 +214,7 @@ async function executeIR(
   ir: IRProgram,
   options: InterpreterOptions,
   compileDiagnostics: readonly Diagnostic[],
+  acceptProgramPermissions: boolean,
 ): Promise<RunResult> {
   const state: ExecutionState = {
     ir,
@@ -211,7 +225,10 @@ async function executeIR(
     output: [],
     emissions: [],
     frames: indexFrames(ir.frames),
-    allowed: new Set([...ir.permissions, ...(options.capabilities ?? [])]),
+    allowed: new Set([
+      ...(acceptProgramPermissions ? ir.permissions : []),
+      ...(options.capabilities ?? []),
+    ]),
     steps: 0,
     toolCalls: 0,
     launches: 0,
