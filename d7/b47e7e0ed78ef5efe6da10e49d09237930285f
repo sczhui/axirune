@@ -1,0 +1,191 @@
+tests/toolchain/benchmark.test.ts
+  s_25ab203f1b07d0::t_2071efc497ba5c 30
+  s_25ab203f1b07d0::t_fe9fea0f52ceab 57,78-80,107
+docs/TOOLCHAIN.md
+  s_25ab203f1b07d0::t_71161d7103519f 13,16-19,32-34,40-41,64-77,99-101,104-114,118-133,136-149
+  s_25ab203f1b07d0::t_ea4f4f9f772cac 15,78-98,115-117
+  s_25ab203f1b07d0::t_26483286b6e213 102-103
+  s_25ab203f1b07d0::t_09b81f2c7ebee5 1
+tests/language/capsule.test.ts
+  s_25ab203f1b07d0::t_e81cfe2e9e19b1 4,9,247-264
+  s_25ab203f1b07d0::t_dda006ed9488ce 51-62,117-130
+  s_25ab203f1b07d0::t_f4b82e1671c185 1-3,5-8,15-16,18-34,50,63-104,131-189,191-193,195-196,266-272
+  s_25ab203f1b07d0::t_b63b64252356dc 190,194
+  s_25ab203f1b07d0::t_353f87aa7c40b2 17,35-49,105-116
+  s_25ab203f1b07d0::t_8e26a33a93aeea 197
+  s_25ab203f1b07d0::t_030ad1222a240f 10-14,198-246,265
+README.md
+  s_25ab203f1b07d0::t_a3655ecef65ef3 96-101
+  s_25ab203f1b07d0::t_246aa135d9c4c3 117-129,173
+  s_25ab203f1b07d0::t_340aff470d7f86 176
+  s_25ab203f1b07d0::t_26483286b6e213 7-9,134,248-252
+  s_25ab203f1b07d0::t_12f4ff4bce357b 23-25,49-51,92-95,102-116,130-132,172,174-175,177,204-206,212
+CHANGELOG.md
+  s_25ab203f1b07d0::t_09b81f2c7ebee5 3
+  s_25ab203f1b07d0::t_a3655ecef65ef3 6-8
+  s_25ab203f1b07d0::t_246aa135d9c4c3 12-15
+  s_25ab203f1b07d0::t_12f4ff4bce357b 4-5,9-11,16-22
+docs/SECURITY.md
+  s_25ab203f1b07d0::t_09b81f2c7ebee5 1
+  s_25ab203f1b07d0::t_329d43c3d13a30 79,92-95
+  s_25ab203f1b07d0::t_1f21a3f874092a 22-26,65-78,80-91,100,118-122
+  s_25ab203f1b07d0::t_8a28cd72a2ebf5 96-99
+docs/SPEC.md
+  s_25ab203f1b07d0::t_ec4f38d0bf4660 453,456,487,517
+  s_25ab203f1b07d0::t_c5b2d93fa11d84 9-14,33,35-36,532,534-536,542-543,546-557,559-561,570-594
+  s_25ab203f1b07d0::t_8a28cd72a2ebf5 533,558,564-569
+  s_25ab203f1b07d0::t_09b81f2c7ebee5 1,5,16
+  s_25ab203f1b07d0::t_26483286b6e213 34
+  s_25ab203f1b07d0::t_329d43c3d13a30 562-563
+src/cli/axirune.ts
+  s_25ab203f1b07d0::t_ffd695c73ddef5 9,11,13,16,23,25,58-64,95,101-109,149,154-156,163-183,185-188
+  s_25ab203f1b07d0::t_8dd0cb8d1f354a 150,397,400-416
+  s_25ab203f1b07d0::t_ba845428a28f96 393-396,398-399,417-447,505-542,544-647
+  s_25ab203f1b07d0::t_b510118946bd91 821-839,899-903
+  s_25ab203f1b07d0::t_cf3eb001b3c237 448-504
+  s_25ab203f1b07d0::t_81a948cd332213 12,98-100,157,184
+  s_25ab203f1b07d0::t_87d84b2ed51990 543
+  s_25ab203f1b07d0::t_090db574dce70d 681-688,694,699-700,703,705,712-713,729
+src/language/parser.ts
+  s_25ab203f1b07d0::t_502b5e7b5463b8 1295-1307,1310
+src/language/runtime.ts
+  s_25ab203f1b07d0::t_68589fbbe68d20 17,140,147-159,164,217,228-231
+tests/support/capsule-fixture.ts
+  s_25ab203f1b07d0::t_030ad1222a240f 1-35,39-160
+  s_25ab203f1b07d0::t_7b59ea71e310c6 36-38
+src/cli/manifest.ts
+  s_25ab203f1b07d0::t_df5069aeda8b49 1-4
+src/content/site.ts
+  s_25ab203f1b07d0::t_4e38e245d0a78e 220-221,508
+  s_25ab203f1b07d0::t_9cb92168159c77 42
+src/cli/arguments.ts
+  s_25ab203f1b07d0::t_a8a093d2e157fc 8,10-12,204,206-209,216,228
+  s_25ab203f1b07d0::t_34c804c1acc375 9,205
+src/ui/HomePage.tsx
+  s_25ab203f1b07d0::t_4e38e245d0a78e 29
+  s_25ab203f1b07d0::t_9cb92168159c77 273-305
+src/styles/responsive.css
+  s_25ab203f1b07d0::t_df00414b33958b 362-396
+  s_25ab203f1b07d0::t_4792681ad9ffe7 768-887
+  s_25ab203f1b07d0::t_a371f041527eaf 108-112
+  s_25ab203f1b07d0::t_a0a71dfc533622 63
+  s_25ab203f1b07d0::t_96043e364b5dba 185,230-245
+src/ui/DocsPage.tsx
+  s_25ab203f1b07d0::t_4e38e245d0a78e 51,58-59
+docs/adr/0001-verifiable-execution-capsules.md
+  s_25ab203f1b07d0::t_2ddcf5531832d8 3
+  s_25ab203f1b07d0::t_f1df286eb62211 1-2
+package.json
+  s_25ab203f1b07d0::t_2071efc497ba5c 3
+src/ui/Router.tsx
+  s_25ab203f1b07d0::t_9cb92168159c77 5,16
+tests/language/parser.test.ts
+  s_25ab203f1b07d0::t_1ddc4884adae5b 108-120
+CONTEXT.md
+  s_25ab203f1b07d0::t_f1df286eb62211 1-30,34-37
+  s_25ab203f1b07d0::t_70e0e592b424b3 31-33
+packages/vscode-extension/extension.cjs
+  s_25ab203f1b07d0::t_2071efc497ba5c 195
+src/language/ir-wire.ts
+  s_25ab203f1b07d0::t_4dcd560a7b3f4f 1-156
+src/language/formatter.ts
+  s_25ab203f1b07d0::t_502b5e7b5463b8 238-239
+docs/DESIGN.md
+  s_25ab203f1b07d0::t_6168c02c0bcbac 86-91,95,104-121
+  s_25ab203f1b07d0::t_26483286b6e213 134-136
+  s_25ab203f1b07d0::t_246aa135d9c4c3 96-103
+  s_25ab203f1b07d0::t_a3655ecef65ef3 92-94
+src/language/capability-manifest.ts
+  s_25ab203f1b07d0::t_df5069aeda8b49 1-217
+src/ui/DownloadPage.tsx
+  s_25ab203f1b07d0::t_4e38e245d0a78e 19-23,47,56,68,72,100,102,121,123,142,144,219-220
+src/ui/BenchmarksPage.tsx
+  s_25ab203f1b07d0::t_4e38e245d0a78e 191
+benchmarks/suite.ts
+  s_25ab203f1b07d0::t_fe9fea0f52ceab 6,9,11,95-101,129-151
+src/ui/CapsuleLabPage.tsx
+  s_25ab203f1b07d0::t_9cb92168159c77 1-336,338-525
+  s_25ab203f1b07d0::t_5ca40d9e145fc8 337
+tests/language/kernel-0.3.test.ts
+  s_25ab203f1b07d0::t_2071efc497ba5c 51
+packages/vscode-extension/package.json
+  s_25ab203f1b07d0::t_2071efc497ba5c 5
+src/ui/LedgerShowcasePage.tsx
+  s_25ab203f1b07d0::t_4e38e245d0a78e 429,927
+docs/LANGUAGE_TOUR.md
+  s_25ab203f1b07d0::t_329d43c3d13a30 412-414
+  s_25ab203f1b07d0::t_48922a9a3ea9c4 398-399,403-411,415-423,440-452
+  s_25ab203f1b07d0::t_09b81f2c7ebee5 1
+  s_25ab203f1b07d0::t_85990cb5de93d0 424-439
+  s_25ab203f1b07d0::t_ec4f38d0bf4660 303,369,384
+index.html
+  s_25ab203f1b07d0::t_ee9ce387d7ea70 7,19
+src/App.tsx
+  s_25ab203f1b07d0::t_9cb92168159c77 4,17,51
+  s_25ab203f1b07d0::t_4e38e245d0a78e 24
+tests/ui/capsule-lab.test.tsx
+  s_25ab203f1b07d0::t_885a9fabc9689f 1-61
+src/ui/IdePage.tsx
+  s_25ab203f1b07d0::t_4e38e245d0a78e 61,230
+src/language/host-capabilities.ts
+  s_25ab203f1b07d0::t_df5069aeda8b49 1-12
+src/language/index.ts
+  s_25ab203f1b07d0::t_df5069aeda8b49 10-11
+  s_25ab203f1b07d0::t_1297f2d9cf7596 12-15
+scripts/stage-downloads.mjs
+  s_25ab203f1b07d0::t_135f400eec6012 19,71
+src/language/metadata.ts
+  s_25ab203f1b07d0::t_2071efc497ba5c 2
+  s_25ab203f1b07d0::t_1297f2d9cf7596 15-18
+tests/toolchain/cli.test.ts
+  s_25ab203f1b07d0::t_fe9fea0f52ceab 182-184
+  s_25ab203f1b07d0::t_053d75fa8e60a0 123
+tests/toolchain/lsp.test.ts
+  s_25ab203f1b07d0::t_2071efc497ba5c 42
+tests/toolchain/capsule-cli.test.ts
+  s_25ab203f1b07d0::t_f4b82e1671c185 1-7,9-154,239-274
+  s_25ab203f1b07d0::t_353f87aa7c40b2 8
+  s_25ab203f1b07d0::t_e6706cb895536c 155,206-238
+  s_25ab203f1b07d0::t_360cb70001936f 156-205
+src/language/canonical-json.ts
+  s_25ab203f1b07d0::t_8f65f501a5b60c 1-110
+src/language/capsule.ts
+  s_25ab203f1b07d0::t_1297f2d9cf7596 1-50,58-88,93-149,179,182,191,193-194,203-222,224-225,228-229,231-415,431-526,534-594,601-618,623-722
+  s_25ab203f1b07d0::t_b53cb3dbf6053c 416,418-419,422-423
+  s_25ab203f1b07d0::t_c8e8f320ed2bc5 51-57,89-92,150-178,180-181,183-190,192,195-202,223,226-227,230
+  s_25ab203f1b07d0::t_342f1f76b51fc9 417,420-421,424-430,527-533,595-600,619-622
+src/language/ir-validator.ts
+  s_25ab203f1b07d0::t_6acfaa65068ab8 1-772
+src/cli/host-adapters.ts
+  s_25ab203f1b07d0::t_df5069aeda8b49 20,22
+docs/ARCHITECTURE.md
+  s_25ab203f1b07d0::t_09b81f2c7ebee5 1
+  s_25ab203f1b07d0::t_908b3abd738b23 13,15-18,62-67,70,73-75,78-87,89-96,102,114-118,121,130-137,143-148
+  s_25ab203f1b07d0::t_26483286b6e213 14
+  s_25ab203f1b07d0::t_8a28cd72a2ebf5 68-69,99-101,138-142
+  s_25ab203f1b07d0::t_329d43c3d13a30 71-72,76-77,88,97-98
+src/styles/pages.css
+  s_25ab203f1b07d0::t_faaae462cea343 636-1313
+  s_25ab203f1b07d0::t_5ca40d9e145fc8 497-557
+src/ui/Shell.tsx
+  s_25ab203f1b07d0::t_9cb92168159c77 56,107
+  s_25ab203f1b07d0::t_4e38e245d0a78e 30,99,116,122-123
+axirune.pack
+  s_25ab203f1b07d0::t_2071efc497ba5c 2
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "d7b47e7e0ed78ef5efe6da10e49d09237930285f",
+  "prompts": {},
+  "sessions": {
+    "s_25ab203f1b07d0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019fa44a-76f2-7673-90ad-3fd964bf68ef",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "sczhui <3062629+sczhui@users.noreply.github.com>"
+    }
+  }
+}
