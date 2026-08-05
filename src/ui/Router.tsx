@@ -4,6 +4,7 @@ export type AppRoute =
   | '/'
   | '/capsule-lab'
   | '/arcade'
+  | '/arcade/river-oath'
   | '/playground'
   | '/ide'
   | '/docs'
@@ -16,6 +17,7 @@ const routes = new Set<AppRoute>([
   '/',
   '/capsule-lab',
   '/arcade',
+  '/arcade/river-oath',
   '/playground',
   '/ide',
   '/docs',

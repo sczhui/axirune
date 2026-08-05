@@ -1,0 +1,394 @@
+{
+  "schema": "axirune-benchmark/river-oath/1",
+  "generatedAt": "2026-08-05T16:52:44.964Z",
+  "languageVersion": "0.6.0-alpha.1",
+  "runtime": {
+    "node": "v22.23.1",
+    "platform": "darwin",
+    "architecture": "arm64",
+    "clock": "process.hrtime.bigint"
+  },
+  "configuration": {
+    "fixedStepHz": 60,
+    "inputSchema": "river-oath-input-script/1",
+    "warmupTicksPerHero": 600,
+    "measuredTicksPerHero": 12000,
+    "minimumTotalTicks": 36000,
+    "entityLimits": {
+      "players": 1,
+      "enemies": 24,
+      "pickups": 8,
+      "effects": 192,
+      "total": 225
+    },
+    "scenarios": [
+      {
+        "heroId": "willow-duelist",
+        "seed": 1465323777,
+        "inputScript": "river-oath-input/willow-flow/1",
+        "branchPreference": [
+          "harbor-road",
+          "beacon-ascent"
+        ]
+      },
+      {
+        "heroId": "astral-lancer",
+        "seed": 2776240642,
+        "inputScript": "river-oath-input/astral-vanguard/1",
+        "branchPreference": [
+          "forge-road",
+          "quench-route",
+          "beacon-ascent"
+        ]
+      },
+      {
+        "heroId": "iron-tactician",
+        "seed": 520753923,
+        "inputScript": "river-oath-input/iron-formation/1",
+        "branchPreference": [
+          "forge-road",
+          "quench-route",
+          "beacon-ascent"
+        ]
+      }
+    ],
+    "timingScope": "Primary fixed-tick run including snapshot validation; warmup and deterministic replay are excluded."
+  },
+  "coverage": {
+    "heroes": 3,
+    "heroIds": [
+      "willow-duelist",
+      "astral-lancer",
+      "iron-tactician"
+    ],
+    "totalTicks": 36000,
+    "minimumTotalTicks": 36000,
+    "minimumCoverageMet": true
+  },
+  "heroes": [
+    {
+      "heroId": "willow-duelist",
+      "seed": 1465323777,
+      "inputScript": "river-oath-input/willow-flow/1",
+      "branchPreference": [
+        "harbor-road",
+        "beacon-ascent"
+      ],
+      "measurement": {
+        "ticks": 12000,
+        "elapsedMs": 932.559,
+        "ticksPerSecond": 12868,
+        "lifecycle": {
+          "starts": 8,
+          "resumes": 0,
+          "branchesSelected": 0,
+          "stagesAdvanced": 0,
+          "campaignRestarts": 0,
+          "gameOverRestarts": 7
+        },
+        "events": {
+          "attack-guarded": 2,
+          "enemy-defeated": 35,
+          "enemy-hit": 134,
+          "game-over": 7,
+          "pickup-collected": 5,
+          "pickup-spawned": 14,
+          "player-action": 533,
+          "player-hit": 80,
+          "stage-started": 8,
+          "wave-cleared": 8,
+          "wave-started": 16
+        }
+      },
+      "determinism": {
+        "matched": true,
+        "measuredDigest": "sha256:3075346a3590e88b4fe6bef1fb483764d2e2e88109dfe86c6c44a2149452f8b3",
+        "replayDigest": "sha256:3075346a3590e88b4fe6bef1fb483764d2e2e88109dfe86c6c44a2149452f8b3",
+        "digestAlgorithm": "sha256",
+        "inputScript": "river-oath-input/willow-flow/1"
+      },
+      "serialization": {
+        "restoreAtTick": 6000,
+        "checkpointDigest": "sha256:8768b020635e2a8ef9cc716b9469b368f760fa07b5dfbed7295d4d68bafe0430",
+        "roundTripByteStable": true,
+        "continuationMatched": true
+      },
+      "validation": {
+        "finiteNumbers": true,
+        "insideArena": true,
+        "inspectedSnapshots": 24002
+      },
+      "entities": {
+        "peak": {
+          "players": 1,
+          "enemies": 4,
+          "pickups": 3,
+          "effects": 13,
+          "total": 18
+        },
+        "replayPeak": {
+          "players": 1,
+          "enemies": 4,
+          "pickups": 3,
+          "effects": 13,
+          "total": 18
+        },
+        "limits": {
+          "players": 1,
+          "enemies": 24,
+          "pickups": 8,
+          "effects": 192,
+          "total": 225
+        },
+        "withinLimits": true
+      },
+      "finalSummary": {
+        "status": "running",
+        "tick": 1003,
+        "stage": 1,
+        "stageId": "reedwater-causeway",
+        "wave": 2,
+        "score": 670,
+        "defeatedEnemies": 4,
+        "randomState": 3464225146,
+        "player": {
+          "heroId": "willow-duelist",
+          "health": 90,
+          "focus": 100,
+          "x": 434.18784,
+          "lane": 562.319188,
+          "action": "walk",
+          "comboHits": 0
+        },
+        "liveEntities": {
+          "enemies": 4,
+          "pickups": 0,
+          "effects": 0
+        },
+        "routeHistory": [
+          "reedwater-causeway"
+        ]
+      }
+    },
+    {
+      "heroId": "astral-lancer",
+      "seed": 2776240642,
+      "inputScript": "river-oath-input/astral-vanguard/1",
+      "branchPreference": [
+        "forge-road",
+        "quench-route",
+        "beacon-ascent"
+      ],
+      "measurement": {
+        "ticks": 12000,
+        "elapsedMs": 899.285,
+        "ticksPerSecond": 13344,
+        "lifecycle": {
+          "starts": 5,
+          "resumes": 0,
+          "branchesSelected": 0,
+          "stagesAdvanced": 0,
+          "campaignRestarts": 0,
+          "gameOverRestarts": 4
+        },
+        "events": {
+          "enemy-defeated": 33,
+          "enemy-hit": 105,
+          "game-over": 4,
+          "pickup-collected": 7,
+          "pickup-spawned": 13,
+          "player-action": 547,
+          "player-hit": 67,
+          "stage-started": 5,
+          "wave-cleared": 6,
+          "wave-started": 11
+        }
+      },
+      "determinism": {
+        "matched": true,
+        "measuredDigest": "sha256:9a94d7133b9437ea25570d0f0020a9bf64f20afed2f0a6dd279712dd418f90fc",
+        "replayDigest": "sha256:9a94d7133b9437ea25570d0f0020a9bf64f20afed2f0a6dd279712dd418f90fc",
+        "digestAlgorithm": "sha256",
+        "inputScript": "river-oath-input/astral-vanguard/1"
+      },
+      "serialization": {
+        "restoreAtTick": 6000,
+        "checkpointDigest": "sha256:238bfd6a810b9d0d53f1b049c58439979340417c49fd2a289ed4e89b9025a2f6",
+        "roundTripByteStable": true,
+        "continuationMatched": true
+      },
+      "validation": {
+        "finiteNumbers": true,
+        "insideArena": true,
+        "inspectedSnapshots": 24002
+      },
+      "entities": {
+        "peak": {
+          "players": 1,
+          "enemies": 4,
+          "pickups": 3,
+          "effects": 13,
+          "total": 18
+        },
+        "replayPeak": {
+          "players": 1,
+          "enemies": 4,
+          "pickups": 3,
+          "effects": 13,
+          "total": 18
+        },
+        "limits": {
+          "players": 1,
+          "enemies": 24,
+          "pickups": 8,
+          "effects": 192,
+          "total": 225
+        },
+        "withinLimits": true
+      },
+      "finalSummary": {
+        "status": "running",
+        "tick": 2650,
+        "stage": 1,
+        "stageId": "reedwater-causeway",
+        "wave": 2,
+        "score": 1423,
+        "defeatedEnemies": 7,
+        "randomState": 3989226870,
+        "player": {
+          "heroId": "astral-lancer",
+          "health": 26,
+          "focus": 45,
+          "x": 1033.650051,
+          "lane": 614,
+          "action": "light",
+          "comboHits": 0
+        },
+        "liveEntities": {
+          "enemies": 1,
+          "pickups": 0,
+          "effects": 1
+        },
+        "routeHistory": [
+          "reedwater-causeway"
+        ]
+      }
+    },
+    {
+      "heroId": "iron-tactician",
+      "seed": 520753923,
+      "inputScript": "river-oath-input/iron-formation/1",
+      "branchPreference": [
+        "forge-road",
+        "quench-route",
+        "beacon-ascent"
+      ],
+      "measurement": {
+        "ticks": 12000,
+        "elapsedMs": 910.25,
+        "ticksPerSecond": 13183,
+        "lifecycle": {
+          "starts": 6,
+          "resumes": 0,
+          "branchesSelected": 0,
+          "stagesAdvanced": 0,
+          "campaignRestarts": 0,
+          "gameOverRestarts": 5
+        },
+        "events": {
+          "attack-guarded": 2,
+          "enemy-defeated": 22,
+          "enemy-hit": 64,
+          "game-over": 5,
+          "pickup-spawned": 7,
+          "player-action": 556,
+          "player-hit": 75,
+          "stage-started": 6,
+          "wave-cleared": 3,
+          "wave-started": 9
+        }
+      },
+      "determinism": {
+        "matched": true,
+        "measuredDigest": "sha256:f60eed4a010cb49dde475559f5babd47640e734ad351d3dc62782c079ca59bdb",
+        "replayDigest": "sha256:f60eed4a010cb49dde475559f5babd47640e734ad351d3dc62782c079ca59bdb",
+        "digestAlgorithm": "sha256",
+        "inputScript": "river-oath-input/iron-formation/1"
+      },
+      "serialization": {
+        "restoreAtTick": 6000,
+        "checkpointDigest": "sha256:f77b887e8c0e05240795fff15a43612fb3e077fd4fe53df142e496fd9ab990e1",
+        "roundTripByteStable": true,
+        "continuationMatched": true
+      },
+      "validation": {
+        "finiteNumbers": true,
+        "insideArena": true,
+        "inspectedSnapshots": 24002
+      },
+      "entities": {
+        "peak": {
+          "players": 1,
+          "enemies": 4,
+          "pickups": 1,
+          "effects": 12,
+          "total": 17
+        },
+        "replayPeak": {
+          "players": 1,
+          "enemies": 4,
+          "pickups": 1,
+          "effects": 12,
+          "total": 17
+        },
+        "limits": {
+          "players": 1,
+          "enemies": 24,
+          "pickups": 8,
+          "effects": 192,
+          "total": 225
+        },
+        "withinLimits": true
+      },
+      "finalSummary": {
+        "status": "running",
+        "tick": 796,
+        "stage": 1,
+        "stageId": "reedwater-causeway",
+        "wave": 1,
+        "score": 450,
+        "defeatedEnemies": 3,
+        "randomState": 1537790632,
+        "player": {
+          "heroId": "iron-tactician",
+          "health": 165,
+          "focus": 63,
+          "x": 182.757958,
+          "lane": 460.3776,
+          "action": "light",
+          "comboHits": 0
+        },
+        "liveEntities": {
+          "enemies": 1,
+          "pickups": 1,
+          "effects": 1
+        },
+        "routeHistory": [
+          "reedwater-causeway"
+        ]
+      }
+    }
+  ],
+  "aggregate": {
+    "totalTicks": 36000,
+    "elapsedMs": 2742.094,
+    "ticksPerSecond": 13129,
+    "deterministicHeroes": 3,
+    "finiteHeroes": 3,
+    "boundedHeroes": 3,
+    "restoredHeroes": 3,
+    "peakLiveEntities": 18,
+    "validationPassed": true
+  },
+  "passed": true
+}

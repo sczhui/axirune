@@ -4,7 +4,7 @@
 
 **Make intent axiomatic. Bound every effect.**
 
-Axirune 0.5.0-alpha.1 is a deterministic general-purpose language and
+Axirune 0.6.0-alpha.1 is a deterministic general-purpose language and
 interpreter designed to be easy for both people and LLMs to write, inspect,
 and refactor.
 Programs do not require a model: shapes, user-defined tasks, named calls,
@@ -30,9 +30,13 @@ This repository includes:
 - [AxiLedger](https://axirune.velhu.com/showcase/ledger), a complete browser
   application whose validation and financial aggregation run from checked
   Axirune source with no model or network access;
-- [Axirune Arcade](https://axirune.velhu.com/arcade), 20 playable original
-  browser worlds across eight deterministic engine families, each backed by a
-  real `.axi` rules program and verified, zero-authority `.axc` capsule;
+- [River Oath](https://axirune.velhu.com/arcade/river-oath), an original
+  four-act 2.5D action campaign with three heroes, twelve encounters, distinct
+  bosses, routes, items, and a dedicated deterministic engine driven by a real
+  `river-oath.axi` rule capsule;
+- [Axirune Arcade](https://axirune.velhu.com/arcade), the River Oath campaign
+  plus 20 compact original browser worlds, all backed by real `.axi` rule
+  programs and verified, zero-authority `.axc` capsules;
 - a Node.js CLI, JSON-RPC Language Server, and self-contained VS Code extension;
 - deterministic examples for recursion, collection processing, invoices,
   errors, and command-line I/O, plus separately labelled optional AI/MCP
@@ -134,7 +138,7 @@ Future WebAssembly or native sections may accelerate a verified capsule, but
 they are optional backends and are not part of the current implementation.
 
 Run the [AxiLedger web showcase](https://axirune.velhu.com/showcase/ledger), or
-read the [language tour](docs/LANGUAGE_TOUR.md), [0.5 alpha
+read the [language tour](docs/LANGUAGE_TOUR.md), [0.6 alpha
 specification](docs/SPEC.md), [design rationale](docs/DESIGN.md), [security
 model](docs/SECURITY.md), [toolchain guide](docs/TOOLCHAIN.md), and
 [implementation architecture](docs/ARCHITECTURE.md). The
@@ -143,6 +147,8 @@ output, authority, determinism, and scale acceptance tests.
 The [Arcade Collection guide](docs/ARCADE_COLLECTION.md) documents all 20
 worlds, their rule sources, honest runtime boundary, controls, replay model,
 benchmark, and originality policy.
+The [River Oath guide](docs/RIVER_OATH.md) documents the campaign, controls,
+rule/host boundary, replay model, visual sources, and originality boundary.
 
 ## Programming model
 
@@ -182,6 +188,8 @@ axirune inspect <file.axc>    print capsule identity, IR, and authority
 axirune decompile <file.axc>  recover an embedded source projection
 axirune build <file> --out X  write source, IR, manifest, and capsule
 axirune bench                 run the measured reference benchmark
+npm run bench:classics        run the 20-world deterministic replay suite
+npm run bench:river-oath      run the 36,000-tick River Oath replay suite
 ```
 
 Diagnostics, AST, IR, manifests, and traces are serializable surfaces for
@@ -251,7 +259,7 @@ interpreter are served from the same deployment.
 
 ## Preview status
 
-Axirune 0.5.0-alpha.1 is a coherent, runnable language preview. Its
+Axirune 0.6.0-alpha.1 is a coherent, runnable language preview. Its
 deterministic core, CLI, browser interpreter, editor tooling, examples, and
 benchmark harness are implemented in this repository. Host I/O, MCP, and model
 adapters remain explicit integration surfaces and never become ambient powers

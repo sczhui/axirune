@@ -1,6 +1,6 @@
 {
   "name": "axirune-language",
-  "version": "0.5.0-alpha.1",
+  "version": "0.6.0-alpha.1",
   "private": true,
   "type": "module",
   "description": "A deterministic general-purpose language with optional typed AI capabilities.",
@@ -38,6 +38,8 @@
     "docs",
     "examples",
     "scripts/benchmark-classics.mjs",
+    "scripts/benchmark-river-oath.mjs",
+    "public/river-oath-benchmark-results.json",
     "axirune.pack",
     "axirune.lock",
     "README.md",
@@ -59,6 +61,7 @@
     "check:examples": "npm run build:toolchain && node scripts/check-examples.mjs",
     "bench": "npm run build:toolchain && node dist-toolchain/benchmarks/run.js",
     "bench:classics": "npm run build:toolchain && node scripts/benchmark-classics.mjs --pretty",
+    "bench:river-oath": "npm run build:toolchain && node scripts/benchmark-river-oath.mjs --pretty",
     "axirune": "node dist-toolchain/src/cli/axirune.js",
     "nexilume": "node dist-toolchain/src/cli/axirune.js"
   },

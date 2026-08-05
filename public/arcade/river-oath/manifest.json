@@ -1,0 +1,44 @@
+{
+  "schema": "axirune-arcade/assets/1",
+  "game": "river-oath",
+  "generated": "2026-08-06",
+  "generator": "OpenAI built-in ImageGen",
+  "licenseBoundary": "Original project assets; no extracted or copied game assets.",
+  "assets": [
+    {
+      "file": "river-oath-key-art.jpg",
+      "width": 1672,
+      "height": 941,
+      "bytes": 556459,
+      "sha256": "b4d7e8a68ab5acd09b636f7c271a91d2ccf54581fb18fe0e90cb4c1ffc341dcc"
+    },
+    {
+      "file": "stage-reedwater.jpg",
+      "width": 1821,
+      "height": 864,
+      "bytes": 600231,
+      "sha256": "67d3052d3fd5327ab136fab33ea32796ce32d5e8c4f5cba1cf5d8a7940453679"
+    },
+    {
+      "file": "stage-foundry.jpg",
+      "width": 1774,
+      "height": 887,
+      "bytes": 650807,
+      "sha256": "02b83533218f2125a8011fe84a72b7d03a1c2fa8d95f842964cd6d372887b74e"
+    },
+    {
+      "file": "stage-harbor.jpg",
+      "width": 1823,
+      "height": 863,
+      "bytes": 498970,
+      "sha256": "207f07ecd3cdf09d19f83fcaa4d7c5b284cc39c997957e37ee7620d9661ae371"
+    },
+    {
+      "file": "stage-beacon.jpg",
+      "width": 1879,
+      "height": 837,
+      "bytes": 651710,
+      "sha256": "edfb8004a10fc23bee921c0199a5a6a60ecac5ff4648e7c1275fb067905ce317"
+    }
+  ]
+}

@@ -81,6 +81,43 @@ type ClassicBenchmarkReport = {
   passed: boolean
 }
 
+type RiverOathBenchmarkReport = {
+  schema: 'axirune-benchmark/river-oath/1'
+  generatedAt: string
+  languageVersion: string
+  configuration: {
+    fixedStepHz: number
+    measuredTicksPerHero: number
+    minimumTotalTicks: number
+  }
+  coverage: {
+    heroes: number
+    heroIds: string[]
+    totalTicks: number
+    minimumCoverageMet: boolean
+  }
+  heroes: Array<{
+    heroId: string
+    measurement: { ticks: number; elapsedMs: number; ticksPerSecond: number }
+    determinism: { matched: boolean; measuredDigest: string; replayDigest: string }
+    serialization: { restoreAtTick: number; roundTripByteStable: boolean; continuationMatched: boolean }
+    validation: { finiteNumbers: boolean; insideArena: boolean }
+    entities: { peak: { total: number }; withinLimits: boolean }
+  }>
+  aggregate: {
+    totalTicks: number
+    elapsedMs: number
+    ticksPerSecond: number
+    deterministicHeroes: number
+    finiteHeroes: number
+    boundedHeroes: number
+    restoredHeroes: number
+    peakLiveEntities: number
+    validationPassed: boolean
+  }
+  passed: boolean
+}
+
 function titleCase(value: string) {
   return value
     .split(/[-_]/u)
@@ -116,6 +153,8 @@ export function BenchmarksPage({ locale }: { locale: Locale }) {
   const [releaseError, setReleaseError] = useState('')
   const [classicReport, setClassicReport] = useState<ClassicBenchmarkReport | null>(null)
   const [classicError, setClassicError] = useState('')
+  const [riverOathReport, setRiverOathReport] = useState<RiverOathBenchmarkReport | null>(null)
+  const [riverOathError, setRiverOathError] = useState('')
   const [resultMode, setResultMode] = useState<'release' | 'local'>('release')
   const [runAt, setRunAt] = useState('')
   const smallSource = samples[0]?.code ?? ''
@@ -160,7 +199,26 @@ export function BenchmarksPage({ locale }: { locale: Locale }) {
         setClassicError(error instanceof Error ? error.message : String(error))
       }
     }
-    void Promise.all([loadReleaseReport(), loadClassicReport()])
+    const loadRiverOathReport = async () => {
+      try {
+        const response = await fetch('/river-oath-benchmark-results.json', { signal: controller.signal })
+        if (!response.ok) throw new Error(`HTTP ${response.status}`)
+        const report = (await response.json()) as RiverOathBenchmarkReport
+        if (
+          report.schema !== 'axirune-benchmark/river-oath/1'
+          || report.coverage.heroes !== 3
+          || report.coverage.totalTicks < 36_000
+          || !report.coverage.minimumCoverageMet
+        ) {
+          throw new Error('Invalid River Oath benchmark report')
+        }
+        setRiverOathReport(report)
+      } catch (error) {
+        if (error instanceof DOMException && error.name === 'AbortError') return
+        setRiverOathError(error instanceof Error ? error.message : String(error))
+      }
+    }
+    void Promise.all([loadReleaseReport(), loadClassicReport(), loadRiverOathReport()])
     return () => controller.abort()
   }, [])
 
@@ -244,7 +302,7 @@ export function BenchmarksPage({ locale }: { locale: Locale }) {
           <div>
             <span className="eyebrow">
               {resultMode === 'release'
-                ? `RELEASE JSON / AXIRUNE ${releaseReport?.languageVersion ?? '0.5.0-alpha.1'}`
+                ? `RELEASE JSON / AXIRUNE ${releaseReport?.languageVersion ?? '0.6.0-alpha.1'}`
                 : 'BROWSER LAB / REAL COMPILER CORE'}
             </span>
             <h2>{locale === 'zh' ? '编译器微基准' : 'Compiler microbenchmarks'}</h2>
@@ -328,6 +386,57 @@ export function BenchmarksPage({ locale }: { locale: Locale }) {
         </div>
       </section>
 
+      <section className="classic-benchmark-lab river-oath-benchmark-lab">
+        <div className="classic-benchmark-lab__head">
+          <div>
+            <span className="eyebrow"><Gamepad2 size={13} /> RIVER OATH / DETERMINISTIC CAMPAIGN</span>
+            <h2>{locale === 'zh' ? '一场真正跑起来的 Axirune 动作战役。' : 'A real Axirune action campaign under load.'}</h2>
+          </div>
+          <p>{locale === 'zh' ? '三位英雄分别执行固定 Seed 与输入脚本；中途序列化、恢复并继续回放。吞吐只描述发布机器，不用于语言间排名。' : 'Each hero executes a fixed seed and input script, serializes mid-run, restores, and continues. Throughput describes only the release machine; it is not a cross-language ranking.'}</p>
+        </div>
+
+        {riverOathReport ? (
+          <>
+            <div className="classic-benchmark-facts">
+              <div><small>HEROES</small><strong>{riverOathReport.coverage.heroes}</strong><span>{locale === 'zh' ? '套独立固定脚本' : 'FIXED INPUT SCENARIOS'}</span></div>
+              <div><small>REPLAY</small><strong>{riverOathReport.aggregate.totalTicks.toLocaleString()}</strong><span>{locale === 'zh' ? '测量 TICKS' : 'MEASURED TICKS'}</span></div>
+              <div><small>THROUGHPUT</small><strong>{riverOathReport.aggregate.ticksPerSecond.toLocaleString()}</strong><span>TICKS / SECOND</span></div>
+              <div><small>RESULT</small><strong>{riverOathReport.passed ? '3 / 3' : 'REVIEW'}</strong><span>{locale === 'zh' ? '回放、恢复、有界' : 'REPLAY + RESTORE + BOUNDS'}</span></div>
+            </div>
+
+            <div className="classic-benchmark-table" role="table" aria-label="River Oath benchmark results">
+              <div className="classic-benchmark-table__row is-header" role="row">
+                <span role="columnheader">HERO</span><span role="columnheader">MEASURED RUN</span><span role="columnheader">TICKS / S</span><span role="columnheader">PEAK</span><span role="columnheader">RESTORE</span>
+              </div>
+              {riverOathReport.heroes.map((hero, index) => {
+                const passed = hero.determinism.matched
+                  && hero.serialization.roundTripByteStable
+                  && hero.serialization.continuationMatched
+                  && hero.validation.finiteNumbers
+                  && hero.validation.insideArena
+                  && hero.entities.withinLimits
+                return (
+                  <div className="classic-benchmark-table__row" role="row" key={hero.heroId}>
+                    <span role="cell"><small>{String(index + 1).padStart(2, '0')}</small><strong>{titleCase(hero.heroId)}</strong></span>
+                    <span role="cell">{hero.measurement.ticks.toLocaleString()} TICKS<small>{riverOathReport.configuration.fixedStepHz} HZ · RESTORE @ {hero.serialization.restoreAtTick.toLocaleString()}</small></span>
+                    <span role="cell" className="benchmark-number">{hero.measurement.ticksPerSecond.toLocaleString()}</span>
+                    <span role="cell" className="benchmark-number">{hero.entities.peak.total}</span>
+                    <span role="cell" className={passed ? 'is-pass' : 'is-fail'}>
+                      {passed ? <Check size={13} /> : '!'}
+                      {passed ? 'MATCH' : 'REVIEW'}
+                    </span>
+                  </div>
+                )
+              })}
+            </div>
+          </>
+        ) : (
+          <div className="classic-benchmark-loading">
+            {riverOathError ? riverOathError : <><LoaderCircle className="spin" size={18} /> {locale === 'zh' ? '读取 River Oath 发布基准' : 'Loading River Oath release benchmark'}</>}
+          </div>
+        )}
+      </section>
+
       <section className="classic-benchmark-lab">
         <div className="classic-benchmark-lab__head">
           <div>
@@ -401,6 +510,10 @@ export function BenchmarksPage({ locale }: { locale: Locale }) {
           <a href="/classics-benchmark-results.json" download>
             <Download size={15} />
             {locale === 'zh' ? '下载 Arcade 基准 JSON' : 'Download Arcade benchmark JSON'}
+          </a>
+          <a href="/river-oath-benchmark-results.json" download>
+            <Download size={15} />
+            {locale === 'zh' ? '下载 River Oath 基准 JSON' : 'Download River Oath benchmark JSON'}
           </a>
         </div>
       </section>

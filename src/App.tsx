@@ -10,6 +10,7 @@ import { HomePage } from './ui/HomePage'
 import { IdePage } from './ui/IdePage'
 import { LedgerShowcasePage } from './ui/LedgerShowcasePage'
 import { PlaygroundPage } from './ui/PlaygroundPage'
+import { RiverOathPage } from './ui/RiverOathPage'
 import { useRoute } from './ui/Router'
 import { PageFrame } from './ui/Shell'
 
@@ -17,13 +18,14 @@ const titles = {
   '/': 'Axirune — Make intent axiomatic. Bound every effect.',
   '/capsule-lab': 'Capsule Lab — Axirune',
   '/arcade': 'Axirune Arcade — Verified rules, original worlds',
+  '/arcade/river-oath': 'River Oath — Built with Axirune',
   '/playground': 'Playground — Axirune',
   '/ide': 'Online IDE — Axirune',
   '/docs': 'Language Documentation — Axirune',
   '/examples': 'Example Programs — Axirune',
   '/showcase/ledger': 'AxiLedger — Built with Axirune',
   '/benchmarks': 'Benchmarks — Axirune',
-  '/download': 'Download Axirune 0.5.0-alpha.1',
+  '/download': 'Download Axirune 0.6.0-alpha.1',
 } as const
 
 function initialLocale(): Locale {
@@ -52,6 +54,7 @@ export default function App() {
       {route === '/' ? <HomePage locale={locale} /> : null}
       {route === '/capsule-lab' ? <CapsuleLabPage locale={locale} /> : null}
       {route === '/arcade' ? <ArcadePage locale={locale} /> : null}
+      {route === '/arcade/river-oath' ? <RiverOathPage locale={locale} /> : null}
       {route === '/playground' ? <PlaygroundPage locale={locale} /> : null}
       {route === '/ide' ? <IdePage locale={locale} /> : null}
       {route === '/docs' ? <DocsPage locale={locale} /> : null}

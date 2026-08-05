@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.6.0-alpha.1 — River Oath
+
+- Adds River Oath: The First Banner, an original late-Han-inspired 2.5D lane
+  brawler with three distinct heroes, four acts, twelve encounters, eight
+  regular enemy classes, four dedicated bosses, items, routes, guard, dodge,
+  launcher, combo, skill, and boss-phase systems.
+- Adds a real `river-oath.axi` program whose 4×3 encounter contract compiles
+  into a deterministic, zero-authority `.axc` capsule and changes bounded
+  combat parameters only at explicit wave boundaries.
+- Adds a dedicated 60 Hz seeded engine, serializable snapshots, replay tests,
+  7,200-frame boundary tests, 2.5D lane sorting, procedural character rigs,
+  high-DPR Canvas presentation, keyboard/touch controls, reduced-motion
+  handling, optional synthesized audio, and an editable source laboratory.
+- Adds five original project-owned visual assets with hashes and source notes,
+  a direct `/arcade/river-oath` route, a dedicated benchmark report, and
+  responsive desktop/mobile presentation. No ROM, extracted asset, protected
+  game character, copied map, model call, or network runtime is included.
+
 ## 0.5.0-alpha.1 — Arcade Collection
 
 - Expands Axirune Arcade from two flagships to 20 playable original browser

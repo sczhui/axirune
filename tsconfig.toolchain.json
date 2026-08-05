@@ -19,6 +19,7 @@
     "src/language/**/*.ts",
     "src/arcade/classic-rule-contract.ts",
     "src/arcade/classics/**/*.ts",
+    "src/arcade/river-oath/**/*.ts",
     "src/cli/**/*.ts",
     "src/lsp/**/*.ts",
     "benchmarks/**/*.ts"

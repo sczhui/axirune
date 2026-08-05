@@ -27,7 +27,7 @@ export function HomePage({ locale }: { locale: Locale }) {
         <div className="hero__copy">
           <div className="hero__meta">
             <span className="live-mark">
-              <i /> GENERAL-PURPOSE LANGUAGE · 0.5.0-ALPHA.1
+              <i /> GENERAL-PURPOSE LANGUAGE · 0.6.0-ALPHA.1
             </span>
             <span>DETERMINISTIC BY DEFAULT</span>
           </div>
@@ -97,20 +97,20 @@ export function HomePage({ locale }: { locale: Locale }) {
       </div>
 
       <section className="home-arcade">
-        <img src="/arcade/classics/classic-vault-hero-v2.jpg" alt="" aria-hidden="true" loading="lazy" />
+        <img src="/arcade/river-oath/river-oath-key-art.jpg" alt="" aria-hidden="true" loading="lazy" />
         <div className="home-arcade__scrim" />
         <div className="home-arcade__copy">
           <span className="eyebrow"><Gamepad2 size={14} /> 00 / AXIRUNE ARCADE</span>
-          <h2>{locale === 'zh' ? '二十款原创游戏，真正由 Axirune 规则驱动。' : 'Twenty original games, genuinely driven by Axirune rules.'}</h2>
-          <p>{locale === 'zh' ? '探索平台跳跃、射击、竞速、解谜、弹珠与竞技世界：编辑 .axi 难度程序、重新生成 .axc 胶囊，然后立即游玩受检规则。' : 'Explore platforming, shooting, racing, puzzles, orbital physics, and arena worlds: edit .axi rules, rebuild the .axc capsule, then play the verified result.'}</p>
-          <Link to="/arcade" className="button button--signal">
+          <h2>{locale === 'zh' ? '二十一款原创作品，一部真正可玩的四幕动作战役。' : 'Twenty-one original works—and a playable four-act action campaign.'}</h2>
+          <p>{locale === 'zh' ? '在 River Oath 中选择三位原创英雄，闯过十二场遭遇与四位 Boss；编辑 .axi 战斗规则、重新生成 .axc 胶囊，然后在下一波应用受检结果。' : 'Choose among three original heroes in River Oath, cross twelve encounters and four bosses, edit the .axi combat rules, rebuild the .axc capsule, and apply the verified result at the next wave.'}</p>
+          <Link to="/arcade/river-oath" className="button button--signal">
             <Play size={16} fill="currentColor" />
-            {locale === 'zh' ? '进入游戏厅' : 'Enter the arcade'}
+            {locale === 'zh' ? '进入 River Oath 战役' : 'Play River Oath'}
           </Link>
         </div>
         <div className="home-arcade__games" aria-hidden="true">
-          <span><strong>20</strong>ORIGINAL WORLDS<small>20 VERIFIED .AXI RULESETS</small></span>
-          <span><strong>08</strong>ENGINE FAMILIES<small>FIXED STEP / SEEDED REPLAY</small></span>
+          <span><strong>21</strong>ORIGINAL WORKS<small>21 VERIFIED .AXI RULESETS</small></span>
+          <span><strong>09</strong>ENGINE FAMILIES<small>FIXED STEP / SEEDED REPLAY</small></span>
           <span><strong>00</strong>HIDDEN AUTHORITY<small>NO ROM · NO MODEL · NO NETWORK</small></span>
         </div>
       </section>

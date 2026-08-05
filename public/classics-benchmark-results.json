@@ -1,7 +1,7 @@
 {
   "schema": "axirune-benchmark/classics/1",
-  "generatedAt": "2026-08-05T15:38:33.022Z",
-  "languageVersion": "0.5.0-alpha.1",
+  "generatedAt": "2026-08-05T16:52:33.965Z",
+  "languageVersion": "0.6.0-alpha.1",
   "runtime": {
     "node": "v22.23.1",
     "platform": "darwin",
@@ -59,8 +59,8 @@
         "seed": 1243070686,
         "measurement": {
           "steps": 6000,
-          "elapsedMs": 19.393,
-          "stepsPerSecond": 309397,
+          "elapsedMs": 19.003,
+          "stepsPerSecond": 315732,
           "terminalRestarts": 1
         },
         "determinism": {
@@ -123,8 +123,8 @@
         "seed": 1243070686,
         "measurement": {
           "steps": 6000,
-          "elapsedMs": 46.799,
-          "stepsPerSecond": 128208,
+          "elapsedMs": 15.171,
+          "stepsPerSecond": 395491,
           "terminalRestarts": 17
         },
         "determinism": {
@@ -187,8 +187,8 @@
         "seed": 1243070686,
         "measurement": {
           "steps": 6000,
-          "elapsedMs": 72.48,
-          "stepsPerSecond": 82781,
+          "elapsedMs": 64.011,
+          "stepsPerSecond": 93733,
           "terminalRestarts": 12
         },
         "determinism": {
@@ -251,8 +251,8 @@
         "seed": 1243070686,
         "measurement": {
           "steps": 6000,
-          "elapsedMs": 9.223,
-          "stepsPerSecond": 650542,
+          "elapsedMs": 10.261,
+          "stepsPerSecond": 584745,
           "terminalRestarts": 24
         },
         "determinism": {
@@ -315,8 +315,8 @@
         "seed": 1243070686,
         "measurement": {
           "steps": 6000,
-          "elapsedMs": 9.019,
-          "stepsPerSecond": 665256,
+          "elapsedMs": 8.148,
+          "stepsPerSecond": 736377,
           "terminalRestarts": 2
         },
         "determinism": {
@@ -379,8 +379,8 @@
         "seed": 1243070686,
         "measurement": {
           "steps": 6000,
-          "elapsedMs": 31.079,
-          "stepsPerSecond": 193055,
+          "elapsedMs": 29.014,
+          "stepsPerSecond": 206798,
           "terminalRestarts": 8
         },
         "determinism": {
@@ -443,8 +443,8 @@
         "seed": 1243070686,
         "measurement": {
           "steps": 6000,
-          "elapsedMs": 17.324,
-          "stepsPerSecond": 346337,
+          "elapsedMs": 14.093,
+          "stepsPerSecond": 425734,
           "terminalRestarts": 12
         },
         "determinism": {
@@ -507,8 +507,8 @@
         "seed": 1243070686,
         "measurement": {
           "steps": 6000,
-          "elapsedMs": 7.57,
-          "stepsPerSecond": 792629,
+          "elapsedMs": 6.827,
+          "stepsPerSecond": 878810,
           "terminalRestarts": 12
         },
         "determinism": {
@@ -571,8 +571,8 @@
         "seed": 1243070686,
         "measurement": {
           "steps": 6000,
-          "elapsedMs": 7.744,
-          "stepsPerSecond": 774772,
+          "elapsedMs": 7.576,
+          "stepsPerSecond": 791940,
           "terminalRestarts": 2
         },
         "determinism": {
@@ -635,8 +635,8 @@
         "seed": 1243070686,
         "measurement": {
           "steps": 6000,
-          "elapsedMs": 5.161,
-          "stepsPerSecond": 1162481,
+          "elapsedMs": 3.761,
+          "stepsPerSecond": 1595144,
           "terminalRestarts": 2
         },
         "determinism": {
@@ -699,8 +699,8 @@
         "seed": 1243070686,
         "measurement": {
           "steps": 6000,
-          "elapsedMs": 10.257,
-          "stepsPerSecond": 584971,
+          "elapsedMs": 8.258,
+          "stepsPerSecond": 726594,
           "terminalRestarts": 0
         },
         "determinism": {
@@ -763,8 +763,8 @@
         "seed": 1243070686,
         "measurement": {
           "steps": 6000,
-          "elapsedMs": 16.379,
-          "stepsPerSecond": 366326,
+          "elapsedMs": 9.388,
+          "stepsPerSecond": 639131,
           "terminalRestarts": 16
         },
         "determinism": {
@@ -827,8 +827,8 @@
         "seed": 1243070686,
         "measurement": {
           "steps": 6000,
-          "elapsedMs": 15.456,
-          "stepsPerSecond": 388196,
+          "elapsedMs": 14.2,
+          "stepsPerSecond": 422527,
           "terminalRestarts": 224
         },
         "determinism": {
@@ -891,8 +891,8 @@
         "seed": 1243070686,
         "measurement": {
           "steps": 6000,
-          "elapsedMs": 5.703,
-          "stepsPerSecond": 1052055,
+          "elapsedMs": 5.31,
+          "stepsPerSecond": 1130005,
           "terminalRestarts": 13
         },
         "determinism": {
@@ -955,8 +955,8 @@
         "seed": 1243070686,
         "measurement": {
           "steps": 6000,
-          "elapsedMs": 8.797,
-          "stepsPerSecond": 682077,
+          "elapsedMs": 7.323,
+          "stepsPerSecond": 819299,
           "terminalRestarts": 7
         },
         "determinism": {
@@ -1019,8 +1019,8 @@
         "seed": 1243070686,
         "measurement": {
           "steps": 6000,
-          "elapsedMs": 9.176,
-          "stepsPerSecond": 653892,
+          "elapsedMs": 8.393,
+          "stepsPerSecond": 714857,
           "terminalRestarts": 8
         },
         "determinism": {
@@ -1083,8 +1083,8 @@
         "seed": 1243070686,
         "measurement": {
           "steps": 6000,
-          "elapsedMs": 5.876,
-          "stepsPerSecond": 1021161,
+          "elapsedMs": 5.046,
+          "stepsPerSecond": 1189129,
           "terminalRestarts": 6
         },
         "determinism": {
@@ -1147,8 +1147,8 @@
         "seed": 1243070686,
         "measurement": {
           "steps": 6000,
-          "elapsedMs": 5.167,
-          "stepsPerSecond": 1161187,
+          "elapsedMs": 5.538,
+          "stepsPerSecond": 1083399,
           "terminalRestarts": 0
         },
         "determinism": {
@@ -1206,8 +1206,8 @@
     ],
     "aggregate": {
       "totalSteps": 108000,
-      "elapsedMs": 302.603,
-      "stepsPerSecond": 356903,
+      "elapsedMs": 241.321,
+      "stepsPerSecond": 447537,
       "deterministicGames": 18,
       "gamesWithinEntityLimits": 18,
       "maxObservedEntities": 331

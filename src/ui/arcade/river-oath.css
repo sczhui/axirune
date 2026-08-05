@@ -1,0 +1,653 @@
+.river-oath-showcase {
+  --oath-ink: #070b0d;
+  --oath-panel: #0d1314;
+  --oath-paper: #f0ead8;
+  --oath-faded: rgba(240, 234, 216, 0.58);
+  --oath-line: rgba(240, 234, 216, 0.15);
+  --oath-gold: #e1ad58;
+  --oath-jade: #77c4ad;
+  --oath-cinnabar: #d85c3f;
+  width: 100%;
+  min-width: 0;
+  margin: 0 auto;
+  color: var(--oath-paper);
+}
+
+.river-oath-showcase__hero {
+  position: relative;
+  min-height: min(74vw, 780px);
+  overflow: hidden;
+  border: 1px solid var(--oath-line);
+  background: #10171a;
+  isolation: isolate;
+}
+
+.river-oath-showcase__hero-art,
+.river-oath-showcase__hero-shade {
+  position: absolute;
+  inset: 0;
+}
+
+.river-oath-showcase__hero-art {
+  z-index: -2;
+  background: url('/arcade/river-oath/river-oath-key-art.jpg') 62% center / cover no-repeat;
+  transform: scale(1.002);
+}
+
+.river-oath-showcase__hero-shade {
+  z-index: -1;
+  background:
+    linear-gradient(90deg, rgba(4, 8, 10, 0.96) 0%, rgba(4, 8, 10, 0.76) 34%, rgba(4, 8, 10, 0.12) 70%, rgba(4, 8, 10, 0.24) 100%),
+    linear-gradient(0deg, rgba(4, 8, 10, 0.86) 0%, transparent 42%);
+}
+
+.river-oath-showcase__hero-copy {
+  display: flex;
+  width: min(680px, 59%);
+  min-height: min(74vw, 780px);
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(42px, 7vw, 104px);
+}
+
+.river-oath-showcase__hero-copy > span,
+.river-oath-lab__story > span {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--oath-gold);
+  font: 720 9px/1 var(--mono);
+  letter-spacing: 0.16em;
+}
+
+.river-oath-showcase__hero-copy h2 {
+  margin: 20px 0 0;
+  color: #fffaf0;
+  font: 740 clamp(56px, 8vw, 116px)/0.78 var(--display);
+  letter-spacing: -0.075em;
+  text-shadow: 0 8px 50px rgba(0, 0, 0, 0.72);
+}
+
+.river-oath-showcase__hero-copy h2 i {
+  display: block;
+  color: transparent;
+  font-style: normal;
+  -webkit-text-stroke: 1px rgba(240, 234, 216, 0.72);
+}
+
+.river-oath-showcase__hero-copy > strong {
+  margin-top: 18px;
+  color: var(--oath-gold);
+  font: 680 clamp(13px, 1.5vw, 20px)/1.2 var(--display);
+  letter-spacing: 0.2em;
+}
+
+.river-oath-showcase__hero-copy > p {
+  max-width: 610px;
+  margin: 24px 0 0;
+  color: rgba(240, 234, 216, 0.7);
+  font: 460 14px/1.8 var(--sans);
+}
+
+.river-oath-showcase__facts {
+  display: grid;
+  max-width: 590px;
+  margin-top: 34px;
+  grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid var(--oath-line);
+  border-bottom: 1px solid var(--oath-line);
+}
+
+.river-oath-showcase__facts span {
+  display: flex;
+  min-width: 0;
+  min-height: 76px;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  padding: 0 15px;
+  border-right: 1px solid var(--oath-line);
+  color: rgba(240, 234, 216, 0.46);
+  font: 650 7px/1.2 var(--mono);
+  letter-spacing: 0.09em;
+}
+
+.river-oath-showcase__facts span:first-child { padding-left: 0; }
+.river-oath-showcase__facts span:last-child { border-right: 0; }
+.river-oath-showcase__facts b { color: #fff; font: 700 21px/1 var(--display); }
+
+.river-oath-showcase__original-mark {
+  position: absolute;
+  right: 28px;
+  bottom: 25px;
+  display: grid;
+  align-items: center;
+  padding: 13px 16px;
+  grid-template-columns: auto 1fr;
+  gap: 4px 8px;
+  border: 1px solid rgba(225, 173, 88, 0.32);
+  background: rgba(6, 10, 11, 0.72);
+  backdrop-filter: blur(12px);
+}
+
+.river-oath-showcase__original-mark svg { grid-row: span 2; color: var(--oath-gold); }
+.river-oath-showcase__original-mark strong { font: 720 9px/1 var(--mono); letter-spacing: 0.12em; }
+.river-oath-showcase__original-mark span { color: var(--oath-faded); font: 650 6px/1 var(--mono); letter-spacing: 0.08em; }
+
+.river-oath-showcase__disclosure {
+  display: flex;
+  min-height: 70px;
+  align-items: center;
+  gap: 15px;
+  padding: 16px clamp(20px, 4vw, 56px);
+  border: 1px solid var(--oath-line);
+  border-top: 0;
+  color: rgba(240, 234, 216, 0.62);
+  background: #101718;
+}
+
+.river-oath-showcase__disclosure svg { flex: 0 0 auto; color: var(--oath-jade); }
+.river-oath-showcase__disclosure p { margin: 0; font: 450 12px/1.65 var(--sans); }
+.river-oath-showcase__disclosure strong { color: var(--oath-paper); }
+
+.river-oath-showcase__machine { width: 100%; margin-top: 34px; }
+
+.river-oath-showcase__loading {
+  display: flex;
+  min-height: 440px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 13px;
+  border: 1px solid var(--oath-line);
+  color: var(--oath-gold);
+  background: var(--oath-ink);
+}
+
+.river-oath-showcase__loading strong { color: var(--oath-paper); font: 700 12px/1 var(--mono); letter-spacing: 0.12em; }
+.river-oath-showcase__loading span { color: var(--oath-faded); font: 650 7px/1 var(--mono); letter-spacing: 0.1em; }
+.river-oath-showcase__loading p { max-width: 680px; color: #ff8b73; font: 500 11px/1.6 var(--mono); text-align: center; }
+
+.river-oath-game {
+  --oath-game-line: rgba(240, 234, 216, 0.16);
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--oath-game-line);
+  outline: none;
+  color: #f0ead8;
+  background: #05090a;
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.42);
+}
+
+.river-oath-game:focus-visible {
+  box-shadow: inset 0 0 0 2px var(--oath-gold), 0 40px 100px rgba(0, 0, 0, 0.42);
+}
+
+.river-oath-game__command-bar {
+  display: flex;
+  min-height: 62px;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 18px;
+  border-bottom: 1px solid var(--oath-game-line);
+  background: #0b1112;
+}
+
+.river-oath-game__command-title,
+.river-oath-game__command-actions,
+.river-oath-game__command-title > div {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+}
+
+.river-oath-game__command-title { gap: 13px; padding-left: 14px; }
+.river-oath-game__command-title > div { align-items: flex-start; flex-direction: column; gap: 6px; }
+.river-oath-game__command-title strong { font: 760 10px/1 var(--display); letter-spacing: 0.15em; }
+.river-oath-game__command-title small { overflow: hidden; max-width: min(43vw, 520px); color: rgba(240, 234, 216, 0.44); font: 650 6px/1 var(--mono); letter-spacing: 0.08em; text-overflow: ellipsis; white-space: nowrap; }
+
+.river-oath-game__seal {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid rgba(216, 92, 63, 0.65);
+  color: #f1d6b2;
+  background: #7c2c22;
+  font: 800 16px/1 serif;
+  box-shadow: inset 0 0 0 3px rgba(15, 6, 5, 0.18);
+}
+
+.river-oath-game__command-actions { align-self: stretch; }
+.river-oath-game__runtime { display: flex; align-items: center; gap: 8px; padding: 0 17px; color: rgba(240, 234, 216, 0.55); font: 680 6px/1 var(--mono); letter-spacing: 0.09em; }
+.river-oath-game__runtime i { width: 6px; height: 6px; border-radius: 50%; background: var(--oath-jade); box-shadow: 0 0 9px var(--oath-jade); }
+.river-oath-game__runtime.is-building i { background: var(--oath-gold); box-shadow: 0 0 9px var(--oath-gold); animation: oath-pulse 1s ease-in-out infinite; }
+
+.river-oath-game__command-actions button {
+  display: grid;
+  width: 52px;
+  min-width: 52px;
+  place-items: center;
+  border: 0;
+  border-left: 1px solid var(--oath-game-line);
+  color: rgba(240, 234, 216, 0.68);
+  background: transparent;
+  cursor: pointer;
+}
+
+.river-oath-game__command-actions button:hover,
+.river-oath-game__command-actions button:focus-visible { color: #13100a; background: var(--oath-gold); outline: none; }
+
+.river-oath-game__viewport {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #05090a;
+  isolation: isolate;
+}
+
+.river-oath-game__viewport canvas { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+
+.river-oath-game__hud {
+  position: absolute;
+  z-index: 3;
+  top: 15px;
+  right: 16px;
+  left: 16px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  pointer-events: none;
+}
+
+.river-oath-game__hero-hud {
+  display: flex;
+  min-width: min(43vw, 420px);
+  align-items: stretch;
+  padding: 7px;
+  border: 1px solid rgba(240, 234, 216, 0.22);
+  background: linear-gradient(100deg, rgba(5, 10, 12, 0.88), rgba(5, 10, 12, 0.54));
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.24);
+  backdrop-filter: blur(8px);
+}
+
+.river-oath-game__portrait {
+  display: grid;
+  width: 56px;
+  min-width: 56px;
+  place-items: center;
+  border: 1px solid rgba(225, 173, 88, 0.44);
+  color: #ffe0a2;
+  background: radial-gradient(circle at 50% 30%, #3b6c75, #10252a 68%);
+  font: 800 25px/1 serif;
+  text-shadow: 0 2px 10px #000;
+}
+
+.river-oath-game__vitals { display: flex; width: 100%; min-width: 0; flex-direction: column; gap: 6px; padding: 2px 8px 1px 10px; }
+.river-oath-game__vitals > div:first-child { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.river-oath-game__vitals strong { font: 750 9px/1 var(--display); letter-spacing: 0.08em; }
+.river-oath-game__vitals small { color: rgba(240, 234, 216, 0.5); font: 650 6px/1 var(--mono); letter-spacing: 0.06em; }
+
+.river-oath-meter { display: grid; align-items: center; grid-template-columns: 1fr auto; gap: 7px; }
+.river-oath-meter i { position: relative; display: block; height: 7px; overflow: hidden; border: 1px solid rgba(240, 234, 216, 0.21); background: rgba(0, 0, 0, 0.62); transform: skewX(-12deg); }
+.river-oath-meter b { display: block; height: 100%; transition: width 100ms linear; }
+.river-oath-meter--health b { background: linear-gradient(90deg, #9d342d, #eb7051 72%, #ffc073); box-shadow: 0 0 11px rgba(235, 112, 81, 0.54); }
+.river-oath-meter--focus b { background: linear-gradient(90deg, #28738a, #6ed3d5 72%, #c5f4d2); box-shadow: 0 0 11px rgba(110, 211, 213, 0.42); }
+.river-oath-meter span { min-width: 61px; color: rgba(240, 234, 216, 0.62); font: 620 6px/1 var(--mono); text-align: right; }
+
+.river-oath-game__mission-hud {
+  display: flex;
+  min-width: 148px;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 5px;
+  padding: 11px 13px;
+  border: 1px solid rgba(240, 234, 216, 0.2);
+  background: rgba(5, 10, 12, 0.72);
+  backdrop-filter: blur(7px);
+}
+
+.river-oath-game__mission-hud span { color: var(--oath-gold); font: 700 6px/1 var(--mono); letter-spacing: 0.1em; }
+.river-oath-game__mission-hud strong { color: #fff; font: 750 16px/1 var(--display); letter-spacing: 0.05em; }
+.river-oath-game__mission-hud small { color: rgba(240, 234, 216, 0.48); font: 650 6px/1 var(--mono); letter-spacing: 0.08em; }
+
+.river-oath-game__combo {
+  position: absolute;
+  top: 88px;
+  left: 11px;
+  display: flex;
+  align-items: flex-end;
+  gap: 7px;
+  color: var(--oath-gold);
+  filter: drop-shadow(0 5px 8px rgba(0, 0, 0, 0.7));
+}
+
+.river-oath-game__combo strong { font: italic 800 clamp(32px, 5vw, 62px)/0.8 var(--display); }
+.river-oath-game__combo span { padding-bottom: 4px; font: 720 7px/1 var(--mono); letter-spacing: 0.12em; }
+
+.river-oath-game__boss {
+  position: absolute;
+  z-index: 4;
+  right: 25%;
+  bottom: 23px;
+  left: 25%;
+  padding: 9px 12px;
+  border: 1px solid rgba(240, 234, 216, 0.23);
+  background: rgba(10, 7, 8, 0.76);
+  backdrop-filter: blur(8px);
+}
+
+.river-oath-game__boss > div { display: flex; align-items: center; justify-content: space-between; gap: 15px; margin-bottom: 7px; }
+.river-oath-game__boss span { color: #e98b60; font: 700 6px/1 var(--mono); letter-spacing: 0.1em; }
+.river-oath-game__boss strong { font: 720 8px/1 var(--display); letter-spacing: 0.09em; }
+.river-oath-game__boss > i { display: block; height: 8px; overflow: hidden; border: 1px solid rgba(240, 234, 216, 0.24); background: #130909; }
+.river-oath-game__boss b { display: block; height: 100%; background: linear-gradient(90deg, #6e181d, #da4b38 55%, #f0ad58); box-shadow: 0 0 15px rgba(216, 75, 56, 0.56); transition: width 100ms linear; }
+
+.river-oath-game__overlay {
+  position: absolute;
+  z-index: 8;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(20px, 4vw, 54px);
+  color: var(--oath-paper);
+  background: radial-gradient(circle at 50% 45%, rgba(16, 40, 40, 0.68), rgba(3, 8, 9, 0.94));
+  text-align: center;
+  backdrop-filter: blur(4px);
+}
+
+.river-oath-game__overlay > span { color: var(--oath-gold); font: 720 7px/1 var(--mono); letter-spacing: 0.18em; }
+.river-oath-game__overlay h3 { max-width: 850px; margin: 14px 0 8px; color: #fffaf0; font: 720 clamp(24px, 4vw, 52px)/1 var(--display); letter-spacing: -0.035em; }
+.river-oath-game__overlay > p { max-width: 640px; margin: 0; color: rgba(240, 234, 216, 0.64); font: 450 11px/1.6 var(--sans); }
+.river-oath-game__overlay > small { margin-top: 12px; color: rgba(240, 234, 216, 0.42); font: 650 6px/1.4 var(--mono); letter-spacing: 0.07em; }
+.river-oath-game__overlay > svg { color: var(--oath-gold); filter: drop-shadow(0 0 15px rgba(225, 173, 88, 0.5)); }
+
+.river-oath-game__heroes { display: grid; width: min(830px, 90%); margin: 22px 0; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.river-oath-game__heroes button {
+  display: flex;
+  min-width: 0;
+  min-height: 135px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 14px;
+  border: 1px solid rgba(240, 234, 216, 0.18);
+  color: var(--oath-paper);
+  background: rgba(8, 14, 15, 0.7);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
+}
+
+.river-oath-game__heroes button:hover,
+.river-oath-game__heroes button:focus-visible { border-color: rgba(225, 173, 88, 0.72); outline: none; transform: translateY(-2px); }
+.river-oath-game__heroes button.is-selected { border-color: var(--oath-gold); background: linear-gradient(145deg, rgba(67, 58, 33, 0.75), rgba(9, 18, 19, 0.88)); box-shadow: inset 0 -3px var(--oath-gold); }
+.river-oath-game__heroes button > span { display: grid; width: 35px; height: 35px; place-items: center; border: 1px solid rgba(225, 173, 88, 0.4); color: #ffe1a9; background: #1c3638; font: 800 15px/1 serif; }
+.river-oath-game__heroes strong { margin-top: 4px; font: 730 10px/1 var(--display); letter-spacing: 0.12em; }
+.river-oath-game__heroes b { color: var(--oath-gold); font: 650 7px/1 var(--sans); }
+.river-oath-game__heroes small { color: rgba(240, 234, 216, 0.48); font: 550 6px/1.3 var(--mono); }
+
+.river-oath-game__primary,
+.river-oath-game__branches button {
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 0 22px;
+  border: 1px solid var(--oath-gold);
+  color: #171007;
+  background: var(--oath-gold);
+  font: 720 8px/1 var(--mono);
+  letter-spacing: 0.1em;
+  cursor: pointer;
+}
+
+.river-oath-game__primary:hover,
+.river-oath-game__primary:focus-visible { color: var(--oath-paper); background: transparent; outline: none; }
+.river-oath-game__pause-panel { gap: 9px; }
+.river-oath-game__pause-panel .river-oath-game__primary { margin-top: 12px; }
+.river-oath-game__clear-panel { gap: 8px; }
+.river-oath-game__clear-panel .river-oath-game__primary { margin-top: 15px; }
+.river-oath-game__branches { display: flex; flex-wrap: wrap; justify-content: center; gap: 9px; margin-top: 18px; }
+.river-oath-game__branches button { color: var(--oath-paper); background: rgba(8, 14, 15, 0.78); }
+.river-oath-game__branches button:hover { color: #171007; background: var(--oath-gold); }
+
+.river-oath-game__gated,
+.river-oath-game__rule-error {
+  position: absolute;
+  z-index: 12;
+  right: 10px;
+  bottom: 10px;
+  padding: 7px 9px;
+  border: 1px solid var(--oath-game-line);
+  color: rgba(240, 234, 216, 0.54);
+  background: rgba(3, 8, 9, 0.78);
+  font: 650 6px/1 var(--mono);
+  letter-spacing: 0.08em;
+}
+
+.river-oath-game__rule-error { right: auto; left: 10px; max-width: 70%; border-color: rgba(216, 92, 63, 0.5); color: #ff9d86; }
+
+.river-oath-controls {
+  display: flex;
+  min-height: 176px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 12px 16px;
+  border-top: 1px solid var(--oath-game-line);
+  background: #0b1112;
+  touch-action: none;
+  user-select: none;
+}
+
+.river-oath-controls__dpad { display: grid; grid-template-columns: repeat(3, 50px); grid-template-rows: repeat(3, 50px); gap: 4px; }
+.river-oath-controls__dpad button:first-child { grid-column: 2; }
+.river-oath-controls__dpad button:nth-child(2) { grid-row: 2; grid-column: 1; }
+.river-oath-controls__dpad i { grid-row: 2; grid-column: 2; border: 1px solid rgba(240, 234, 216, 0.08); background: rgba(0, 0, 0, 0.26); }
+.river-oath-controls__dpad button:nth-child(4) { grid-row: 2; grid-column: 3; }
+.river-oath-controls__dpad button:nth-child(5) { grid-row: 3; grid-column: 2; }
+
+.river-oath-controls__actions { display: grid; grid-template-columns: repeat(6, minmax(50px, 72px)); gap: 7px; }
+.river-oath-controls button {
+  position: relative;
+  display: flex;
+  min-width: 50px;
+  min-height: 50px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border: 1px solid rgba(240, 234, 216, 0.2);
+  border-radius: 2px;
+  color: rgba(240, 234, 216, 0.76);
+  background: linear-gradient(150deg, rgba(35, 46, 45, 0.8), rgba(12, 18, 19, 0.95));
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.05), 0 4px 12px rgba(0, 0, 0, 0.24);
+  cursor: pointer;
+}
+
+.river-oath-controls button strong { font: 750 13px/1 var(--display); }
+.river-oath-controls button small { color: rgba(240, 234, 216, 0.36); font: 620 5px/1 var(--mono); letter-spacing: 0.05em; }
+.river-oath-controls button.is-emphasis { border-color: rgba(225, 173, 88, 0.46); color: #ffe2a9; background: linear-gradient(150deg, rgba(93, 63, 28, 0.78), rgba(26, 20, 13, 0.96)); }
+.river-oath-controls button:hover,
+.river-oath-controls button:focus-visible,
+.river-oath-controls button:active { border-color: var(--oath-gold); color: #171007; background: var(--oath-gold); outline: none; transform: translateY(1px); }
+.river-oath-controls button:hover small,
+.river-oath-controls button:focus-visible small,
+.river-oath-controls button:active small { color: rgba(23, 16, 7, 0.62); }
+
+.river-oath-game__status {
+  display: grid;
+  min-height: 48px;
+  align-items: center;
+  padding: 0 16px;
+  grid-template-columns: auto 1fr auto;
+  gap: 18px;
+  border-top: 1px solid var(--oath-game-line);
+  background: #080d0e;
+}
+
+.river-oath-game__status span { display: flex; align-items: center; gap: 7px; color: rgba(240, 234, 216, 0.52); font: 650 6px/1 var(--mono); letter-spacing: 0.08em; }
+.river-oath-game__status span:first-child { color: var(--oath-jade); }
+.river-oath-game__status i { width: 6px; height: 6px; border-radius: 50%; background: currentColor; box-shadow: 0 0 8px currentColor; }
+.river-oath-game__status i[data-status='paused'],
+.river-oath-game__status i[data-status='stage-clear'] { color: var(--oath-gold); }
+.river-oath-game__status i[data-status='game-over'] { color: var(--oath-cinnabar); }
+.river-oath-game__status p { overflow: hidden; margin: 0; color: rgba(240, 234, 216, 0.62); font: 470 9px/1 var(--sans); text-align: center; text-overflow: ellipsis; white-space: nowrap; }
+
+.river-oath-lab {
+  display: grid;
+  margin-top: 34px;
+  grid-template-columns: minmax(280px, 0.76fr) minmax(520px, 1.24fr);
+  border: 1px solid var(--oath-line);
+  background: var(--oath-ink);
+}
+
+.river-oath-lab__story {
+  padding: clamp(30px, 5vw, 68px);
+  border-right: 1px solid var(--oath-line);
+  background:
+    linear-gradient(rgba(8, 14, 14, 0.93), rgba(8, 14, 14, 0.96)),
+    url('/arcade/river-oath/stage-reedwater.jpg') center / cover;
+}
+
+.river-oath-lab__story h3 { margin: 18px 0; color: #fffaf0; font: 720 clamp(26px, 3vw, 44px)/1.03 var(--display); letter-spacing: -0.04em; }
+.river-oath-lab__story > p { margin: 0; color: rgba(240, 234, 216, 0.6); font: 450 13px/1.75 var(--sans); }
+.river-oath-lab__story ol { display: grid; margin: 35px 0 0; padding: 0; gap: 0; list-style: none; border-top: 1px solid var(--oath-line); }
+.river-oath-lab__story li { display: grid; min-height: 73px; align-items: center; grid-template-columns: 42px 1fr; gap: 12px; border-bottom: 1px solid var(--oath-line); }
+.river-oath-lab__story li > i { color: var(--oath-gold); font: normal 720 8px/1 var(--mono); }
+.river-oath-lab__story li > div { display: flex; flex-direction: column; gap: 6px; }
+.river-oath-lab__story li strong { font: 700 8px/1 var(--mono); letter-spacing: 0.08em; }
+.river-oath-lab__story li span { color: rgba(240, 234, 216, 0.46); font: 450 10px/1.4 var(--sans); }
+
+.river-oath-studio { min-width: 0; background: #0b1011; }
+.river-oath-studio__bar { display: flex; min-height: 48px; align-items: stretch; justify-content: space-between; border-bottom: 1px solid var(--oath-line); }
+.river-oath-studio__bar > div,
+.river-oath-studio__bar > span { display: flex; align-items: center; gap: 8px; padding: 0 15px; }
+.river-oath-studio__bar > div { color: rgba(240, 234, 216, 0.76); }
+.river-oath-studio__bar > div svg { color: var(--oath-gold); }
+.river-oath-studio__bar strong { font: 680 8px/1 var(--mono); }
+.river-oath-studio__bar > span { border-left: 1px solid var(--oath-line); color: var(--oath-jade); font: 680 6px/1 var(--mono); letter-spacing: 0.08em; }
+.river-oath-studio__bar > span.is-dirty { color: var(--oath-gold); }
+.river-oath-studio__bar > span.is-error { color: #ff876d; }
+.river-oath-studio .code-editor { border: 0; border-bottom: 1px solid var(--oath-line); }
+
+.river-oath-studio__actions { display: flex; min-height: 54px; align-items: stretch; justify-content: flex-end; border-bottom: 1px solid var(--oath-line); }
+.river-oath-studio__actions button { display: inline-flex; min-width: 52px; min-height: 48px; align-items: center; justify-content: center; gap: 8px; padding: 0 15px; border: 0; border-left: 1px solid var(--oath-line); color: rgba(240, 234, 216, 0.72); background: transparent; font: 680 7px/1 var(--mono); letter-spacing: 0.07em; cursor: pointer; }
+.river-oath-studio__actions button:first-child { color: #171007; background: var(--oath-gold); }
+.river-oath-studio__actions button:hover:not(:disabled) { color: #171007; background: var(--oath-paper); }
+.river-oath-studio__actions button:disabled { opacity: 0.35; cursor: not-allowed; }
+.river-oath-studio__error { margin: 0; padding: 12px 15px; border-bottom: 1px solid rgba(216, 92, 63, 0.4); color: #ff937c; background: rgba(95, 24, 19, 0.22); font: 520 9px/1.5 var(--mono); }
+
+.river-oath-evidence { padding: 20px; }
+.river-oath-evidence > div:first-child { display: flex; align-items: center; gap: 8px; color: var(--oath-gold); }
+.river-oath-evidence > div:first-child strong { font: 700 7px/1 var(--mono); letter-spacing: 0.1em; }
+.river-oath-evidence dl { display: grid; margin: 15px 0 0; grid-template-columns: repeat(5, minmax(0, 1fr)); border: 1px solid var(--oath-line); }
+.river-oath-evidence dl > div { min-width: 0; padding: 12px; border-right: 1px solid var(--oath-line); }
+.river-oath-evidence dl > div:last-child { border-right: 0; }
+.river-oath-evidence dt { color: rgba(240, 234, 216, 0.38); font: 650 5px/1 var(--mono); letter-spacing: 0.09em; }
+.river-oath-evidence dd { overflow: hidden; margin: 7px 0 0; color: rgba(240, 234, 216, 0.78); font: 650 6px/1 var(--mono); text-overflow: ellipsis; white-space: nowrap; }
+.river-oath-evidence dd.is-empty { color: var(--oath-jade); font-size: 13px; }
+.river-oath-evidence > p { display: flex; align-items: center; gap: 8px; margin: 14px 0 0; color: rgba(240, 234, 216, 0.48); font: 450 9px/1.5 var(--sans); }
+
+@keyframes oath-pulse { 50% { opacity: 0.35; transform: scale(0.7); } }
+
+@media (max-width: 980px) {
+  .river-oath-showcase__hero { min-height: 690px; }
+  .river-oath-showcase__hero-copy { width: min(710px, 78%); min-height: 690px; padding: 55px 42px; }
+  .river-oath-showcase__hero-shade { background: linear-gradient(90deg, rgba(4, 8, 10, 0.95), rgba(4, 8, 10, 0.55) 62%, rgba(4, 8, 10, 0.18)), linear-gradient(0deg, rgba(4, 8, 10, 0.88), transparent 52%); }
+  .river-oath-lab { grid-template-columns: 1fr; }
+  .river-oath-lab__story { border-right: 0; border-bottom: 1px solid var(--oath-line); }
+  .river-oath-controls { align-items: flex-end; }
+  .river-oath-controls__actions { grid-template-columns: repeat(3, minmax(52px, 74px)); }
+  .river-oath-game__boss { right: 16%; left: 16%; }
+}
+
+@media (max-width: 720px) {
+  .river-oath-showcase__hero { min-height: 660px; }
+  .river-oath-showcase__hero-art { background-position: 68% center; opacity: 0.72; }
+  .river-oath-showcase__hero-shade { background: linear-gradient(0deg, rgba(4, 8, 10, 0.98) 0%, rgba(4, 8, 10, 0.76) 58%, rgba(4, 8, 10, 0.3)); }
+  .river-oath-showcase__hero-copy { width: 100%; min-height: 660px; justify-content: flex-end; padding: 36px 22px 86px; }
+  .river-oath-showcase__hero-copy h2 { font-size: clamp(58px, 18vw, 88px); }
+  .river-oath-showcase__hero-copy > p { font-size: 12px; }
+  .river-oath-showcase__facts { width: 100%; margin-top: 24px; }
+  .river-oath-showcase__facts span { min-height: 62px; padding: 0 8px; }
+  .river-oath-showcase__original-mark { right: 16px; bottom: 14px; }
+  .river-oath-showcase__disclosure { align-items: flex-start; padding: 15px 18px; }
+  .river-oath-showcase__machine,
+  .river-oath-lab { margin-top: 22px; }
+  .river-oath-game__command-bar { min-height: 54px; }
+  .river-oath-game__command-title { padding-left: 10px; }
+  .river-oath-game__seal { width: 30px; height: 30px; font-size: 14px; }
+  .river-oath-game__command-title small,
+  .river-oath-game__runtime { display: none; }
+  .river-oath-game__command-actions button { width: 48px; min-width: 48px; }
+  .river-oath-game__hud { top: 7px; right: 7px; left: 7px; }
+  .river-oath-game__hero-hud { min-width: 0; width: 66%; padding: 4px; }
+  .river-oath-game__portrait { width: 38px; min-width: 38px; }
+  .river-oath-game__vitals { gap: 3px; padding: 1px 5px; }
+  .river-oath-game__vitals > div:first-child small,
+  .river-oath-meter span { display: none; }
+  .river-oath-game__mission-hud { min-width: 92px; gap: 3px; padding: 7px; }
+  .river-oath-game__mission-hud strong { font-size: 11px; }
+  .river-oath-game__combo { top: 55px; }
+  .river-oath-game__boss { right: 8%; bottom: 8px; left: 8%; padding: 6px 8px; }
+  .river-oath-game__boss > div { margin-bottom: 4px; }
+  .river-oath-game__viewport { aspect-ratio: 16 / 9; }
+  .river-oath-game__overlay { padding: 15px; }
+  .river-oath-game__overlay h3 { margin: 8px 0 5px; font-size: clamp(20px, 6vw, 32px); }
+  .river-oath-game__overlay > p { font-size: 9px; }
+  .river-oath-game__heroes { width: 100%; margin: 11px 0; gap: 5px; }
+  .river-oath-game__heroes button { min-height: 102px; gap: 3px; padding: 8px; }
+  .river-oath-game__heroes button > span { width: 26px; height: 26px; font-size: 12px; }
+  .river-oath-game__heroes strong { font-size: 7px; }
+  .river-oath-game__heroes small { display: none; }
+  .river-oath-game__primary { min-height: 48px; }
+  .river-oath-controls { min-height: 174px; align-items: center; padding: 9px; }
+  .river-oath-controls__dpad { grid-template-columns: repeat(3, 48px); grid-template-rows: repeat(3, 48px); }
+  .river-oath-controls__actions { grid-template-columns: repeat(3, minmax(48px, 58px)); gap: 5px; }
+  .river-oath-controls button { min-width: 48px; min-height: 48px; }
+  .river-oath-game__status { min-height: 42px; padding: 0 10px; grid-template-columns: auto 1fr; gap: 9px; }
+  .river-oath-game__status span:last-child { display: none; }
+  .river-oath-game__status p { text-align: right; }
+  .river-oath-lab__story { padding: 34px 22px; }
+  .river-oath-studio__bar > span { padding: 0 10px; }
+  .river-oath-evidence dl { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .river-oath-evidence dl > div { border-bottom: 1px solid var(--oath-line); }
+}
+
+@media (max-width: 470px) {
+  .river-oath-showcase__facts span { font-size: 5px; }
+  .river-oath-showcase__facts b { font-size: 17px; }
+  .river-oath-game__hero-select { padding: 6px 8px; }
+  .river-oath-game__hero-select > p,
+  .river-oath-game__hero-select > small { display: none; }
+  .river-oath-game__hero-select h3 { margin: 4px 0 2px; font-size: 17px; }
+  .river-oath-game__hero-select .river-oath-game__heroes { margin: 4px 0; }
+  .river-oath-game__hero-select .river-oath-game__heroes button { min-height: 50px; padding: 5px; }
+  .river-oath-game__hero-select .river-oath-game__heroes button > span { width: 20px; height: 20px; font-size: 9px; }
+  .river-oath-game__hero-select .river-oath-game__heroes b,
+  .river-oath-game__hero-select .river-oath-game__heroes small { display: none; }
+  .river-oath-game__hero-select .river-oath-game__primary { min-height: 48px; }
+  .river-oath-game__overlay > small { display: none; }
+  .river-oath-game__heroes b { font-size: 6px; }
+  .river-oath-controls { gap: 7px; padding: 7px 6px; }
+  .river-oath-controls__dpad { grid-template-columns: repeat(3, 48px); grid-template-rows: repeat(3, 48px); gap: 3px; }
+  .river-oath-controls__actions { grid-template-columns: repeat(3, 48px); gap: 3px; }
+  .river-oath-controls button { min-width: 48px; }
+  .river-oath-controls button small { display: none; }
+  .river-oath-game__branches { margin-top: 10px; }
+  .river-oath-game__branches button { min-height: 48px; padding: 0 13px; font-size: 6px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .river-oath-game *,
+  .river-oath-showcase * { scroll-behavior: auto !important; transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
+}

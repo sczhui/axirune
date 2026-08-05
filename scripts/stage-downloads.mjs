@@ -66,6 +66,7 @@ const sourceEntries = [
   'public/benchmark-results.json',
   'public/benchmark-results.md',
   'public/classics-benchmark-results.json',
+  'public/river-oath-benchmark-results.json',
   'Dockerfile',
   'docker-compose.yml',
   'nginx.conf',

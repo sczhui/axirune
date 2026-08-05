@@ -48,7 +48,7 @@ export function DocsPage({ locale }: { locale: Locale }) {
       <section className="docs-hero">
         <div className="docs-hero__icon">
           <BookOpen size={28} />
-          <span>DOCS / 0.5α</span>
+          <span>DOCS / 0.6α</span>
         </div>
         <div>
           <span className="eyebrow">LANGUAGE REFERENCE</span>
