@@ -27,7 +27,7 @@ export function HomePage({ locale }: { locale: Locale }) {
         <div className="hero__copy">
           <div className="hero__meta">
             <span className="live-mark">
-              <i /> GENERAL-PURPOSE LANGUAGE · 0.4.0-ALPHA.2
+              <i /> GENERAL-PURPOSE LANGUAGE · 0.4.0-ALPHA.3
             </span>
             <span>DETERMINISTIC BY DEFAULT</span>
           </div>

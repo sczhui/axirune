@@ -924,7 +924,7 @@ export function LedgerShowcasePage({ locale }: { locale: Locale }) {
                 {activeTab === 'source' ? (
                   <div className="ledger-code-panel">
                     <header>
-                      <span>AXIRUNE 0.4.0-ALPHA.2 / UTF-8</span>
+                      <span>AXIRUNE 0.4.0-ALPHA.3 / UTF-8</span>
                       <code>{sourceLineCount} LINES</code>
                     </header>
                     <pre>

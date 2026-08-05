@@ -96,7 +96,7 @@ export function Footer({ locale }: { locale: Locale }) {
   return (
     <footer className="site-footer">
       <div className="site-footer__statement">
-        <span className="eyebrow">AXIRUNE / 0.4.0-ALPHA.2</span>
+        <span className="eyebrow">AXIRUNE / 0.4.0-ALPHA.3</span>
         <p>Make intent axiomatic.</p>
         <p>Bound every effect.</p>
       </div>

@@ -116,7 +116,7 @@ export function ArcadePage({ locale }: { locale: Locale }) {
         <div className="arcade-hero__scrim" />
         <div className="arcade-hero__copy">
           <span className="arcade-kicker">
-            <Gamepad2 size={14} /> AXIRUNE ARCADE / 0.4 ALPHA 2
+            <Gamepad2 size={14} /> AXIRUNE ARCADE / 0.4 ALPHA 3
           </span>
           <h1>
             {locale === 'zh' ? '经典手感。' : 'CLASSIC FEEL.'}

@@ -45,7 +45,7 @@ export function DownloadPage({ locale }: { locale: Locale }) {
       <section className="download-hero">
         <div className="download-hero__copy">
           <span className="eyebrow">
-            <PackageOpen size={14} /> AXIRUNE 0.4.0-ALPHA.2 / ARCADE PREVIEW
+            <PackageOpen size={14} /> AXIRUNE 0.4.0-ALPHA.3 / ARCADE PREVIEW
           </span>
           <h1>{locale === 'zh' ? '安装一门无需模型即可运行的语言。' : 'Install a language that runs without a model.'}</h1>
           <p>
@@ -66,7 +66,7 @@ export function DownloadPage({ locale }: { locale: Locale }) {
         <div className="download-hero__seal">
           <div>
             <span>VERSION</span>
-            <strong>0.4α2</strong>
+            <strong>0.4α3</strong>
           </div>
           <div>
             <span>CHANNEL</span>
