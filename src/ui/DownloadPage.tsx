@@ -16,13 +16,13 @@ import type { Locale } from '../content/site'
 import { Link } from './Router'
 
 const installCommand =
-  'npm install -g https://axirune.velhu.com/downloads/axirune-language-0.4.0-alpha.2.tgz'
-const vscodeCommand = 'code --install-extension axirune-0.4.0-alpha.2.vsix'
-const dockerCommand = `mkdir axirune-0.4.0-alpha.2
-tar -xzf axirune-source-0.4.0-alpha.2.tar.gz -C axirune-0.4.0-alpha.2
-cd axirune-0.4.0-alpha.2
-docker build -t axirune:0.4.0-alpha.2 .
-docker run --rm -p 8080:8080 axirune:0.4.0-alpha.2`
+  'npm install -g https://axirune.velhu.com/downloads/axirune-language-0.4.0-alpha.3.tgz'
+const vscodeCommand = 'code --install-extension axirune-0.4.0-alpha.3.vsix'
+const dockerCommand = `mkdir axirune-0.4.0-alpha.3
+tar -xzf axirune-source-0.4.0-alpha.3.tar.gz -C axirune-0.4.0-alpha.3
+cd axirune-0.4.0-alpha.3
+docker build -t axirune:0.4.0-alpha.3 .
+docker run --rm -p 8080:8080 axirune:0.4.0-alpha.3`
 
 function CopyCommand({ value, locale }: { value: string; locale: Locale }) {
   const [copied, setCopied] = useState(false)
@@ -54,7 +54,7 @@ export function DownloadPage({ locale }: { locale: Locale }) {
               : 'Get the deterministic interpreter, compiler, CLI, Language Server, VS Code extension, and reproducible Docker source archive. Enable AI only when needed.'}
           </p>
           <div className="download-hero__actions">
-            <a className="button button--signal" href="/downloads/axirune-language-0.4.0-alpha.2.tgz" download>
+            <a className="button button--signal" href="/downloads/axirune-language-0.4.0-alpha.3.tgz" download>
               <ArrowDownToLine size={16} />
               {locale === 'zh' ? '下载工具链' : 'Download toolchain'}
             </a>
@@ -98,9 +98,9 @@ export function DownloadPage({ locale }: { locale: Locale }) {
             <code>{installCommand}</code>
             <CopyCommand value={installCommand} locale={locale} />
           </div>
-          <a href="/downloads/axirune-language-0.4.0-alpha.2.tgz" download>
+          <a href="/downloads/axirune-language-0.4.0-alpha.3.tgz" download>
             <FileArchive size={15} />
-            axirune-language-0.4.0-alpha.2.tgz
+            axirune-language-0.4.0-alpha.3.tgz
             <ArrowDownToLine size={15} />
           </a>
         </article>
@@ -119,9 +119,9 @@ export function DownloadPage({ locale }: { locale: Locale }) {
             <code>{vscodeCommand}</code>
             <CopyCommand value={vscodeCommand} locale={locale} />
           </div>
-          <a href="/downloads/axirune-0.4.0-alpha.2.vsix" download>
+          <a href="/downloads/axirune-0.4.0-alpha.3.vsix" download>
             <PlugZap size={15} />
-            axirune-0.4.0-alpha.2.vsix
+            axirune-0.4.0-alpha.3.vsix
             <ArrowDownToLine size={15} />
           </a>
         </article>
@@ -140,9 +140,9 @@ export function DownloadPage({ locale }: { locale: Locale }) {
             <code>{dockerCommand}</code>
             <CopyCommand value={dockerCommand} locale={locale} />
           </div>
-          <a href="/downloads/axirune-source-0.4.0-alpha.2.tar.gz" download>
+          <a href="/downloads/axirune-source-0.4.0-alpha.3.tar.gz" download>
             <Container size={15} />
-            axirune-source-0.4.0-alpha.2.tar.gz
+            axirune-source-0.4.0-alpha.3.tar.gz
             <ArrowDownToLine size={15} />
           </a>
         </article>
@@ -217,8 +217,8 @@ export function DownloadPage({ locale }: { locale: Locale }) {
         <span>RELEASE NOTE</span>
         <p>
           {locale === 'zh'
-            ? '0.4.0-alpha.2 新增 Axirune Arcade：两款原创 Canvas 游戏由零权限 .axc 规则胶囊驱动，并保留可复现的固定步进引擎。胶囊格式仍处于 Alpha；采用前请锁定版本、运行测试并审查请求权限。'
-            : 'Axirune 0.4.0-alpha.2 adds Axirune Arcade: two original Canvas games driven by zero-authority .axc rule capsules and reproducible fixed-step engines. The capsule format remains alpha; pin versions, run tests, and review requested authority before adoption.'}
+            ? '0.4.0-alpha.3 发布 Axirune Arcade：两款原创 Canvas 游戏由零权限 .axc 规则胶囊驱动，并修复反向代理下的 Arcade 直达路由。胶囊格式仍处于 Alpha；采用前请锁定版本、运行测试并审查请求权限。'
+            : 'Axirune 0.4.0-alpha.3 ships Arcade: two original Canvas games driven by zero-authority .axc rule capsules, plus hardened direct routing behind reverse proxies. The capsule format remains alpha; pin versions, run tests, and review requested authority before adoption.'}
         </p>
       </section>
     </>

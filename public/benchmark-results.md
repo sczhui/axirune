@@ -1,6 +1,6 @@
 # Axirune benchmark
 
-Generated: 2026-08-05T13:05:11.331Z
+Generated: 2026-08-05T13:36:25.709Z
 
 Input checksum: `sha256:deeb2552825c799f5913ea346de33d14abebc0f4bb3ae7c131b8f768ffffa37c`
 
@@ -10,35 +10,35 @@ Configuration: 30 measured samples after 5 warmups.
 
 | Fixture | Bytes | Operation | Mean (ms) | Median (ms) | p95 (ms) | ops/s |
 | --- | ---: | --- | ---: | ---: | ---: | ---: |
-| hello | 162 | parse | 0.024 | 0.020 | 0.034 | 42497.974 |
-| hello | 162 | compile | 0.025 | 0.020 | 0.061 | 39713.270 |
-| hello | 162 | run | 0.043 | 0.031 | 0.124 | 23145.130 |
-| hello | 162 | capsule-build | 0.352 | 0.293 | 0.751 | 2842.109 |
-| hello | 162 | capsule-verify | 0.289 | 0.252 | 0.449 | 3462.288 |
-| hello | 162 | capsule-run | 0.041 | 0.035 | 0.102 | 24117.365 |
-| agent-graph | 2465 | parse | 0.179 | 0.140 | 0.335 | 5588.936 |
-| agent-graph | 2465 | compile | 0.172 | 0.139 | 0.327 | 5814.421 |
-| agent-graph | 2465 | run | 0.156 | 0.137 | 0.277 | 6402.166 |
-| agent-graph | 2465 | capsule-build | 1.968 | 1.862 | 2.658 | 508.235 |
-| agent-graph | 2465 | capsule-verify | 2.002 | 1.861 | 2.640 | 499.458 |
-| agent-graph | 2465 | capsule-run | 0.367 | 0.336 | 0.599 | 2724.404 |
-| invoice-calculation | 887 | parse | 0.068 | 0.068 | 0.068 | 14725.704 |
-| invoice-calculation | 887 | compile | 0.097 | 0.093 | 0.110 | 10359.409 |
-| invoice-calculation | 887 | run | 0.195 | 0.125 | 0.614 | 5134.970 |
-| invoice-calculation | 887 | capsule-build | 0.710 | 0.663 | 1.051 | 1407.561 |
-| invoice-calculation | 887 | capsule-verify | 0.684 | 0.595 | 1.029 | 1461.273 |
-| invoice-calculation | 887 | capsule-run | 0.157 | 0.144 | 0.182 | 6354.136 |
-| data-transform | 639 | parse | 0.023 | 0.022 | 0.024 | 44271.948 |
-| data-transform | 639 | compile | 0.061 | 0.070 | 0.077 | 16267.516 |
-| data-transform | 639 | run | 0.231 | 0.138 | 0.360 | 4321.367 |
-| data-transform | 639 | capsule-build | 0.647 | 0.605 | 1.017 | 1545.220 |
-| data-transform | 639 | capsule-verify | 0.605 | 0.544 | 1.015 | 1654.142 |
-| data-transform | 639 | capsule-run | 0.164 | 0.142 | 0.208 | 6108.375 |
-| recursive-factorial | 394 | parse | 0.013 | 0.012 | 0.013 | 79103.285 |
-| recursive-factorial | 394 | compile | 0.024 | 0.024 | 0.030 | 40839.497 |
-| recursive-factorial | 394 | run | 0.170 | 0.140 | 0.202 | 5889.568 |
-| recursive-factorial | 394 | capsule-build | 0.370 | 0.351 | 0.459 | 2701.384 |
-| recursive-factorial | 394 | capsule-verify | 0.361 | 0.331 | 0.494 | 2766.623 |
-| recursive-factorial | 394 | capsule-run | 0.142 | 0.135 | 0.148 | 7061.590 |
+| hello | 162 | parse | 0.021 | 0.019 | 0.032 | 46595.789 |
+| hello | 162 | compile | 0.025 | 0.018 | 0.060 | 40737.733 |
+| hello | 162 | run | 0.041 | 0.028 | 0.116 | 24581.842 |
+| hello | 162 | capsule-build | 0.312 | 0.296 | 0.392 | 3207.570 |
+| hello | 162 | capsule-verify | 0.275 | 0.256 | 0.387 | 3639.010 |
+| hello | 162 | capsule-run | 0.042 | 0.032 | 0.108 | 23760.043 |
+| agent-graph | 2465 | parse | 0.136 | 0.121 | 0.259 | 7357.372 |
+| agent-graph | 2465 | compile | 0.172 | 0.133 | 0.340 | 5823.028 |
+| agent-graph | 2465 | run | 0.150 | 0.126 | 0.306 | 6684.802 |
+| agent-graph | 2465 | capsule-build | 1.877 | 1.778 | 2.611 | 532.881 |
+| agent-graph | 2465 | capsule-verify | 1.794 | 1.792 | 2.080 | 557.519 |
+| agent-graph | 2465 | capsule-run | 0.345 | 0.311 | 0.557 | 2898.329 |
+| invoice-calculation | 887 | parse | 0.062 | 0.062 | 0.063 | 16050.660 |
+| invoice-calculation | 887 | compile | 0.085 | 0.085 | 0.090 | 11732.104 |
+| invoice-calculation | 887 | run | 0.140 | 0.131 | 0.184 | 7125.532 |
+| invoice-calculation | 887 | capsule-build | 0.657 | 0.636 | 0.815 | 1522.012 |
+| invoice-calculation | 887 | capsule-verify | 0.632 | 0.583 | 0.855 | 1582.995 |
+| invoice-calculation | 887 | capsule-run | 0.155 | 0.139 | 0.203 | 6436.442 |
+| data-transform | 639 | parse | 0.022 | 0.022 | 0.022 | 45842.400 |
+| data-transform | 639 | compile | 0.087 | 0.048 | 0.189 | 11505.278 |
+| data-transform | 639 | run | 0.157 | 0.136 | 0.334 | 6353.517 |
+| data-transform | 639 | capsule-build | 0.579 | 0.531 | 0.991 | 1727.443 |
+| data-transform | 639 | capsule-verify | 0.527 | 0.501 | 0.728 | 1897.578 |
+| data-transform | 639 | capsule-run | 0.145 | 0.128 | 0.173 | 6876.195 |
+| recursive-factorial | 394 | parse | 0.012 | 0.011 | 0.013 | 86809.323 |
+| recursive-factorial | 394 | compile | 0.037 | 0.022 | 0.031 | 26978.442 |
+| recursive-factorial | 394 | run | 0.215 | 0.148 | 0.687 | 4644.380 |
+| recursive-factorial | 394 | capsule-build | 0.368 | 0.343 | 0.521 | 2720.915 |
+| recursive-factorial | 394 | capsule-verify | 0.358 | 0.321 | 0.497 | 2793.134 |
+| recursive-factorial | 394 | capsule-run | 0.136 | 0.133 | 0.139 | 7369.796 |
 
 _Every value above is measured in this run; the report contains no precomputed timings._

@@ -426,7 +426,7 @@ export function LedgerShowcasePage({ locale }: { locale: Locale }) {
   const downloadReport = () => {
     if (!report || !lastRun) return
     const artifact = {
-      generated_by: 'Axirune 0.4.0-alpha.2 / AxiLedger',
+      generated_by: 'Axirune 0.4.0-alpha.3 / AxiLedger',
       generated_at: new Date().toISOString(),
       execution: {
         runtime: 'browser',

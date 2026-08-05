@@ -114,14 +114,14 @@ export function Footer({ locale }: { locale: Locale }) {
           <span className="site-footer__label">{locale === 'zh' ? '理解' : 'LEARN'}</span>
           <Link to="/docs">Language docs</Link>
           <Link to="/benchmarks">Benchmarks</Link>
-          <a href="/downloads/axirune-source-0.4.0-alpha.2.tar.gz">
+          <a href="/downloads/axirune-source-0.4.0-alpha.3.tar.gz">
             Source archive <ArrowUpRight size={13} />
           </a>
         </div>
         <div>
           <span className="site-footer__label">{locale === 'zh' ? '构建' : 'BUILD'}</span>
-          <a href="/downloads/axirune-language-0.4.0-alpha.2.tgz">Compiler + LSP</a>
-          <a href="/downloads/axirune-0.4.0-alpha.2.vsix">VS Code extension</a>
+          <a href="/downloads/axirune-language-0.4.0-alpha.3.tgz">Compiler + LSP</a>
+          <a href="/downloads/axirune-0.4.0-alpha.3.vsix">VS Code extension</a>
           <a href="https://github.com/sczhui/axirune" target="_blank" rel="noreferrer">
             GitHub source <ArrowUpRight size={13} />
           </a>

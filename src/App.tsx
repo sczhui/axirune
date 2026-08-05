@@ -23,7 +23,7 @@ const titles = {
   '/examples': 'Example Programs — Axirune',
   '/showcase/ledger': 'AxiLedger — Built with Axirune',
   '/benchmarks': 'Benchmarks — Axirune',
-  '/download': 'Download Axirune 0.4.0-alpha.2',
+  '/download': 'Download Axirune 0.4.0-alpha.3',
 } as const
 
 function initialLocale(): Locale {

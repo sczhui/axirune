@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.0-alpha.3 — Arcade route hardening
+
+- Handles `/arcade` and `/arcade/` as exact SPA document routes while keeping
+  original artwork under `/arcade/*`, preventing Nginx from leaking its
+  internal `:8080` directory redirect through a reverse proxy.
+- Republishes the compiler, language server, VS Code extension, Docker source,
+  browser build, and release benchmark under one consistent version.
+
 ## 0.4.0-alpha.2 — Axirune Arcade
 
 - Adds two polished, original browser games: the 60 Hz vertical shooter Vector

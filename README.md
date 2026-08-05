@@ -4,7 +4,7 @@
 
 **Make intent axiomatic. Bound every effect.**
 
-Axirune 0.4.0-alpha.2 is a deterministic general-purpose language and
+Axirune 0.4.0-alpha.3 is a deterministic general-purpose language and
 interpreter designed to be easy for both people and LLMs to write, inspect,
 and refactor.
 Programs do not require a model: shapes, user-defined tasks, named calls,
@@ -248,7 +248,7 @@ interpreter are served from the same deployment.
 
 ## Preview status
 
-Axirune 0.4.0-alpha.2 is a coherent, runnable language preview. Its
+Axirune 0.4.0-alpha.3 is a coherent, runnable language preview. Its
 deterministic core, CLI, browser interpreter, editor tooling, examples, and
 benchmark harness are implemented in this repository. Host I/O, MCP, and model
 adapters remain explicit integration surfaces and never become ambient powers

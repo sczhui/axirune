@@ -39,7 +39,7 @@ describe("Axirune language server", () => {
       },
       serverInfo: {
         name: "axirune-lsp",
-        version: "0.4.0-alpha.2",
+        version: "0.4.0-alpha.3",
       },
     });
   });
