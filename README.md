@@ -4,7 +4,7 @@
 
 **Make intent axiomatic. Bound every effect.**
 
-Axirune 0.4.0-alpha.1 is a deterministic general-purpose language and
+Axirune 0.4.0-alpha.2 is a deterministic general-purpose language and
 interpreter designed to be easy for both people and LLMs to write, inspect,
 and refactor.
 Programs do not require a model: shapes, user-defined tasks, named calls,
@@ -30,6 +30,9 @@ This repository includes:
 - [AxiLedger](https://axirune.velhu.com/showcase/ledger), a complete browser
   application whose validation and financial aggregation run from checked
   Axirune source with no model or network access;
+- [Axirune Arcade](https://axirune.velhu.com/arcade), two polished original
+  browser games whose difficulty contracts run from verified, zero-authority
+  `.axc` rule capsules over deterministic fixed-step engines;
 - a Node.js CLI, JSON-RPC Language Server, and self-contained VS Code extension;
 - deterministic examples for recursion, collection processing, invoices,
   errors, and command-line I/O, plus separately labelled optional AI/MCP
@@ -245,7 +248,7 @@ interpreter are served from the same deployment.
 
 ## Preview status
 
-Axirune 0.4.0-alpha.1 is a coherent, runnable language preview. Its
+Axirune 0.4.0-alpha.2 is a coherent, runnable language preview. Its
 deterministic core, CLI, browser interpreter, editor tooling, examples, and
 benchmark harness are implemented in this repository. Host I/O, MCP, and model
 adapters remain explicit integration surfaces and never become ambient powers

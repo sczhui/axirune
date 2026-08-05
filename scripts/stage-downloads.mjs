@@ -62,6 +62,7 @@ const sourceEntries = [
   'scripts',
   'public/favicon.svg',
   'public/og.png',
+  'public/arcade',
   'public/benchmark-results.json',
   'public/benchmark-results.md',
   'Dockerfile',

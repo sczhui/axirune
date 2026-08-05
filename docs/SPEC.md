@@ -2,7 +2,7 @@
 
 Status: executable preview
 
-Language version: `0.4.0-alpha.1`
+Language version: `0.4.0-alpha.2`
 
 IR version: `axirune-ir/0.3`
 

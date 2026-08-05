@@ -4,6 +4,7 @@ import {
   Check,
   CircleDot,
   Cpu,
+  Gamepad2,
   GitBranch,
   KeyRound,
   Network,
@@ -26,7 +27,7 @@ export function HomePage({ locale }: { locale: Locale }) {
         <div className="hero__copy">
           <div className="hero__meta">
             <span className="live-mark">
-              <i /> GENERAL-PURPOSE LANGUAGE · 0.4.0-ALPHA.1
+              <i /> GENERAL-PURPOSE LANGUAGE · 0.4.0-ALPHA.2
             </span>
             <span>DETERMINISTIC BY DEFAULT</span>
           </div>
@@ -94,6 +95,24 @@ export function HomePage({ locale }: { locale: Locale }) {
           <span>OPTIONAL AI</span>
         </div>
       </div>
+
+      <section className="home-arcade">
+        <img src="/arcade/axi-arcade-hero.jpg" alt="" aria-hidden="true" loading="lazy" />
+        <div className="home-arcade__scrim" />
+        <div className="home-arcade__copy">
+          <span className="eyebrow"><Gamepad2 size={14} /> 00 / AXIRUNE ARCADE</span>
+          <h2>{locale === 'zh' ? '两款原创游戏，真正由 Axirune 规则驱动。' : 'Two original games, genuinely driven by Axirune rules.'}</h2>
+          <p>{locale === 'zh' ? '进入矢量防线与棱镜堡垒：编辑 .axi 难度程序、重新生成 .axc 胶囊，然后立即游玩受检规则。' : 'Enter Vector Siege and Prism Bastion: edit the .axi difficulty program, rebuild its .axc capsule, then play the verified rules immediately.'}</p>
+          <Link to="/arcade" className="button button--signal">
+            <Play size={16} fill="currentColor" />
+            {locale === 'zh' ? '进入游戏厅' : 'Enter the arcade'}
+          </Link>
+        </div>
+        <div className="home-arcade__games" aria-hidden="true">
+          <span><strong>01</strong>VECTOR SIEGE<small>60 HZ / WAVE CONTRACT</small></span>
+          <span><strong>02</strong>PRISM BASTION<small>120 HZ / NOVA CHAIN</small></span>
+        </div>
+      </section>
 
       <section className="manifesto section-shell">
         <div className="section-index">

@@ -192,7 +192,7 @@ function start(context) {
       processId: process.pid,
       rootUri: vscode.workspace.workspaceFolders?.[0]?.uri.toString() || null,
       capabilities: {},
-      clientInfo: { name: 'Axirune VS Code', version: '0.4.0-alpha.1' },
+      clientInfo: { name: 'Axirune VS Code', version: '0.4.0-alpha.2' },
     }).catch((error) => console.error(`[Axirune LSP] ${error.message}`))
   send({ jsonrpc: '2.0', method: 'initialized', params: {} })
   vscode.workspace.textDocuments.filter((doc) => doc.languageId === 'axirune').forEach(openDocument)

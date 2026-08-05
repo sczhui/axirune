@@ -37,7 +37,7 @@ services:
       homepage.name: "Axirune Language"
       homepage.icon: "mdi-code-block-braces"
       homepage.href: "https://axirune.velhu.com"
-      homepage.description: "无需大模型的 AI 原生通用编程语言"
+      homepage.description: "可编译、无需模型，含原创 Arcade 的 AI 原生语言"
     healthcheck:
       test:
         - CMD

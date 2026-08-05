@@ -188,7 +188,7 @@ export function BenchmarksPage({ locale }: { locale: Locale }) {
           <div>
             <span className="eyebrow">
               {resultMode === 'release'
-                ? `RELEASE JSON / AXIRUNE ${releaseReport?.languageVersion ?? '0.4.0-alpha.1'}`
+                ? `RELEASE JSON / AXIRUNE ${releaseReport?.languageVersion ?? '0.4.0-alpha.2'}`
                 : 'BROWSER LAB / REAL COMPILER CORE'}
             </span>
             <h2>{locale === 'zh' ? '编译器微基准' : 'Compiler microbenchmarks'}</h2>

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import type { Locale } from './content/site'
+import { ArcadePage } from './ui/ArcadePage'
 import { BenchmarksPage } from './ui/BenchmarksPage'
 import { CapsuleLabPage } from './ui/CapsuleLabPage'
 import { DocsPage } from './ui/DocsPage'
@@ -15,13 +16,14 @@ import { PageFrame } from './ui/Shell'
 const titles = {
   '/': 'Axirune — Make intent axiomatic. Bound every effect.',
   '/capsule-lab': 'Capsule Lab — Axirune',
+  '/arcade': 'Axirune Arcade — Verified rules, original worlds',
   '/playground': 'Playground — Axirune',
   '/ide': 'Online IDE — Axirune',
   '/docs': 'Language Documentation — Axirune',
   '/examples': 'Example Programs — Axirune',
   '/showcase/ledger': 'AxiLedger — Built with Axirune',
   '/benchmarks': 'Benchmarks — Axirune',
-  '/download': 'Download Axirune 0.4.0-alpha.1',
+  '/download': 'Download Axirune 0.4.0-alpha.2',
 } as const
 
 function initialLocale(): Locale {
@@ -49,6 +51,7 @@ export default function App() {
     <PageFrame route={route} locale={locale} onLocaleChange={changeLocale}>
       {route === '/' ? <HomePage locale={locale} /> : null}
       {route === '/capsule-lab' ? <CapsuleLabPage locale={locale} /> : null}
+      {route === '/arcade' ? <ArcadePage locale={locale} /> : null}
       {route === '/playground' ? <PlaygroundPage locale={locale} /> : null}
       {route === '/ide' ? <IdePage locale={locale} /> : null}
       {route === '/docs' ? <DocsPage locale={locale} /> : null}

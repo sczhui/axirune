@@ -3,6 +3,7 @@ import { useEffect, useState, type MouseEvent, type ReactNode } from 'react'
 export type AppRoute =
   | '/'
   | '/capsule-lab'
+  | '/arcade'
   | '/playground'
   | '/ide'
   | '/docs'
@@ -14,6 +15,7 @@ export type AppRoute =
 const routes = new Set<AppRoute>([
   '/',
   '/capsule-lab',
+  '/arcade',
   '/playground',
   '/ide',
   '/docs',

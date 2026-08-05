@@ -40,6 +40,7 @@ export type Concept = {
 export const navItems = [
   { path: '/playground', label: { zh: '演练场', en: 'Playground' } },
   { path: '/capsule-lab', label: { zh: '胶囊实验室', en: 'Capsule Lab' } },
+  { path: '/arcade', label: { zh: '游戏厅', en: 'Arcade' } },
   { path: '/ide', label: { zh: '在线 IDE', en: 'IDE' } },
   { path: '/docs', label: { zh: '文档', en: 'Docs' } },
   { path: '/examples', label: { zh: '示例', en: 'Examples' } },
@@ -505,7 +506,7 @@ axirune run examples/word-frequency.axi --allow-read .`,
   },
 ]
 
-export const quickStart = `npm install -g https://axirune.velhu.com/downloads/axirune-language-0.4.0-alpha.1.tgz
+export const quickStart = `npm install -g https://axirune.velhu.com/downloads/axirune-language-0.4.0-alpha.2.tgz
 axirune check examples/invoice-total.axi
 axirune run examples/invoice-total.axi`
 

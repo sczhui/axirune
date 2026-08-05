@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.4.0-alpha.2 — Axirune Arcade
+
+- Adds two polished, original browser games: the 60 Hz vertical shooter Vector
+  Siege and the 120 Hz prismatic breaker Prism Bastion, with keyboard, pointer,
+  and touch controls plus desktop and mobile layouts.
+- Compiles each game's editable Axirune rules to an `.axc` Execution Capsule,
+  verifies it independently, rejects every requested capability, tool,
+  permission, or sandbox, and executes only the verified checked IR.
+- Adds seeded deterministic engines, serializable snapshots, collision and
+  scoring tests, wave and level contracts, original project-owned key art, and
+  an Arcade route linked from the site navigation and home page.
+- Keeps the boundary honest: Axirune computes validated game-rule contracts;
+  host TypeScript executes the real-time fixed-step simulation and Canvas
+  rendering. No model, prompt, MCP server, ROM, or external game asset is used.
+
 ## 0.4.0-alpha.1 — Verifiable Execution Capsules
 
 - Adds artifact-first `.axc` Execution Capsules without making source an
