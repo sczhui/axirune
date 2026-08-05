@@ -1,0 +1,27 @@
+src/ui/HomePage.tsx
+  s_25ab203f1b07d0::t_ca4a954f5c46f4 30
+src/ui/LedgerShowcasePage.tsx
+  s_25ab203f1b07d0::t_ca4a954f5c46f4 927
+src/ui/Shell.tsx
+  s_25ab203f1b07d0::t_ca4a954f5c46f4 99
+src/ui/DownloadPage.tsx
+  s_25ab203f1b07d0::t_ca4a954f5c46f4 48,69
+src/ui/ArcadePage.tsx
+  s_25ab203f1b07d0::t_ca4a954f5c46f4 119
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "85f98de1b877bada8ae25e469bd6516495006db5",
+  "prompts": {},
+  "sessions": {
+    "s_25ab203f1b07d0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019fa44a-76f2-7673-90ad-3fd964bf68ef",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "sczhui <3062629+sczhui@users.noreply.github.com>"
+    }
+  }
+}
