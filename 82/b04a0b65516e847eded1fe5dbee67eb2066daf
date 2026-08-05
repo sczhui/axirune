@@ -1,0 +1,162 @@
+docs/SECURITY.md
+  s_25ab203f1b07d0::t_887e9cef38344a 1
+src/ui/arcade/ClassicWorldGame.tsx
+  s_25ab203f1b07d0::t_94217cad3c858f 246-249
+  s_25ab203f1b07d0::t_b9a1a01ccc88dc 1-245,250-268,270-797
+  s_25ab203f1b07d0::t_b5a5e1de0b9c41 269
+scripts/benchmark-classics.mjs
+  s_25ab203f1b07d0::t_3a1de1ec929ad1 173
+  s_25ab203f1b07d0::t_7d3852e919ab64 1-3,6-85,88-128,130-135,143-152,154-159,167-172,174-181,183-184,188-417,419-440
+  s_25ab203f1b07d0::t_6543ea70db2049 4-5,86-87,129,136-142,153,160-166,182,185-187,418
+apps/arcade/classics/orbit-foundry.axi
+  s_25ab203f1b07d0::t_64f1fc42c609c6 1-20
+src/content/site.ts
+  s_25ab203f1b07d0::t_887e9cef38344a 221-222,509
+tests/arcade/classics-micro-engine.test.ts
+  s_25ab203f1b07d0::t_99c0cf31590885 137-181
+  s_25ab203f1b07d0::t_e32ea2b993297b 1-3,6-136,182-184,191-192,197-199,206-216,218-222,251-277
+  s_25ab203f1b07d0::t_c7e90a98d6f800 4-5,185-190,193-196,200-205,217,223-250
+index.html
+  s_25ab203f1b07d0::t_887e9cef38344a 7,19
+src/ui/DocsPage.tsx
+  s_25ab203f1b07d0::t_887e9cef38344a 51,58-59
+docs/ARCHITECTURE.md
+  s_25ab203f1b07d0::t_887e9cef38344a 1
+docs/TOOLCHAIN.md
+  s_25ab203f1b07d0::t_887e9cef38344a 1
+apps/arcade/classics/glyph-current.axi
+  s_25ab203f1b07d0::t_64f1fc42c609c6 1-20
+src/styles/pages.css
+  s_25ab203f1b07d0::t_88c139ba931fe2 2682-2737
+package.json
+  s_25ab203f1b07d0::t_6543ea70db2049 61
+  s_25ab203f1b07d0::t_0df6912e6d1308 3,35,40
+apps/arcade/classics/README.md
+  s_25ab203f1b07d0::t_4ba9c2ebcf272c 1-23
+apps/arcade/classics/chromaline-circuit.axi
+  s_25ab203f1b07d0::t_64f1fc42c609c6 1-20
+apps/arcade/classics/neon-coil.axi
+  s_25ab203f1b07d0::t_64f1fc42c609c6 1-20
+CHANGELOG.md
+  s_25ab203f1b07d0::t_887e9cef38344a 3-18
+scripts/stage-downloads.mjs
+  s_25ab203f1b07d0::t_0df6912e6d1308 68
+src/ui/arcade/classic-vault.css
+  s_25ab203f1b07d0::t_139472fc372fd3 1-222
+apps/arcade/classics/sparkcell-siege.axi
+  s_25ab203f1b07d0::t_64f1fc42c609c6 1-20
+apps/arcade/classics/circuit-strikers.axi
+  s_25ab203f1b07d0::t_64f1fc42c609c6 1-20
+src/arcade/classics/micro-engine.ts
+  s_25ab203f1b07d0::t_c7e90a98d6f800 300,365,369-387,402-406,413-415
+  s_25ab203f1b07d0::t_ec3cc1cda096f0 287,299,308
+  s_25ab203f1b07d0::t_e098f9cc0cd4b1 1-286,288-298,301-307,309-364,366-368,388-401,407-412,416-702,704-943,945-1445
+  s_25ab203f1b07d0::t_f99dd51b7761b1 703
+  s_25ab203f1b07d0::t_c004a611e578e2 944
+apps/arcade/classics/signal-bloom.axi
+  s_25ab203f1b07d0::t_64f1fc42c609c6 1-20
+apps/arcade/classics/aetherstep-foundry.axi
+  s_25ab203f1b07d0::t_64f1fc42c609c6 1-20
+src/arcade/classic-rule-contract.ts
+  s_25ab203f1b07d0::t_bb63012b54d57b 1-86
+src/ui/arcade.css
+  s_25ab203f1b07d0::t_e616f06e4235c9 169-186,371-373
+src/ui/arcade/ClassicVault.tsx
+  s_25ab203f1b07d0::t_2e3a20c58118f1 1-326
+tests/language/classic-world-rules.test.ts
+  s_25ab203f1b07d0::t_bb63012b54d57b 1-76
+src/ui/ArcadePage.tsx
+  s_25ab203f1b07d0::t_3d506ca854e7de 22,113-119,123,127,130-131,136-137,140,152-177,179-180
+tests/arcade/classics-catalog.test.ts
+  s_25ab203f1b07d0::t_1b51c072a7c04d 1,69,72,81-86,100-103,110
+  s_25ab203f1b07d0::t_ecf96780b0517d 2-68,70-71,73-80,87-99,104-109,111-132
+tsconfig.toolchain.json
+  s_25ab203f1b07d0::t_6543ea70db2049 20-21
+src/ui/DownloadPage.tsx
+  s_25ab203f1b07d0::t_887e9cef38344a 19-25,48,57,69,101,103,122,124,143,145,220-221
+apps/arcade/classics/prism-stack.axi
+  s_25ab203f1b07d0::t_64f1fc42c609c6 1-20
+docker-compose.yml
+  s_25ab203f1b07d0::t_69e7cdc4fb756f 40
+src/ui/arcade/classic-world-game.css
+  s_25ab203f1b07d0::t_b9a1a01ccc88dc 1-483
+apps/arcade/classics/lumen-labyrinth.axi
+  s_25ab203f1b07d0::t_64f1fc42c609c6 1-20
+docs/ARCADE_COLLECTION.md
+  s_25ab203f1b07d0::t_ce31d42f344bb4 1-121,123-124,126-127,129-131,134-176
+  s_25ab203f1b07d0::t_6543ea70db2049 122,125,128,132-133
+src/arcade/classics/micro-renderer.ts
+  s_25ab203f1b07d0::t_65e8e7b4ed1d81 156
+  s_25ab203f1b07d0::t_4b79e23b6f2d5d 1-155,157-586
+apps/arcade/classics/moonthread-ronin.axi
+  s_25ab203f1b07d0::t_64f1fc42c609c6 1-20
+apps/arcade/classics/harbor-brawl.axi
+  s_25ab203f1b07d0::t_64f1fc42c609c6 1-20
+docs/LANGUAGE_TOUR.md
+  s_25ab203f1b07d0::t_887e9cef38344a 1
+apps/arcade/classics/alloy-tempest.axi
+  s_25ab203f1b07d0::t_64f1fc42c609c6 1-20
+src/ui/HomePage.tsx
+  s_25ab203f1b07d0::t_73e45f4182ba99 30,112
+  s_25ab203f1b07d0::t_bace19d0952176 100,104-105,113-114
+tests/arcade/classics-contracts.test.ts
+  s_25ab203f1b07d0::t_ecf96780b0517d 1-242
+src/arcade/classics/index.ts
+  s_25ab203f1b07d0::t_4ea3fdd4d05e8d 1-2
+  s_25ab203f1b07d0::t_eca69615f97cdc 3
+src/arcade/index.ts
+  s_25ab203f1b07d0::t_15e0c6f4fcac3c 4-5
+apps/arcade/classics/dustcoil-courier.axi
+  s_25ab203f1b07d0::t_64f1fc42c609c6 1-20
+public/arcade/classics/ASSET-SOURCES.md
+  s_25ab203f1b07d0::t_4ba9c2ebcf272c 1-19
+src/styles/responsive.css
+  s_25ab203f1b07d0::t_88c139ba931fe2 545-550,1052-1056
+apps/arcade/classics/vault-cartographer.axi
+  s_25ab203f1b07d0::t_64f1fc42c609c6 1-20
+src/arcade/classics/catalog.ts
+  s_25ab203f1b07d0::t_4ea3fdd4d05e8d 1-9,13,24,30-127,131,142,148-190,193,196,199,201,209,212,215,217,225,228,231,241,244,247,257,260,263,273,276,279,289,292,295,305,308,311-313,321,324,327,329,337,340,343,353,356,359,369,372,375,385,388,391,401,404,407-409,417,420,423,425,433,436,439,449,452,455,457,465,468,471,473,482,485,488,499,502,505,507,512-585,589-621,623-637,667-764,766-777,780-782,785-790,792-793,799-808,814-815,832-859
+  s_25ab203f1b07d0::t_d95c521bede1b1 586-588,622,658-660,765,778-779,783-784,794-798,809-813,816-831
+  s_25ab203f1b07d0::t_037c27c650cddc 638-657,661-666
+  s_25ab203f1b07d0::t_a06e3d0f72ad97 791
+  s_25ab203f1b07d0::t_8e818254cc3045 10-12,14-23,25-29,128-130,132-141,143-147
+  s_25ab203f1b07d0::t_9afc17d176a187 191-192,194-195,197-198,200,202-208,210-211,213-214,216,218-224,226-227,229-230,232-240,242-243,245-246,248-256,258-259,261-262,264-272,274-275,277-278,280-288,290-291,293-294,296-304,306-307,309-310,314-320,322-323,325-326,328,330-336,338-339,341-342,344-352,354-355,357-358,360-368,370-371,373-374,376-384,386-387,389-390,392-400,402-403,405-406,410-416,418-419,421-422,424,426-432,434-435,437-438,440-448,450-451,453-454,456,458-464,466-467,469-470,472,474-481,483-484,486-487,489-498,500-501,503-504,506,508-511
+benchmarks/classics/README.md
+  s_25ab203f1b07d0::t_7d3852e919ab64 1-7,10-11,13-20,24-25
+  s_25ab203f1b07d0::t_6543ea70db2049 8-9,12,21-23
+apps/arcade/classics/sunwake-corsairs.axi
+  s_25ab203f1b07d0::t_64f1fc42c609c6 1-20
+tests/arcade/classics-benchmark-contract.test.ts
+  s_25ab203f1b07d0::t_7d3852e919ab64 1-12,14-23,25-40,43-144,147-150,152-157
+  s_25ab203f1b07d0::t_6543ea70db2049 13,24,41-42,145-146,151
+README.md
+  s_25ab203f1b07d0::t_887e9cef38344a 7,33-35,137,143-145,254
+src/arcade/classics/contracts.ts
+  s_25ab203f1b07d0::t_4ea3fdd4d05e8d 1-195,198-199,201-202,216,220-221,225-253,258-313,315-697
+  s_25ab203f1b07d0::t_0a11cda58e2640 314
+  s_25ab203f1b07d0::t_02d8ce3cf1c1f9 196-197,200,203-215,217-219,222-224,254-257
+apps/arcade/classics/emberglass-atlas.axi
+  s_25ab203f1b07d0::t_64f1fc42c609c6 1-20
+docs/SPEC.md
+  s_25ab203f1b07d0::t_887e9cef38344a 1,5
+src/ui/BenchmarksPage.tsx
+  s_25ab203f1b07d0::t_3f009347caa407 1,44-83,117-118,149-163,247,331-385,401-403
+apps/arcade/classics/bastion-treads.axi
+  s_25ab203f1b07d0::t_64f1fc42c609c6 1-20
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "82b04a0b65516e847eded1fe5dbee67eb2066daf",
+  "prompts": {},
+  "sessions": {
+    "s_25ab203f1b07d0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019fa44a-76f2-7673-90ad-3fd964bf68ef",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "sczhui <3062629+sczhui@users.noreply.github.com>"
+    }
+  }
+}
