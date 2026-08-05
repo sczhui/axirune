@@ -1,0 +1,23 @@
+src/ui/DownloadPage.tsx
+  s_25ab203f1b07d0::t_ce545c9111d53d 19-25,57,101,103,122,124,143,145,220-221
+nginx.conf
+  s_25ab203f1b07d0::t_90385dfe910c93 44-56
+CHANGELOG.md
+  s_25ab203f1b07d0::t_ec1f230d8afcb9 3-10
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "6c00ea23ed4b2f4cbe8ecded6b2ec52b67296190",
+  "prompts": {},
+  "sessions": {
+    "s_25ab203f1b07d0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019fa44a-76f2-7673-90ad-3fd964bf68ef",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "sczhui <3062629+sczhui@users.noreply.github.com>"
+    }
+  }
+}
