@@ -1,4 +1,4 @@
-# Axirune 0.4 alpha language tour
+# Axirune 0.5 alpha language tour
 
 Axirune is a deterministic general-purpose language designed for an unusual
 maintainer: a team of people and coding agents. Programs are explicit,

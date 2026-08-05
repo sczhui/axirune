@@ -1,0 +1,1239 @@
+{
+  "schema": "axirune-benchmark/classics/1",
+  "generatedAt": "2026-08-05T15:38:33.022Z",
+  "languageVersion": "0.5.0-alpha.1",
+  "runtime": {
+    "node": "v22.23.1",
+    "platform": "darwin",
+    "architecture": "arm64",
+    "clock": "process.hrtime.bigint"
+  },
+  "configuration": {
+    "seed": 1243070686,
+    "inputScript": "classic-input-script/1",
+    "warmupSteps": 600,
+    "measuredSteps": 6000,
+    "entityLimits": {
+      "actors": 512,
+      "shots": 512,
+      "particles": 2048,
+      "trail": 4096,
+      "boardCells": 512
+    }
+  },
+  "coverage": {
+    "catalogGames": 20,
+    "measuredSharedGames": 18,
+    "separatelyReportedFlagships": 2,
+    "gameIds": [
+      "aetherstep-foundry",
+      "bastion-treads",
+      "sunwake-corsairs",
+      "vector-siege",
+      "emberglass-atlas",
+      "moonthread-ronin",
+      "alloy-tempest",
+      "chromaline-circuit",
+      "dustcoil-courier",
+      "prism-stack",
+      "glyph-current",
+      "vault-cartographer",
+      "sparkcell-siege",
+      "neon-coil",
+      "prism-bastion",
+      "orbit-foundry",
+      "lumen-labyrinth",
+      "harbor-brawl",
+      "circuit-strikers",
+      "signal-bloom"
+    ]
+  },
+  "sharedEngine": {
+    "implementation": "src/arcade/classics/micro-engine.ts",
+    "games": [
+      {
+        "gameId": "aetherstep-foundry",
+        "title": "AETHERSTEP FOUNDRY",
+        "engineFamily": "platform-field",
+        "fixedStepHz": 120,
+        "seed": 1243070686,
+        "measurement": {
+          "steps": 6000,
+          "elapsedMs": 19.393,
+          "stepsPerSecond": 309397,
+          "terminalRestarts": 1
+        },
+        "determinism": {
+          "matched": true,
+          "finalDigest": "sha256:e449bd36403afc24436f5e7319b8c4361b5ee1c6641d4b8bfc25e0bee8c0dff8",
+          "replayDigest": "sha256:e449bd36403afc24436f5e7319b8c4361b5ee1c6641d4b8bfc25e0bee8c0dff8",
+          "inputScript": "classic-input-script/1"
+        },
+        "finalSummary": {
+          "status": "running",
+          "tick": 5160,
+          "stage": 1,
+          "score": 0,
+          "lives": 3,
+          "streak": 0,
+          "progress": 0,
+          "clock": 43,
+          "rng": 2818983282,
+          "player": {
+            "x": 26,
+            "y": 460,
+            "vx": -9.325314,
+            "vy": 0,
+            "energy": 0.45
+          },
+          "entities": {
+            "actors": 5,
+            "shots": 0,
+            "particles": 1,
+            "trail": 0,
+            "boardRows": 0,
+            "boardColumns": 0,
+            "boardOccupied": 0
+          }
+        },
+        "entities": {
+          "peak": {
+            "actors": 5,
+            "shots": 0,
+            "particles": 52,
+            "trail": 0,
+            "boardCells": 0,
+            "total": 56
+          },
+          "limits": {
+            "actors": 512,
+            "shots": 512,
+            "particles": 2048,
+            "trail": 4096,
+            "boardCells": 512
+          },
+          "withinLimits": true
+        }
+      },
+      {
+        "gameId": "bastion-treads",
+        "title": "BASTION TREADS",
+        "engineFamily": "projectile-field",
+        "fixedStepHz": 60,
+        "seed": 1243070686,
+        "measurement": {
+          "steps": 6000,
+          "elapsedMs": 46.799,
+          "stepsPerSecond": 128208,
+          "terminalRestarts": 17
+        },
+        "determinism": {
+          "matched": true,
+          "finalDigest": "sha256:8bc7b761eede15c022ebc86e00fcda7c2e3a7cdef0d5e2052a26a3a0aa94684f",
+          "replayDigest": "sha256:8bc7b761eede15c022ebc86e00fcda7c2e3a7cdef0d5e2052a26a3a0aa94684f",
+          "inputScript": "classic-input-script/1"
+        },
+        "finalSummary": {
+          "status": "running",
+          "tick": 48,
+          "stage": 1,
+          "score": 0,
+          "lives": 3,
+          "streak": 0,
+          "progress": 0,
+          "clock": 0.8,
+          "rng": 732075541,
+          "player": {
+            "x": 1,
+            "y": 1,
+            "vx": 0,
+            "vy": 0,
+            "energy": 0.45
+          },
+          "entities": {
+            "actors": 6,
+            "shots": 0,
+            "particles": 0,
+            "trail": 0,
+            "boardRows": 9,
+            "boardColumns": 15,
+            "boardOccupied": 58
+          }
+        },
+        "entities": {
+          "peak": {
+            "actors": 6,
+            "shots": 1,
+            "particles": 44,
+            "trail": 0,
+            "boardCells": 58,
+            "total": 108
+          },
+          "limits": {
+            "actors": 512,
+            "shots": 512,
+            "particles": 2048,
+            "trail": 4096,
+            "boardCells": 512
+          },
+          "withinLimits": true
+        }
+      },
+      {
+        "gameId": "sunwake-corsairs",
+        "title": "SUNWAKE CORSAIRS",
+        "engineFamily": "projectile-field",
+        "fixedStepHz": 60,
+        "seed": 1243070686,
+        "measurement": {
+          "steps": 6000,
+          "elapsedMs": 72.48,
+          "stepsPerSecond": 82781,
+          "terminalRestarts": 12
+        },
+        "determinism": {
+          "matched": true,
+          "finalDigest": "sha256:53c9d2cd2c81c2fb698ceeb4d0c3cf907c17eb98b8e5b41566b0755a4350cd91",
+          "replayDigest": "sha256:53c9d2cd2c81c2fb698ceeb4d0c3cf907c17eb98b8e5b41566b0755a4350cd91",
+          "inputScript": "classic-input-script/1"
+        },
+        "finalSummary": {
+          "status": "running",
+          "tick": 165,
+          "stage": 1,
+          "score": 108,
+          "lives": 3,
+          "streak": 1,
+          "progress": 1,
+          "clock": 2.75,
+          "rng": 2559836301,
+          "player": {
+            "x": 36,
+            "y": 242,
+            "vx": 0,
+            "vy": 0,
+            "energy": 0.45
+          },
+          "entities": {
+            "actors": 5,
+            "shots": 11,
+            "particles": 18,
+            "trail": 0,
+            "boardRows": 0,
+            "boardColumns": 0,
+            "boardOccupied": 0
+          }
+        },
+        "entities": {
+          "peak": {
+            "actors": 16,
+            "shots": 67,
+            "particles": 69,
+            "trail": 0,
+            "boardCells": 0,
+            "total": 140
+          },
+          "limits": {
+            "actors": 512,
+            "shots": 512,
+            "particles": 2048,
+            "trail": 4096,
+            "boardCells": 512
+          },
+          "withinLimits": true
+        }
+      },
+      {
+        "gameId": "emberglass-atlas",
+        "title": "EMBERGLASS ATLAS",
+        "engineFamily": "grid-field",
+        "fixedStepHz": 20,
+        "seed": 1243070686,
+        "measurement": {
+          "steps": 6000,
+          "elapsedMs": 9.223,
+          "stepsPerSecond": 650542,
+          "terminalRestarts": 24
+        },
+        "determinism": {
+          "matched": true,
+          "finalDigest": "sha256:797d0a557722f54e20d6e3e42aea05634fffae61828fad225676818bc6869b32",
+          "replayDigest": "sha256:797d0a557722f54e20d6e3e42aea05634fffae61828fad225676818bc6869b32",
+          "inputScript": "classic-input-script/1"
+        },
+        "finalSummary": {
+          "status": "running",
+          "tick": 24,
+          "stage": 1,
+          "score": 0,
+          "lives": 3,
+          "streak": 0,
+          "progress": 0,
+          "clock": 1.2,
+          "rng": 1631139158,
+          "player": {
+            "x": 1,
+            "y": 1,
+            "vx": 0,
+            "vy": 0,
+            "energy": 0.45
+          },
+          "entities": {
+            "actors": 5,
+            "shots": 0,
+            "particles": 0,
+            "trail": 0,
+            "boardRows": 9,
+            "boardColumns": 15,
+            "boardOccupied": 58
+          }
+        },
+        "entities": {
+          "peak": {
+            "actors": 5,
+            "shots": 0,
+            "particles": 32,
+            "trail": 0,
+            "boardCells": 58,
+            "total": 94
+          },
+          "limits": {
+            "actors": 512,
+            "shots": 512,
+            "particles": 2048,
+            "trail": 4096,
+            "boardCells": 512
+          },
+          "withinLimits": true
+        }
+      },
+      {
+        "gameId": "moonthread-ronin",
+        "title": "MOONTHREAD RONIN",
+        "engineFamily": "platform-field",
+        "fixedStepHz": 120,
+        "seed": 1243070686,
+        "measurement": {
+          "steps": 6000,
+          "elapsedMs": 9.019,
+          "stepsPerSecond": 665256,
+          "terminalRestarts": 2
+        },
+        "determinism": {
+          "matched": true,
+          "finalDigest": "sha256:e9f117cfa3a8bc8f3bbd97eeb31cabbe92297b8fe19c14900470185d7bdd1354",
+          "replayDigest": "sha256:e9f117cfa3a8bc8f3bbd97eeb31cabbe92297b8fe19c14900470185d7bdd1354",
+          "inputScript": "classic-input-script/1"
+        },
+        "finalSummary": {
+          "status": "running",
+          "tick": 2004,
+          "stage": 1,
+          "score": 224,
+          "lives": 3,
+          "streak": 2,
+          "progress": 2,
+          "clock": 16.7,
+          "rng": 4174375800,
+          "player": {
+            "x": 62.412408,
+            "y": 414.298611,
+            "vx": -10.868301,
+            "vy": 445.833333,
+            "energy": 0
+          },
+          "entities": {
+            "actors": 3,
+            "shots": 0,
+            "particles": 7,
+            "trail": 0,
+            "boardRows": 0,
+            "boardColumns": 0,
+            "boardOccupied": 0
+          }
+        },
+        "entities": {
+          "peak": {
+            "actors": 5,
+            "shots": 0,
+            "particles": 55,
+            "trail": 0,
+            "boardCells": 0,
+            "total": 58
+          },
+          "limits": {
+            "actors": 512,
+            "shots": 512,
+            "particles": 2048,
+            "trail": 4096,
+            "boardCells": 512
+          },
+          "withinLimits": true
+        }
+      },
+      {
+        "gameId": "alloy-tempest",
+        "title": "ALLOY TEMPEST",
+        "engineFamily": "projectile-field",
+        "fixedStepHz": 60,
+        "seed": 1243070686,
+        "measurement": {
+          "steps": 6000,
+          "elapsedMs": 31.079,
+          "stepsPerSecond": 193055,
+          "terminalRestarts": 8
+        },
+        "determinism": {
+          "matched": true,
+          "finalDigest": "sha256:4573a58ed34609ac4e73c829e1a90198fdfd79d59a9817950190224f91de0562",
+          "replayDigest": "sha256:4573a58ed34609ac4e73c829e1a90198fdfd79d59a9817950190224f91de0562",
+          "inputScript": "classic-input-script/1"
+        },
+        "finalSummary": {
+          "status": "running",
+          "tick": 106,
+          "stage": 1,
+          "score": 0,
+          "lives": 3,
+          "streak": 0,
+          "progress": 0,
+          "clock": 1.766667,
+          "rng": 832154148,
+          "player": {
+            "x": 26,
+            "y": 368.783333,
+            "vx": -0.272347,
+            "vy": 85.333333,
+            "energy": 0.45
+          },
+          "entities": {
+            "actors": 4,
+            "shots": 0,
+            "particles": 4,
+            "trail": 0,
+            "boardRows": 0,
+            "boardColumns": 0,
+            "boardOccupied": 0
+          }
+        },
+        "entities": {
+          "peak": {
+            "actors": 54,
+            "shots": 3,
+            "particles": 327,
+            "trail": 0,
+            "boardCells": 0,
+            "total": 331
+          },
+          "limits": {
+            "actors": 512,
+            "shots": 512,
+            "particles": 2048,
+            "trail": 4096,
+            "boardCells": 512
+          },
+          "withinLimits": true
+        }
+      },
+      {
+        "gameId": "chromaline-circuit",
+        "title": "CHROMALINE CIRCUIT",
+        "engineFamily": "lane-field",
+        "fixedStepHz": 60,
+        "seed": 1243070686,
+        "measurement": {
+          "steps": 6000,
+          "elapsedMs": 17.324,
+          "stepsPerSecond": 346337,
+          "terminalRestarts": 12
+        },
+        "determinism": {
+          "matched": true,
+          "finalDigest": "sha256:9ea7ecaa371aa63bb5f80b683eb78b3521477e8343287dd7d154874d09f62033",
+          "replayDigest": "sha256:9ea7ecaa371aa63bb5f80b683eb78b3521477e8343287dd7d154874d09f62033",
+          "inputScript": "classic-input-script/1"
+        },
+        "finalSummary": {
+          "status": "running",
+          "tick": 471,
+          "stage": 1,
+          "score": 282,
+          "lives": 1,
+          "streak": 1,
+          "progress": 5.7849066190476375,
+          "clock": 7.85,
+          "rng": 2948941333,
+          "player": {
+            "x": 250,
+            "y": 438,
+            "vx": -8.710333,
+            "vy": 0,
+            "energy": 0
+          },
+          "entities": {
+            "actors": 11,
+            "shots": 0,
+            "particles": 0,
+            "trail": 0,
+            "boardRows": 0,
+            "boardColumns": 0,
+            "boardOccupied": 0
+          }
+        },
+        "entities": {
+          "peak": {
+            "actors": 11,
+            "shots": 0,
+            "particles": 43,
+            "trail": 0,
+            "boardCells": 0,
+            "total": 48
+          },
+          "limits": {
+            "actors": 512,
+            "shots": 512,
+            "particles": 2048,
+            "trail": 4096,
+            "boardCells": 512
+          },
+          "withinLimits": true
+        }
+      },
+      {
+        "gameId": "dustcoil-courier",
+        "title": "DUSTCOIL COURIER",
+        "engineFamily": "lane-field",
+        "fixedStepHz": 60,
+        "seed": 1243070686,
+        "measurement": {
+          "steps": 6000,
+          "elapsedMs": 7.57,
+          "stepsPerSecond": 792629,
+          "terminalRestarts": 12
+        },
+        "determinism": {
+          "matched": true,
+          "finalDigest": "sha256:68396f38ef5fd1f2c153d684419b4e9301a04cf134891e0c4833be2c18b478c3",
+          "replayDigest": "sha256:68396f38ef5fd1f2c153d684419b4e9301a04cf134891e0c4833be2c18b478c3",
+          "inputScript": "classic-input-script/1"
+        },
+        "finalSummary": {
+          "status": "running",
+          "tick": 471,
+          "stage": 1,
+          "score": 282,
+          "lives": 1,
+          "streak": 1,
+          "progress": 5.7849066190476375,
+          "clock": 7.85,
+          "rng": 2948941333,
+          "player": {
+            "x": 250,
+            "y": 438,
+            "vx": -8.710333,
+            "vy": 0,
+            "energy": 0
+          },
+          "entities": {
+            "actors": 11,
+            "shots": 0,
+            "particles": 0,
+            "trail": 0,
+            "boardRows": 0,
+            "boardColumns": 0,
+            "boardOccupied": 0
+          }
+        },
+        "entities": {
+          "peak": {
+            "actors": 11,
+            "shots": 0,
+            "particles": 43,
+            "trail": 0,
+            "boardCells": 0,
+            "total": 48
+          },
+          "limits": {
+            "actors": 512,
+            "shots": 512,
+            "particles": 2048,
+            "trail": 4096,
+            "boardCells": 512
+          },
+          "withinLimits": true
+        }
+      },
+      {
+        "gameId": "prism-stack",
+        "title": "PRISM STACK",
+        "engineFamily": "falling-grid",
+        "fixedStepHz": 30,
+        "seed": 1243070686,
+        "measurement": {
+          "steps": 6000,
+          "elapsedMs": 7.744,
+          "stepsPerSecond": 774772,
+          "terminalRestarts": 2
+        },
+        "determinism": {
+          "matched": true,
+          "finalDigest": "sha256:aa8e0c31c46a9174eba71186571ae02f6121d798d98a0469371c45d8b37b82bb",
+          "replayDigest": "sha256:aa8e0c31c46a9174eba71186571ae02f6121d798d98a0469371c45d8b37b82bb",
+          "inputScript": "classic-input-script/1"
+        },
+        "finalSummary": {
+          "status": "running",
+          "tick": 701,
+          "stage": 1,
+          "score": 0,
+          "lives": 3,
+          "streak": 0,
+          "progress": 0,
+          "clock": 23.366667,
+          "rng": 2896826041,
+          "player": {
+            "x": 130,
+            "y": 410,
+            "vx": 0,
+            "vy": 0,
+            "energy": 0.45
+          },
+          "entities": {
+            "actors": 0,
+            "shots": 0,
+            "particles": 0,
+            "trail": 0,
+            "boardRows": 16,
+            "boardColumns": 10,
+            "boardOccupied": 48
+          }
+        },
+        "entities": {
+          "peak": {
+            "actors": 0,
+            "shots": 0,
+            "particles": 16,
+            "trail": 0,
+            "boardCells": 91,
+            "total": 91
+          },
+          "limits": {
+            "actors": 512,
+            "shots": 512,
+            "particles": 2048,
+            "trail": 4096,
+            "boardCells": 512
+          },
+          "withinLimits": true
+        }
+      },
+      {
+        "gameId": "glyph-current",
+        "title": "GLYPH CURRENT",
+        "engineFamily": "collection-field",
+        "fixedStepHz": 60,
+        "seed": 1243070686,
+        "measurement": {
+          "steps": 6000,
+          "elapsedMs": 5.161,
+          "stepsPerSecond": 1162481,
+          "terminalRestarts": 2
+        },
+        "determinism": {
+          "matched": true,
+          "finalDigest": "sha256:e802a867936e4308812b5e5cbba83d9f14df09d940cd24f87b2a5a2436e07662",
+          "replayDigest": "sha256:e802a867936e4308812b5e5cbba83d9f14df09d940cd24f87b2a5a2436e07662",
+          "inputScript": "classic-input-script/1"
+        },
+        "finalSummary": {
+          "status": "running",
+          "tick": 688,
+          "stage": 1,
+          "score": 0,
+          "lives": 3,
+          "streak": 0,
+          "progress": 0,
+          "clock": 11.466667,
+          "rng": 1067922201,
+          "player": {
+            "x": 130,
+            "y": 410,
+            "vx": 0,
+            "vy": 0,
+            "energy": 0.45
+          },
+          "entities": {
+            "actors": 0,
+            "shots": 0,
+            "particles": 0,
+            "trail": 0,
+            "boardRows": 8,
+            "boardColumns": 8,
+            "boardOccupied": 64
+          }
+        },
+        "entities": {
+          "peak": {
+            "actors": 0,
+            "shots": 0,
+            "particles": 36,
+            "trail": 0,
+            "boardCells": 64,
+            "total": 100
+          },
+          "limits": {
+            "actors": 512,
+            "shots": 512,
+            "particles": 2048,
+            "trail": 4096,
+            "boardCells": 512
+          },
+          "withinLimits": true
+        }
+      },
+      {
+        "gameId": "vault-cartographer",
+        "title": "VAULT CARTOGRAPHER",
+        "engineFamily": "grid-field",
+        "fixedStepHz": 20,
+        "seed": 1243070686,
+        "measurement": {
+          "steps": 6000,
+          "elapsedMs": 10.257,
+          "stepsPerSecond": 584971,
+          "terminalRestarts": 0
+        },
+        "determinism": {
+          "matched": true,
+          "finalDigest": "sha256:23f9f93d09364eb5918dfc79218884a77a474f3dacf62353c65c6881ca671efb",
+          "replayDigest": "sha256:23f9f93d09364eb5918dfc79218884a77a474f3dacf62353c65c6881ca671efb",
+          "inputScript": "classic-input-script/1"
+        },
+        "finalSummary": {
+          "status": "running",
+          "tick": 6000,
+          "stage": 1,
+          "score": 0,
+          "lives": 3,
+          "streak": 0,
+          "progress": 1,
+          "clock": 300,
+          "rng": 1243070686,
+          "player": {
+            "x": 1,
+            "y": 7,
+            "vx": 0,
+            "vy": 0,
+            "energy": 0.45
+          },
+          "entities": {
+            "actors": 3,
+            "shots": 0,
+            "particles": 0,
+            "trail": 0,
+            "boardRows": 9,
+            "boardColumns": 15,
+            "boardOccupied": 54
+          }
+        },
+        "entities": {
+          "peak": {
+            "actors": 3,
+            "shots": 0,
+            "particles": 0,
+            "trail": 0,
+            "boardCells": 54,
+            "total": 57
+          },
+          "limits": {
+            "actors": 512,
+            "shots": 512,
+            "particles": 2048,
+            "trail": 4096,
+            "boardCells": 512
+          },
+          "withinLimits": true
+        }
+      },
+      {
+        "gameId": "sparkcell-siege",
+        "title": "SPARKCELL SIEGE",
+        "engineFamily": "projectile-field",
+        "fixedStepHz": 60,
+        "seed": 1243070686,
+        "measurement": {
+          "steps": 6000,
+          "elapsedMs": 16.379,
+          "stepsPerSecond": 366326,
+          "terminalRestarts": 16
+        },
+        "determinism": {
+          "matched": true,
+          "finalDigest": "sha256:d6d1f14eca624e376ac5cf5d5cc2ebf6f43b036884e22d3288673c14bf341867",
+          "replayDigest": "sha256:d6d1f14eca624e376ac5cf5d5cc2ebf6f43b036884e22d3288673c14bf341867",
+          "inputScript": "classic-input-script/1"
+        },
+        "finalSummary": {
+          "status": "running",
+          "tick": 72,
+          "stage": 1,
+          "score": 0,
+          "lives": 3,
+          "streak": 0,
+          "progress": 0,
+          "clock": 1.2,
+          "rng": 2820587220,
+          "player": {
+            "x": 1,
+            "y": 1,
+            "vx": 0,
+            "vy": 0,
+            "energy": 0.45
+          },
+          "entities": {
+            "actors": 7,
+            "shots": 0,
+            "particles": 0,
+            "trail": 0,
+            "boardRows": 9,
+            "boardColumns": 15,
+            "boardOccupied": 58
+          }
+        },
+        "entities": {
+          "peak": {
+            "actors": 7,
+            "shots": 0,
+            "particles": 49,
+            "trail": 0,
+            "boardCells": 58,
+            "total": 113
+          },
+          "limits": {
+            "actors": 512,
+            "shots": 512,
+            "particles": 2048,
+            "trail": 4096,
+            "boardCells": 512
+          },
+          "withinLimits": true
+        }
+      },
+      {
+        "gameId": "neon-coil",
+        "title": "NEON COIL",
+        "engineFamily": "grid-field",
+        "fixedStepHz": 20,
+        "seed": 1243070686,
+        "measurement": {
+          "steps": 6000,
+          "elapsedMs": 15.456,
+          "stepsPerSecond": 388196,
+          "terminalRestarts": 224
+        },
+        "determinism": {
+          "matched": true,
+          "finalDigest": "sha256:b9351c74b76247f7320a7d15a876b7f7429e22f86c012f2bd998935835ab6a72",
+          "replayDigest": "sha256:b9351c74b76247f7320a7d15a876b7f7429e22f86c012f2bd998935835ab6a72",
+          "inputScript": "classic-input-script/1"
+        },
+        "finalSummary": {
+          "status": "running",
+          "tick": 12,
+          "stage": 1,
+          "score": 0,
+          "lives": 2,
+          "streak": 0,
+          "progress": 0,
+          "clock": 0.6,
+          "rng": 3458201477,
+          "player": {
+            "x": 5,
+            "y": 2,
+            "vx": 0,
+            "vy": 0,
+            "energy": 0.45
+          },
+          "entities": {
+            "actors": 6,
+            "shots": 0,
+            "particles": 10,
+            "trail": 3,
+            "boardRows": 9,
+            "boardColumns": 15,
+            "boardOccupied": 58
+          }
+        },
+        "entities": {
+          "peak": {
+            "actors": 6,
+            "shots": 0,
+            "particles": 34,
+            "trail": 5,
+            "boardCells": 58,
+            "total": 98
+          },
+          "limits": {
+            "actors": 512,
+            "shots": 512,
+            "particles": 2048,
+            "trail": 4096,
+            "boardCells": 512
+          },
+          "withinLimits": true
+        }
+      },
+      {
+        "gameId": "orbit-foundry",
+        "title": "ORBIT FOUNDRY",
+        "engineFamily": "arena-field",
+        "fixedStepHz": 60,
+        "seed": 1243070686,
+        "measurement": {
+          "steps": 6000,
+          "elapsedMs": 5.703,
+          "stepsPerSecond": 1052055,
+          "terminalRestarts": 13
+        },
+        "determinism": {
+          "matched": true,
+          "finalDigest": "sha256:d777940f5c498ea03c9b6211e0a09198347db951cd8d9d05b966aa2716bbe183",
+          "replayDigest": "sha256:d777940f5c498ea03c9b6211e0a09198347db951cd8d9d05b966aa2716bbe183",
+          "inputScript": "classic-input-script/1"
+        },
+        "finalSummary": {
+          "status": "running",
+          "tick": 383,
+          "stage": 1,
+          "score": 620,
+          "lives": 2,
+          "streak": 0,
+          "progress": 620,
+          "clock": 6.383333,
+          "rng": 3663144434,
+          "player": {
+            "x": 466,
+            "y": 418.166667,
+            "vx": -210,
+            "vy": 324,
+            "energy": 0.45
+          },
+          "entities": {
+            "actors": 0,
+            "shots": 0,
+            "particles": 0,
+            "trail": 0,
+            "boardRows": 0,
+            "boardColumns": 0,
+            "boardOccupied": 0
+          }
+        },
+        "entities": {
+          "peak": {
+            "actors": 0,
+            "shots": 0,
+            "particles": 27,
+            "trail": 0,
+            "boardCells": 0,
+            "total": 27
+          },
+          "limits": {
+            "actors": 512,
+            "shots": 512,
+            "particles": 2048,
+            "trail": 4096,
+            "boardCells": 512
+          },
+          "withinLimits": true
+        }
+      },
+      {
+        "gameId": "lumen-labyrinth",
+        "title": "LUMEN LABYRINTH",
+        "engineFamily": "grid-field",
+        "fixedStepHz": 20,
+        "seed": 1243070686,
+        "measurement": {
+          "steps": 6000,
+          "elapsedMs": 8.797,
+          "stepsPerSecond": 682077,
+          "terminalRestarts": 7
+        },
+        "determinism": {
+          "matched": true,
+          "finalDigest": "sha256:d0ef77a0f2d093f93736deee00551eeeba95deb775cf71462c170d492757e46a",
+          "replayDigest": "sha256:d0ef77a0f2d093f93736deee00551eeeba95deb775cf71462c170d492757e46a",
+          "inputScript": "classic-input-script/1"
+        },
+        "finalSummary": {
+          "status": "running",
+          "tick": 96,
+          "stage": 1,
+          "score": 0,
+          "lives": 3,
+          "streak": 0,
+          "progress": 0,
+          "clock": 4.8,
+          "rng": 1867559650,
+          "player": {
+            "x": 1,
+            "y": 1,
+            "vx": 0,
+            "vy": 0,
+            "energy": 0.45
+          },
+          "entities": {
+            "actors": 3,
+            "shots": 0,
+            "particles": 0,
+            "trail": 0,
+            "boardRows": 9,
+            "boardColumns": 15,
+            "boardOccupied": 85
+          }
+        },
+        "entities": {
+          "peak": {
+            "actors": 3,
+            "shots": 0,
+            "particles": 16,
+            "trail": 0,
+            "boardCells": 85,
+            "total": 102
+          },
+          "limits": {
+            "actors": 512,
+            "shots": 512,
+            "particles": 2048,
+            "trail": 4096,
+            "boardCells": 512
+          },
+          "withinLimits": true
+        }
+      },
+      {
+        "gameId": "harbor-brawl",
+        "title": "HARBOR BRAWL",
+        "engineFamily": "arena-field",
+        "fixedStepHz": 60,
+        "seed": 1243070686,
+        "measurement": {
+          "steps": 6000,
+          "elapsedMs": 9.176,
+          "stepsPerSecond": 653892,
+          "terminalRestarts": 8
+        },
+        "determinism": {
+          "matched": true,
+          "finalDigest": "sha256:0daa8454038d482ea16f96581f9bd422253040dc4b12be636f488d739c8f7238",
+          "replayDigest": "sha256:0daa8454038d482ea16f96581f9bd422253040dc4b12be636f488d739c8f7238",
+          "inputScript": "classic-input-script/1"
+        },
+        "finalSummary": {
+          "status": "running",
+          "tick": 164,
+          "stage": 1,
+          "score": 0,
+          "lives": 3,
+          "streak": 0,
+          "progress": 0,
+          "clock": 2.733333,
+          "rng": 4180812525,
+          "player": {
+            "x": 40,
+            "y": 337,
+            "vx": 0,
+            "vy": 0,
+            "energy": 0.45
+          },
+          "entities": {
+            "actors": 4,
+            "shots": 0,
+            "particles": 0,
+            "trail": 0,
+            "boardRows": 0,
+            "boardColumns": 0,
+            "boardOccupied": 0
+          }
+        },
+        "entities": {
+          "peak": {
+            "actors": 4,
+            "shots": 0,
+            "particles": 55,
+            "trail": 0,
+            "boardCells": 0,
+            "total": 58
+          },
+          "limits": {
+            "actors": 512,
+            "shots": 512,
+            "particles": 2048,
+            "trail": 4096,
+            "boardCells": 512
+          },
+          "withinLimits": true
+        }
+      },
+      {
+        "gameId": "circuit-strikers",
+        "title": "CIRCUIT STRIKERS",
+        "engineFamily": "arena-field",
+        "fixedStepHz": 60,
+        "seed": 1243070686,
+        "measurement": {
+          "steps": 6000,
+          "elapsedMs": 5.876,
+          "stepsPerSecond": 1021161,
+          "terminalRestarts": 6
+        },
+        "determinism": {
+          "matched": true,
+          "finalDigest": "sha256:ead143e8136f5ac90b9c3a63c5bdd644468cc3eb64ea2133bd5327ec448a0224",
+          "replayDigest": "sha256:ead143e8136f5ac90b9c3a63c5bdd644468cc3eb64ea2133bd5327ec448a0224",
+          "inputScript": "classic-input-script/1"
+        },
+        "finalSummary": {
+          "status": "running",
+          "tick": 903,
+          "stage": 1,
+          "score": 0,
+          "lives": 2,
+          "streak": 0,
+          "progress": 0,
+          "clock": 15.05,
+          "rng": 1067922201,
+          "player": {
+            "x": 60.5,
+            "y": 200,
+            "vx": 0,
+            "vy": 0,
+            "energy": 0.45
+          },
+          "entities": {
+            "actors": 2,
+            "shots": 0,
+            "particles": 0,
+            "trail": 0,
+            "boardRows": 0,
+            "boardColumns": 0,
+            "boardOccupied": 0
+          }
+        },
+        "entities": {
+          "peak": {
+            "actors": 2,
+            "shots": 0,
+            "particles": 16,
+            "trail": 0,
+            "boardCells": 0,
+            "total": 18
+          },
+          "limits": {
+            "actors": 512,
+            "shots": 512,
+            "particles": 2048,
+            "trail": 4096,
+            "boardCells": 512
+          },
+          "withinLimits": true
+        }
+      },
+      {
+        "gameId": "signal-bloom",
+        "title": "SIGNAL BLOOM",
+        "engineFamily": "collection-field",
+        "fixedStepHz": 60,
+        "seed": 1243070686,
+        "measurement": {
+          "steps": 6000,
+          "elapsedMs": 5.167,
+          "stepsPerSecond": 1161187,
+          "terminalRestarts": 0
+        },
+        "determinism": {
+          "matched": true,
+          "finalDigest": "sha256:f7e4239a16edbe5173d07050f8a4679a3651786c7dd166a3bff662f2ca6820db",
+          "replayDigest": "sha256:f7e4239a16edbe5173d07050f8a4679a3651786c7dd166a3bff662f2ca6820db",
+          "inputScript": "classic-input-script/1"
+        },
+        "finalSummary": {
+          "status": "running",
+          "tick": 6000,
+          "stage": 1,
+          "score": 432,
+          "lives": 3,
+          "streak": 0,
+          "progress": 4,
+          "clock": 100,
+          "rng": 3256311699,
+          "player": {
+            "x": 421,
+            "y": 127,
+            "vx": 0,
+            "vy": 0,
+            "energy": 0.45
+          },
+          "entities": {
+            "actors": 2,
+            "shots": 0,
+            "particles": 0,
+            "trail": 0,
+            "boardRows": 0,
+            "boardColumns": 0,
+            "boardOccupied": 0
+          }
+        },
+        "entities": {
+          "peak": {
+            "actors": 3,
+            "shots": 0,
+            "particles": 16,
+            "trail": 0,
+            "boardCells": 0,
+            "total": 18
+          },
+          "limits": {
+            "actors": 512,
+            "shots": 512,
+            "particles": 2048,
+            "trail": 4096,
+            "boardCells": 512
+          },
+          "withinLimits": true
+        }
+      }
+    ],
+    "aggregate": {
+      "totalSteps": 108000,
+      "elapsedMs": 302.603,
+      "stepsPerSecond": 356903,
+      "deterministicGames": 18,
+      "gamesWithinEntityLimits": 18,
+      "maxObservedEntities": 331
+    }
+  },
+  "flagships": [
+    {
+      "gameId": "vector-siege",
+      "implementation": "src/arcade/shooter-engine.ts",
+      "deterministicContract": "tests/arcade/shooter-engine.test.ts",
+      "title": "VECTOR SIEGE",
+      "engineFamily": "projectile-field",
+      "fixedStepHz": 60,
+      "tier": "dedicated-engine",
+      "measurement": "reported-separately"
+    },
+    {
+      "gameId": "prism-bastion",
+      "implementation": "src/arcade/breaker-engine.ts",
+      "deterministicContract": "tests/arcade/breaker-engine.test.ts",
+      "title": "PRISM BASTION",
+      "engineFamily": "ricochet-field",
+      "fixedStepHz": 120,
+      "tier": "dedicated-engine",
+      "measurement": "reported-separately"
+    }
+  ],
+  "passed": true
+}

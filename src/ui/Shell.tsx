@@ -27,7 +27,7 @@ export function Header({ route, locale, onLocaleChange }: HeaderProps) {
             <i />
           </span>
           <span className="wordmark__name">axirune</span>
-          <span className="wordmark__version">0.4α</span>
+          <span className="wordmark__version">0.5α</span>
         </Link>
 
         <nav className={`primary-nav ${open ? 'primary-nav--open' : ''}`} aria-label="Primary">
@@ -96,7 +96,7 @@ export function Footer({ locale }: { locale: Locale }) {
   return (
     <footer className="site-footer">
       <div className="site-footer__statement">
-        <span className="eyebrow">AXIRUNE / 0.4.0-ALPHA.3</span>
+        <span className="eyebrow">AXIRUNE / 0.5.0-ALPHA.1</span>
         <p>Make intent axiomatic.</p>
         <p>Bound every effect.</p>
       </div>
@@ -114,14 +114,14 @@ export function Footer({ locale }: { locale: Locale }) {
           <span className="site-footer__label">{locale === 'zh' ? '理解' : 'LEARN'}</span>
           <Link to="/docs">Language docs</Link>
           <Link to="/benchmarks">Benchmarks</Link>
-          <a href="/downloads/axirune-source-0.4.0-alpha.3.tar.gz">
+          <a href="/downloads/axirune-source-0.5.0-alpha.1.tar.gz">
             Source archive <ArrowUpRight size={13} />
           </a>
         </div>
         <div>
           <span className="site-footer__label">{locale === 'zh' ? '构建' : 'BUILD'}</span>
-          <a href="/downloads/axirune-language-0.4.0-alpha.3.tgz">Compiler + LSP</a>
-          <a href="/downloads/axirune-0.4.0-alpha.3.vsix">VS Code extension</a>
+          <a href="/downloads/axirune-language-0.5.0-alpha.1.tgz">Compiler + LSP</a>
+          <a href="/downloads/axirune-0.5.0-alpha.1.vsix">VS Code extension</a>
           <a href="https://github.com/sczhui/axirune" target="_blank" rel="noreferrer">
             GitHub source <ArrowUpRight size={13} />
           </a>

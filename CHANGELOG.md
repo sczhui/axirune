@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.5.0-alpha.1 — Arcade Collection
+
+- Expands Axirune Arcade from two flagships to 20 playable original browser
+  worlds across eight deterministic engine families, without ROMs, extracted
+  assets, protected characters, copied maps, external models, or network calls.
+- Adds 18 independent `.axi` Classic World rule programs alongside Vector
+  Siege and Prism Bastion; every source compiles into a unique verified `.axc`
+  capsule and must request zero capabilities, tools, permissions, or sandboxes.
+- Adds a shared fixed-step state engine, high-DPR procedural Canvas renderer,
+  keyboard, pointer, and touch controls, stage transitions, seeded replay,
+  snapshots, bounded entities, responsive gallery, and editable rule studio.
+- Adds a 20-entry catalog, dedicated collection guide, long-replay boundary
+  tests, a 108,000-step determinism benchmark, downloadable benchmark JSON,
+  and an evidence-backed benchmark page while keeping the Axirune/host runtime
+  boundary explicit.
+
 ## 0.4.0-alpha.3 — Arcade route hardening
 
 - Handles `/arcade` and `/arcade/` as exact SPA document routes while keeping

@@ -1,4 +1,4 @@
-import { Activity, BarChart3, Check, Clock3, Download, Gauge, LoaderCircle, Play, TerminalSquare } from 'lucide-react'
+import { Activity, BarChart3, Check, Clock3, Download, Gamepad2, Gauge, LoaderCircle, Play, ShieldCheck, TerminalSquare } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 import { samples, type Locale } from '../content/site'
 import { compileProgram, formatProgram, parseProgram } from './languageBridge'
@@ -41,6 +41,46 @@ type BenchmarkReport = {
   }>
 }
 
+type ClassicBenchmarkReport = {
+  schema: 'axirune-benchmark/classics/1'
+  generatedAt: string
+  languageVersion: string
+  configuration: { warmupSteps: number; measuredSteps: number; seed: number }
+  coverage: {
+    catalogGames: number
+    measuredSharedGames: number
+    separatelyReportedFlagships: number
+    gameIds: string[]
+  }
+  sharedEngine: {
+    games: Array<{
+      gameId: string
+      title: string
+      engineFamily: string
+      fixedStepHz: number
+      measurement: { steps: number; elapsedMs: number; stepsPerSecond: number }
+      determinism: { matched: boolean; finalDigest: string }
+      entities: { peak: { total: number }; withinLimits: boolean }
+    }>
+    aggregate: {
+      totalSteps: number
+      elapsedMs: number
+      stepsPerSecond: number
+      deterministicGames: number
+      gamesWithinEntityLimits: number
+      maxObservedEntities: number
+    }
+  }
+  flagships: Array<{
+    gameId: string
+    title: string
+    engineFamily: string
+    fixedStepHz: number
+    deterministicContract: string
+  }>
+  passed: boolean
+}
+
 function titleCase(value: string) {
   return value
     .split(/[-_]/u)
@@ -74,6 +114,8 @@ export function BenchmarksPage({ locale }: { locale: Locale }) {
   const [releaseResults, setReleaseResults] = useState<BenchResult[]>([])
   const [releaseReport, setReleaseReport] = useState<BenchmarkReport | null>(null)
   const [releaseError, setReleaseError] = useState('')
+  const [classicReport, setClassicReport] = useState<ClassicBenchmarkReport | null>(null)
+  const [classicError, setClassicError] = useState('')
   const [resultMode, setResultMode] = useState<'release' | 'local'>('release')
   const [runAt, setRunAt] = useState('')
   const smallSource = samples[0]?.code ?? ''
@@ -104,7 +146,21 @@ export function BenchmarksPage({ locale }: { locale: Locale }) {
         setReleaseError(error instanceof Error ? error.message : String(error))
       }
     }
-    void loadReleaseReport()
+    const loadClassicReport = async () => {
+      try {
+        const response = await fetch('/classics-benchmark-results.json', { signal: controller.signal })
+        if (!response.ok) throw new Error(`HTTP ${response.status}`)
+        const report = (await response.json()) as ClassicBenchmarkReport
+        if (report.schema !== 'axirune-benchmark/classics/1' || report.coverage.catalogGames !== 20) {
+          throw new Error('Invalid Classic Worlds benchmark report')
+        }
+        setClassicReport(report)
+      } catch (error) {
+        if (error instanceof DOMException && error.name === 'AbortError') return
+        setClassicError(error instanceof Error ? error.message : String(error))
+      }
+    }
+    void Promise.all([loadReleaseReport(), loadClassicReport()])
     return () => controller.abort()
   }, [])
 
@@ -188,7 +244,7 @@ export function BenchmarksPage({ locale }: { locale: Locale }) {
           <div>
             <span className="eyebrow">
               {resultMode === 'release'
-                ? `RELEASE JSON / AXIRUNE ${releaseReport?.languageVersion ?? '0.4.0-alpha.3'}`
+                ? `RELEASE JSON / AXIRUNE ${releaseReport?.languageVersion ?? '0.5.0-alpha.1'}`
                 : 'BROWSER LAB / REAL COMPILER CORE'}
             </span>
             <h2>{locale === 'zh' ? '编译器微基准' : 'Compiler microbenchmarks'}</h2>
@@ -272,6 +328,61 @@ export function BenchmarksPage({ locale }: { locale: Locale }) {
         </div>
       </section>
 
+      <section className="classic-benchmark-lab">
+        <div className="classic-benchmark-lab__head">
+          <div>
+            <span className="eyebrow"><Gamepad2 size={13} /> ARCADE / FIXED INPUT REPLAY</span>
+            <h2>{locale === 'zh' ? '20 款作品的确定性证据' : 'Determinism evidence for 20 worlds'}</h2>
+          </div>
+          <p>{locale === 'zh' ? '18 款共享引擎作品执行固定 Seed 与输入脚本；两款旗舰保留各自的专属确定性测试，不把不同实现混成一项跑分。' : 'Eighteen shared-engine worlds execute a fixed seed and input script. Two flagships retain dedicated determinism suites instead of being mixed into an unlike score.'}</p>
+        </div>
+
+        {classicReport ? (
+          <>
+            <div className="classic-benchmark-facts">
+              <div><small>CATALOG</small><strong>{classicReport.coverage.catalogGames}</strong><span>{locale === 'zh' ? '款已覆盖作品' : 'WORLDS COVERED'}</span></div>
+              <div><small>REPLAY</small><strong>{classicReport.sharedEngine.aggregate.totalSteps.toLocaleString()}</strong><span>{locale === 'zh' ? '固定输入步' : 'FIXED INPUT STEPS'}</span></div>
+              <div><small>THROUGHPUT</small><strong>{classicReport.sharedEngine.aggregate.stepsPerSecond.toLocaleString()}</strong><span>STEPS / SECOND</span></div>
+              <div><small>RESULT</small><strong>{classicReport.passed ? '18 / 18' : 'REVIEW'}</strong><span>{locale === 'zh' ? '确定且有界' : 'DETERMINISTIC + BOUNDED'}</span></div>
+            </div>
+
+            <div className="classic-benchmark-table" role="table" aria-label="Classic Worlds benchmark results">
+              <div className="classic-benchmark-table__row is-header" role="row">
+                <span role="columnheader">WORLD</span><span role="columnheader">ENGINE</span><span role="columnheader">STEPS / S</span><span role="columnheader">PEAK</span><span role="columnheader">REPLAY</span>
+              </div>
+              {classicReport.sharedEngine.games.map((game, index) => (
+                <div className="classic-benchmark-table__row" role="row" key={game.gameId}>
+                  <span role="cell"><small>{String(index + 1).padStart(2, '0')}</small><strong>{game.title}</strong></span>
+                  <span role="cell">{game.engineFamily}<small>{game.fixedStepHz} HZ · {game.measurement.steps.toLocaleString()} STEPS</small></span>
+                  <span role="cell" className="benchmark-number">{game.measurement.stepsPerSecond.toLocaleString()}</span>
+                  <span role="cell" className="benchmark-number">{game.entities.peak.total}</span>
+                  <span role="cell" className={game.determinism.matched && game.entities.withinLimits ? 'is-pass' : 'is-fail'}>
+                    {game.determinism.matched && game.entities.withinLimits ? <Check size={13} /> : '!'}
+                    {game.determinism.matched && game.entities.withinLimits ? 'MATCH' : 'REVIEW'}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            <div className="classic-benchmark-flagships">
+              {classicReport.flagships.map((game) => (
+                <article key={game.gameId}>
+                  <ShieldCheck size={18} />
+                  <span>DEDICATED ENGINE / {game.fixedStepHz} HZ</span>
+                  <h3>{game.title}</h3>
+                  <p>{locale === 'zh' ? '使用独立状态机与专属确定性合同测试。' : 'Independent state machine with a dedicated determinism contract.'}</p>
+                  <code>{game.deterministicContract}</code>
+                </article>
+              ))}
+            </div>
+          </>
+        ) : (
+          <div className="classic-benchmark-loading">
+            {classicError ? classicError : <><LoaderCircle className="spin" size={18} /> {locale === 'zh' ? '读取 Arcade 发布基准' : 'Loading Arcade release benchmark'}</>}
+          </div>
+        )}
+      </section>
+
       <section className="cli-benchmark section-shell">
         <div>
           <span className="eyebrow">REPRODUCE IN YOUR ENVIRONMENT</span>
@@ -286,6 +397,10 @@ export function BenchmarksPage({ locale }: { locale: Locale }) {
           <a href="/benchmark-results.json" download>
             <Download size={15} />
             {locale === 'zh' ? '下载发布基准 JSON' : 'Download release benchmark JSON'}
+          </a>
+          <a href="/classics-benchmark-results.json" download>
+            <Download size={15} />
+            {locale === 'zh' ? '下载 Arcade 基准 JSON' : 'Download Arcade benchmark JSON'}
           </a>
         </div>
       </section>

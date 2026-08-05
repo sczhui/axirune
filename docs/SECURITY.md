@@ -1,4 +1,4 @@
-# Axirune 0.4 alpha security and authority model
+# Axirune 0.5 alpha security and authority model
 
 Security starts with a distinction: deterministic computation is not an
 external effect.

@@ -58,7 +58,7 @@ const projectFiles: ProjectFile[] = [
     path: 'axirune.pack',
     kind: 'manifest',
     code: `package general-programs
-  version «0.4.0-alpha.3»
+  version «0.5.0-alpha.1»
   edition «2»
   source «src/**/*.axi»
   entry «src/main.axi»
@@ -227,7 +227,7 @@ export function IdePage({ locale }: { locale: Locale }) {
             <span>
               <TerminalSquare size={13} /> WEB RUNTIME
             </span>
-            <span>axirune 0.4.0-alpha.3</span>
+            <span>axirune 0.5.0-alpha.1</span>
           </div>
           <div>
             <span>UTF-8</span>

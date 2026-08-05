@@ -17,6 +17,8 @@
   },
   "include": [
     "src/language/**/*.ts",
+    "src/arcade/classic-rule-contract.ts",
+    "src/arcade/classics/**/*.ts",
     "src/cli/**/*.ts",
     "src/lsp/**/*.ts",
     "benchmarks/**/*.ts"

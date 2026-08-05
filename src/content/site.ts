@@ -218,8 +218,8 @@ export const docSections: DocSection[] = [
     kicker: '00 / ORIENTATION',
     title: { zh: '确定性优先，AI 可选', en: 'Deterministic first, AI optional' },
     summary: {
-      zh: 'Axirune 0.4 Alpha 是具备可验证执行胶囊与可选 Agent 扩展的确定性通用语言。名称取自 axiom 与 rune：让意图成为可检查的公理，让每个 effect 都有边界。',
-      en: 'Axirune 0.4 Alpha is a deterministic general-purpose language with verifiable execution capsules and optional agent extensions. Its name joins axiom and rune: make intent axiomatic and bound every effect.',
+      zh: 'Axirune 0.5 Alpha 是具备可验证执行胶囊与可选 Agent 扩展的确定性通用语言。名称取自 axiom 与 rune：让意图成为可检查的公理，让每个 effect 都有边界。',
+      en: 'Axirune 0.5 Alpha is a deterministic general-purpose language with verifiable execution capsules and optional agent extensions. Its name joins axiom and rune: make intent axiomatic and bound every effect.',
     },
     body: {
       zh: [
@@ -506,7 +506,7 @@ axirune run examples/word-frequency.axi --allow-read .`,
   },
 ]
 
-export const quickStart = `npm install -g https://axirune.velhu.com/downloads/axirune-language-0.4.0-alpha.3.tgz
+export const quickStart = `npm install -g https://axirune.velhu.com/downloads/axirune-language-0.5.0-alpha.1.tgz
 axirune check examples/invoice-total.axi
 axirune run examples/invoice-total.axi`
 

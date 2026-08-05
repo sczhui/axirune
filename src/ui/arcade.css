@@ -166,6 +166,24 @@
   background: #08130f;
 }
 
+.arcade-featured {
+  scroll-margin-top: var(--header-height);
+  background: #07100c;
+}
+
+.arcade-featured__head {
+  display: grid;
+  padding: clamp(70px, 8vw, 118px) var(--page-pad) 42px;
+  grid-template-columns: minmax(320px, 1fr) minmax(300px, 0.7fr);
+  gap: 20px clamp(40px, 7vw, 110px);
+  align-items: end;
+  border-top: 1px solid rgba(233, 237, 227, 0.16);
+}
+
+.arcade-featured__head .arcade-kicker { grid-column: 1 / -1; }
+.arcade-featured__head h2 { margin: 0; font: 720 clamp(43px, 5.4vw, 82px) / .88 var(--display); letter-spacing: -.06em; }
+.arcade-featured__head p { margin: 0; color: rgba(238, 244, 236, .6); font-size: 14px; line-height: 1.72; }
+
 .arcade-selector button {
   position: relative;
   display: grid;
@@ -348,6 +366,11 @@
   .arcade-game__viewport--portrait { width: min(100%, 480px); }
   .arcade-principles { grid-template-columns: 1fr; }
   .arcade-principles article { min-height: 280px; border-right: 0; border-bottom: 1px solid rgba(233, 237, 227, 0.16); }
+}
+
+@media (max-width: 760px) {
+  .arcade-featured__head { grid-template-columns: 1fr; }
+  .arcade-featured__head .arcade-kicker { grid-column: auto; }
 }
 
 @media (max-width: 720px) {

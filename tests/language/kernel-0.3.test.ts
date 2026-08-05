@@ -48,7 +48,7 @@ describe("Axirune 0.3 deterministic task kernel", () => {
     expect(LANGUAGE_NAME).toBe("Axirune");
     expect(LANGUAGE_EXTENSION).toBe(".axi");
     expect(LEGACY_LANGUAGE_EXTENSIONS).toContain(".nxl");
-    expect(LANGUAGE_VERSION).toBe("0.4.0-alpha.3");
+    expect(LANGUAGE_VERSION).toBe("0.5.0-alpha.1");
     expect(result.status).toBe("completed");
     expect(result.value).toBe(720);
     expect(result.output).toEqual([720]);

@@ -1,8 +1,8 @@
-# Axirune 0.4 alpha language specification
+# Axirune 0.5 alpha language specification
 
 Status: executable preview
 
-Language version: `0.4.0-alpha.3`
+Language version: `0.5.0-alpha.1`
 
 IR version: `axirune-ir/0.3`
 

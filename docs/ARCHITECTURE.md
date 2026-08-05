@@ -1,4 +1,4 @@
-# Axirune 0.4 alpha reference architecture
+# Axirune 0.5 alpha reference architecture
 
 Axirune has a deterministic general-purpose core and an optional effect
 boundary. The same strict TypeScript implementation runs in Node.js and in the

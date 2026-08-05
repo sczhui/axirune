@@ -542,6 +542,12 @@
     overflow: hidden;
   }
 
+  .classic-benchmark-lab { overflow: hidden; }
+  .classic-benchmark-lab__head { grid-template-columns: 1fr; }
+  .classic-benchmark-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .classic-benchmark-table { width: 100%; overflow-x: auto; }
+  .classic-benchmark-table__row { width: 860px; }
+
   .benchmark-table {
     width: 100%;
     overflow-x: auto;
@@ -1042,6 +1048,12 @@
     padding-right: 14px;
     padding-left: 14px;
   }
+
+  .classic-benchmark-lab { padding-right: 14px; padding-left: 14px; }
+  .classic-benchmark-facts { grid-template-columns: 1fr; }
+  .classic-benchmark-facts > div { min-height: 110px; }
+  .classic-benchmark-flagships { grid-template-columns: 1fr; }
+  .classic-benchmark-flagships article + article { border-top: 0; border-left: 1px solid var(--line-light); }
 
   .cli-benchmark__actions > code {
     min-height: 72px;

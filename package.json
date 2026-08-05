@@ -1,6 +1,6 @@
 {
   "name": "axirune-language",
-  "version": "0.4.0-alpha.3",
+  "version": "0.5.0-alpha.1",
   "private": true,
   "type": "module",
   "description": "A deterministic general-purpose language with optional typed AI capabilities.",
@@ -32,10 +32,12 @@
     "dist-toolchain/src/language",
     "dist-toolchain/src/cli",
     "dist-toolchain/src/lsp",
+    "dist-toolchain/src/arcade",
     "dist-toolchain/benchmarks",
     "apps",
     "docs",
     "examples",
+    "scripts/benchmark-classics.mjs",
     "axirune.pack",
     "axirune.lock",
     "README.md",
@@ -56,6 +58,7 @@
     "preview": "vite preview --host 0.0.0.0",
     "check:examples": "npm run build:toolchain && node scripts/check-examples.mjs",
     "bench": "npm run build:toolchain && node dist-toolchain/benchmarks/run.js",
+    "bench:classics": "npm run build:toolchain && node scripts/benchmark-classics.mjs --pretty",
     "axirune": "node dist-toolchain/src/cli/axirune.js",
     "nexilume": "node dist-toolchain/src/cli/axirune.js"
   },

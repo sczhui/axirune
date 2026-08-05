@@ -426,7 +426,7 @@ export function LedgerShowcasePage({ locale }: { locale: Locale }) {
   const downloadReport = () => {
     if (!report || !lastRun) return
     const artifact = {
-      generated_by: 'Axirune 0.4.0-alpha.3 / AxiLedger',
+      generated_by: 'Axirune 0.5.0-alpha.1 / AxiLedger',
       generated_at: new Date().toISOString(),
       execution: {
         runtime: 'browser',
@@ -924,7 +924,7 @@ export function LedgerShowcasePage({ locale }: { locale: Locale }) {
                 {activeTab === 'source' ? (
                   <div className="ledger-code-panel">
                     <header>
-                      <span>AXIRUNE 0.4.0-ALPHA.3 / UTF-8</span>
+                      <span>AXIRUNE 0.5.0-ALPHA.1 / UTF-8</span>
                       <code>{sourceLineCount} LINES</code>
                     </header>
                     <pre>

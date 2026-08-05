@@ -19,6 +19,7 @@ import {
 import type { RuntimeValue } from '../language'
 import type { Locale } from '../content/site'
 import { CodeEditor } from './CodeEditor'
+import { ClassicVault } from './arcade/ClassicVault'
 import { PrismBastionGame } from './arcade/PrismBastionGame'
 import { VectorSiegeGame } from './arcade/VectorSiegeGame'
 import './arcade.css'
@@ -109,27 +110,34 @@ export function ArcadePage({ locale }: { locale: Locale }) {
   const [activeId, setActiveId] = useState<ArcadeGameId>('vector-siege')
   const selected = games.find((game) => game.id === activeId) ?? games[0]!
 
+  const openFlagship = (id: ArcadeGameId) => {
+    setActiveId(id)
+    window.requestAnimationFrame(() => {
+      document.getElementById('flagship-cabinets')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    })
+  }
+
   return (
     <div className="arcade-page">
       <section className="arcade-hero">
-        <img src="/arcade/axi-arcade-hero.jpg" alt="" aria-hidden="true" />
+        <img src="/arcade/classics/classic-vault-hero-v2.jpg" alt="" aria-hidden="true" />
         <div className="arcade-hero__scrim" />
         <div className="arcade-hero__copy">
           <span className="arcade-kicker">
-            <Gamepad2 size={14} /> AXIRUNE ARCADE / 0.4 ALPHA 3
+            <Gamepad2 size={14} /> AXIRUNE ARCADE / 0.5 ALPHA 1
           </span>
           <h1>
-            {locale === 'zh' ? '经典手感。' : 'CLASSIC FEEL.'}
-            <strong>{locale === 'zh' ? '原创世界。' : 'ORIGINAL WORLDS.'}</strong>
+            {locale === 'zh' ? '二十种机制。' : 'TWENTY MECHANICS.'}
+            <strong>{locale === 'zh' ? '二十个原创世界。' : 'TWENTY ORIGINAL WORLDS.'}</strong>
             {locale === 'zh' ? '规则可验证。' : 'VERIFIED RULES.'}
           </h1>
           <p>
             {locale === 'zh'
-              ? '不是 ROM 模拟器，也不是套皮小游戏。每个世界都有原创美术、确定性物理、可复现状态和一份真正参与难度计算的 Axirune 规则程序。'
-              : 'Not a ROM emulator and not a reskin. Every world has original art, deterministic physics, reproducible state, and a real Axirune program that participates in difficulty calculation.'}
+              ? '汲取早期主机游戏的清晰规则、即时反馈与难度节奏。不是 ROM 模拟器，也不是套皮小游戏：每个世界都有原创美术、确定性状态和真正参与难度计算的 Axirune 程序。'
+              : 'Inspired by the clarity, immediacy, and difficulty cadence of early console games. Not a ROM emulator or a reskin: every world has original art, deterministic state, and real Axirune code governing difficulty.'}
           </p>
           <div className="arcade-hero__facts">
-            <span><strong>2</strong>{locale === 'zh' ? '可玩世界' : 'PLAYABLE WORLDS'}</span>
+            <span><strong>20</strong>{locale === 'zh' ? '可玩世界' : 'PLAYABLE WORLDS'}</span>
             <span><strong>.AXC</strong>{locale === 'zh' ? '规则胶囊' : 'RULE CAPSULES'}</span>
             <span><strong>∅</strong>{locale === 'zh' ? '外部权限' : 'EXTERNAL AUTHORITY'}</span>
           </div>
@@ -141,26 +149,35 @@ export function ArcadePage({ locale }: { locale: Locale }) {
         </div>
       </section>
 
-      <section className="arcade-selector" aria-label={locale === 'zh' ? '选择游戏' : 'Choose a game'}>
-        {games.map((game) => (
-          <button
-            key={game.id}
-            type="button"
-            className={activeId === game.id ? 'is-active' : ''}
-            onClick={() => setActiveId(game.id)}
-            aria-pressed={activeId === game.id}
-          >
-            <span>{game.index}</span>
-            <div>
-              <strong>{game.title}</strong>
-              <small>{game.subtitle[locale]}</small>
-            </div>
-            <i>{game.cadence}</i>
-          </button>
-        ))}
-      </section>
+      <ClassicVault locale={locale} onOpenFlagship={openFlagship} />
 
-      <ArcadeExperience key={selected.id} game={selected} locale={locale} />
+      <div id="flagship-cabinets" className="arcade-featured">
+        <div className="arcade-featured__head">
+          <span className="arcade-kicker"><Sparkles size={14} /> 02 / FLAGSHIP CABINETS</span>
+          <h2>{locale === 'zh' ? '两台独立旗舰引擎' : 'TWO FLAGSHIP ENGINES'}</h2>
+          <p>{locale === 'zh' ? '更深的波次射击与 120Hz 棱镜物理，保留独立状态机、关卡和源码实验台。' : 'Deeper wave combat and 120 Hz prism physics, each retaining its own state machine, stages, and source laboratory.'}</p>
+        </div>
+        <section className="arcade-selector" aria-label={locale === 'zh' ? '选择旗舰游戏' : 'Choose a flagship game'}>
+          {games.map((game) => (
+            <button
+              key={game.id}
+              type="button"
+              className={activeId === game.id ? 'is-active' : ''}
+              onClick={() => setActiveId(game.id)}
+              aria-pressed={activeId === game.id}
+            >
+              <span>{game.index}</span>
+              <div>
+                <strong>{game.title}</strong>
+                <small>{game.subtitle[locale]}</small>
+              </div>
+              <i>{game.cadence}</i>
+            </button>
+          ))}
+        </section>
+
+        <ArcadeExperience key={selected.id} game={selected} locale={locale} />
+      </div>
 
       <section className="arcade-principles">
         <article>

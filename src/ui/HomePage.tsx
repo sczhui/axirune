@@ -27,7 +27,7 @@ export function HomePage({ locale }: { locale: Locale }) {
         <div className="hero__copy">
           <div className="hero__meta">
             <span className="live-mark">
-              <i /> GENERAL-PURPOSE LANGUAGE · 0.4.0-ALPHA.3
+              <i /> GENERAL-PURPOSE LANGUAGE · 0.5.0-ALPHA.1
             </span>
             <span>DETERMINISTIC BY DEFAULT</span>
           </div>
@@ -97,20 +97,21 @@ export function HomePage({ locale }: { locale: Locale }) {
       </div>
 
       <section className="home-arcade">
-        <img src="/arcade/axi-arcade-hero.jpg" alt="" aria-hidden="true" loading="lazy" />
+        <img src="/arcade/classics/classic-vault-hero-v2.jpg" alt="" aria-hidden="true" loading="lazy" />
         <div className="home-arcade__scrim" />
         <div className="home-arcade__copy">
           <span className="eyebrow"><Gamepad2 size={14} /> 00 / AXIRUNE ARCADE</span>
-          <h2>{locale === 'zh' ? '两款原创游戏，真正由 Axirune 规则驱动。' : 'Two original games, genuinely driven by Axirune rules.'}</h2>
-          <p>{locale === 'zh' ? '进入矢量防线与棱镜堡垒：编辑 .axi 难度程序、重新生成 .axc 胶囊，然后立即游玩受检规则。' : 'Enter Vector Siege and Prism Bastion: edit the .axi difficulty program, rebuild its .axc capsule, then play the verified rules immediately.'}</p>
+          <h2>{locale === 'zh' ? '二十款原创游戏，真正由 Axirune 规则驱动。' : 'Twenty original games, genuinely driven by Axirune rules.'}</h2>
+          <p>{locale === 'zh' ? '探索平台跳跃、射击、竞速、解谜、弹珠与竞技世界：编辑 .axi 难度程序、重新生成 .axc 胶囊，然后立即游玩受检规则。' : 'Explore platforming, shooting, racing, puzzles, orbital physics, and arena worlds: edit .axi rules, rebuild the .axc capsule, then play the verified result.'}</p>
           <Link to="/arcade" className="button button--signal">
             <Play size={16} fill="currentColor" />
             {locale === 'zh' ? '进入游戏厅' : 'Enter the arcade'}
           </Link>
         </div>
         <div className="home-arcade__games" aria-hidden="true">
-          <span><strong>01</strong>VECTOR SIEGE<small>60 HZ / WAVE CONTRACT</small></span>
-          <span><strong>02</strong>PRISM BASTION<small>120 HZ / NOVA CHAIN</small></span>
+          <span><strong>20</strong>ORIGINAL WORLDS<small>20 VERIFIED .AXI RULESETS</small></span>
+          <span><strong>08</strong>ENGINE FAMILIES<small>FIXED STEP / SEEDED REPLAY</small></span>
+          <span><strong>00</strong>HIDDEN AUTHORITY<small>NO ROM · NO MODEL · NO NETWORK</small></span>
         </div>
       </section>
 

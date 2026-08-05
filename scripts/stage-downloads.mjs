@@ -65,6 +65,7 @@ const sourceEntries = [
   'public/arcade',
   'public/benchmark-results.json',
   'public/benchmark-results.md',
+  'public/classics-benchmark-results.json',
   'Dockerfile',
   'docker-compose.yml',
   'nginx.conf',
